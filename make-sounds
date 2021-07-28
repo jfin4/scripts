@@ -1,0 +1,67 @@
+#!/bin/sh
+
+start_m=1 
+dur_m=25  
+fade_s=10
+
+start=$(( $start_m * 60 )) # start fade in
+dur=$(( $dur_m * 60 )) # duration
+fs=$fade_s
+fi=$start
+fo=$(( $start + $dur - $fade_s )) # start fade out
+
+if [ ! $1 ]
+then
+	set wind rain water waves
+fi
+
+while [ $1 ]
+do
+
+	case $1 in
+		# Relaxing Sounds of Nature
+		# https://www.youtube.com/channel/UCKBpKeRhhCQOQwbPz4aYZWg
+		wind) 
+			link="https://www.youtube.com/watch?v=SuSVNA21S2A"
+			;;
+		rain) 
+			link="https://www.youtube.com/watch?v=IafTAPboPNY"
+			;;
+		water) 
+			link="https://www.youtube.com/watch?v=OpAgyVcMXvU" 
+			;;
+		waves) 
+			link="https://www.youtube.com/watch?v=AO2S2QZjykE"
+	esac
+
+	# download
+	if [ ! -e $1-orig.* ]
+	then
+		youtube-dl\
+			--extract-audio\
+			--audio-quality 0\
+			--output "$1-orig.%(ext)s"\
+			"$link"
+	fi
+
+	# clip, fade, convert
+	# "-q:a 0" is highest quality variable rate
+	# 0-3 are said to produce transparent results
+	# can also use "-b:a 320k" for constant rate
+	# may also use "-c:a libmp3lame" if default codec is (not) lame
+	# https://trac.ffmpeg.org/wiki/Encode/MP3
+	if [ ! -e $1.mp3 ]
+	then
+	ffmpeg\
+		-i $1-orig.*\
+		-ss $start\
+		-t $dur\
+		-af "afade=t=in:st=$fi:d=$fs,afade=t=out:st=$fo:d=$fs"\
+		-q:a 0\
+	    -c:a libmp3lame\
+		$1.mp3
+	fi
+
+	shift
+
+done
