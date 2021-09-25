@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# rtl, remote to local
+# translate remote path to local path
+
+local="/home/jfin/waterboard/rdrive"
+remote="/r/RB3/Shared"
+
+# if root of $PWD is same as $remote
+if [ "${1:0:${#remote}}" != "$remote" ] 
+then
+	exit
+else
+	echo -n "$local${1#$remote}"
+fi
+

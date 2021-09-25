@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# translate local to remote path
+
+local="/home/jfin/rdrive"
+remote="/r/rb3/shared"
+
+printf '%s' "${@//$local/$remote}"

@@ -1,0 +1,14 @@
+#!/bin/sh
+# start wrapper for ranger
+
+for file in "$@"
+do
+	ext="${file##*.}"
+	if [ "$ext" = "pdf" ]
+	then 
+		sumatra-pdf "$file" &
+	else
+		cmd //c start "" "$file"
+	fi
+done
+

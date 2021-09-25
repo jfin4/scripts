@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# pandoc wrapper used primarily to convert markdown notes into pdf
+
+doc="${1%.md}"
+
+pandoc "${doc}".md --output="${doc}".docx

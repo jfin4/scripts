@@ -1,0 +1,19 @@
+#!/bin/ksh
+
+w=$(tmux display-message -p '#{window_width}')
+# tmux swap-pane -t {top-left}
+# tmux select-pane -t {top-left}
+# tmux select-layout main-vertical
+# tmux resize-pane -x $(( ($w + 1) * 3 / 4 ))
+# tmux split-pane -bh ''
+# tmux resize-pane -x $(( $w / 4 ))
+# tmux select-pane -t {right-of}
+
+# tmux kill-pane -a
+tmux split-pane -bh ''
+tmux resize-pane -x $(( ($w + 1) / 4 ))
+tmux select-pane -t {last}
+tmux split-pane -h ''
+tmux resize-pane -x $(( $w / 4 ))
+tmux select-pane -t {last}
+

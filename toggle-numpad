@@ -1,0 +1,12 @@
+#! /bin/ksh
+# virtual number pad
+
+if [[ ! -e ~/.numpad ]]
+then
+    xmodmap ~/usr/xmodmap/numpad
+    touch ~/.numpad
+else
+    xmodmap ~/usr/xmodmap/default
+    "rm" ~/.numpad
+fi
+

@@ -1,0 +1,6 @@
+#! /bin/ksh
+# neomutt wrapper
+
+cd ~/downloads/
+neomutt $@
+cd ~

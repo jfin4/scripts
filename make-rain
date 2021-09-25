@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Download clip. I used this one:
+# https://www.youtube.com/watch?v=bhWJF9FlBqM
+youtube-dl\
+    --extract-audio\
+    --audio-quality 0\
+    --audio-format "mp3"\
+    --output "orig.%(ext)s"\
+	"https://www.youtube.com/watch?v=bhWJF9FlBqM"
+
+# It was 60 minutes long but I wanted an 90-minute track. The first step would
+# be to loop it but the track has a fade in so I had to clip this out first. I
+# made the track 45 minutes so the looping step would have simple math:
+
+# if [ ! -e orig.mp3 ]
+# then
+# 	echo "Something went wrong. No orig.mp3"
+# 	exit
+# fi
+
+# ffmpeg\
+# 	-ss 60\
+# 	-t 2700\
+# 	-i orig.mp3\
+# 	-acodec copy\
+# 	clip.mp3
+
+# # Then I looped it:
+# if [ ! -e clip.mp3 ]
+# then
+# 	echo "Something went wrong. No clip.mp3"
+# 	exit
+# fi
+
+# echo "file clip.mp3" >> ./concat.txt
+# echo "file clip.mp3" >> ./concat.txt
+# ffmpeg\
+# 	-f concat\
+# 	-i concat.txt\
+# 	-c copy\
+# 	concat.mp3
+
+# # finally I re-added a 10-second fade-in and fade-out
+# if [ ! -e concat.mp3 ]
+# then
+# 	echo "Something went wrong. No concat.mp3"
+# 	exit
+# fi
+
+# ffmpeg.exe\
+# 	-i concat.mp3\
+# 	-af "afade=t=in:st=0:d=10,afade=t=out:st=4790:d=10"\
+# 	fade.mp3
+
+# # clean up
+# if [ ! -e fade.mp3 ]
+# then
+# 	echo "Something went wrong. No fade.mp3"
+# 	exit
+# fi
+
+# rm ./concat.txt
+# rm orig.mp3
+# rm clip.mp3
+# rm concat.mp3
+# mv fade.mp3 rain.mp3

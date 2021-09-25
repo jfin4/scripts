@@ -1,0 +1,6 @@
+#!/bin/sh
+# connect network drives
+
+cmd //c 'net use h: \\wb-rb3-file-01\home$\JInman /y' > /dev/null 2>&1
+cmd //c 'net use r: \\wb-rb3-file-01\RB /y' > /dev/null 2>&1
+cmd //c 'net use s: \\wb-rb3-file-01\SB /y' > /dev/null 2>&1

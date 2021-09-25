@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Edit file names in a text editor
+
+# If no files are specified ...
+if [ -z "$1" ] 
+then 
+	# ... then set positional parameters to all files
+	set -- *
+fi
+
+# Exit if there are no matching files
+if [ ! -e "$1" ]
+then
+	echo "No matching files"
+	exit
+fi
+
+# Setting IFS to <newline> ...
+IFS='
+' # (this method is the most direct and universal)
+# ... puts each arg of "$*" on a new line
+echo "$*" > /tmp/rename
+
+vim /tmp/rename
+
+# Setting IFS to <nul> prevents word splitting
+IFS=
+# -r: treat "\" literally rather than escape character
+while read -r NAME
+do
+	# -n: no clobber; -v: verbose output
+	mv -nv "$1" "$NAME"
+	shift 1
+done < /tmp/rename

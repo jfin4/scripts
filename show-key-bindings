@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# see man bash, READLINE section
+
+echo '
+                 C-r
+                 C-p
+                 C-n 
+  C-a  M-b  C-b       C-f  M-f  C-e
+                 C-l
+  C-u  M-H  C-h       C-d  M-d  C-k
+                (C-_)
+                 C-y 
+                 M-y'

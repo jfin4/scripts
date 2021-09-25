@@ -1,0 +1,32 @@
+#!/bin/sh
+
+TRASH=$HOME/trash
+if [ ! -e "$TRASH" ]
+then
+    mkdir "$TRASH"
+fi
+
+for FILE in "$@"
+do
+
+	# remove trailing slash
+	NAMEEXT="${FILE%/}"
+
+	# remove dirname
+	NAMEEXT="${NAMEEXT##*/}"
+
+	# get filename
+	NAME="${NAMEEXT%%.*}"
+
+	# get extension
+	EXT="${NAMEEXT#*.}"
+
+
+	# if file or link already in trash add timestamp
+    if [ -e "$TRASH"/"$NAMEEXT"  -o -h "$TRASH"/"$NAMEEXT" ]
+    then
+        mv "$FILE" "$TRASH"/"$NAME"-"$(date +'%Y%m%d%H%M%S')"."$EXT"
+    else
+        mv "$FILE" "$TRASH"
+    fi
+done

@@ -1,0 +1,79 @@
+#!/bin/sh
+
+cd $HOME
+
+# configure etc
+su root -c 'cat <<- EOF > /etc/doas.conf
+	# See doas.conf(5) for syntax and examples.
+
+	# Allow wheel by default
+	permit nopass keepenv :wheel
+EOF'
+
+# system daemons
+doas rcctl enable apmd
+doas rcctl set apmd flags -A
+
+# setup git
+doas pkg_add git--
+git config --global user.name "John Inman"
+git config --global user.email jfinmaniv@icloud.com
+git config --global credential.helper store
+
+# install dotfiles
+cd $HOME
+
+if [ ! -e .dot.git ]
+then
+	git clone --bare https://github.com/jfinmaniv/dotfiles .dot.git
+
+	function dot {
+	git --git-dir=.dot.git/ --work-tree=. "$@"
+	}
+
+	dot checkout obsd
+
+	if [ "$?" = 0 ]; then
+		echo "Checked out dot files."
+		else
+			mkdir dotfiles.bak
+			echo "Backing up pre-existing dot files."
+			dot checkout obsd 2>&1 \
+				| awk '/\../ {print}' \
+				| xargs -I{} mv {} dotfiles.bak/{}
+	fi;
+
+	dot checkout obsd
+	dot config --local status.showUntrackedFiles no
+	dot push --set-upstream origin obsd
+fi
+
+# install scripts
+cd $HOME
+if [ ! -e scripts ]
+then
+	git clone https://github.com/jfinmaniv/scripts
+	cd scripts
+	git checkout obsd
+fi
+
+# set up vim
+cd $HOME
+doas pkg_add vim--no_x11-python3
+
+while read plug
+do 
+	if [ ! -e .vim/pack/pack/start/${plug#*/} ]
+	then
+		git clone https://github.com/$plug .vim/pack/pack/start/${plug#*/}
+	fi
+done < .vim/plugins
+
+# set up python
+doas pkg_add python--%3.8
+if [ ! -h /usr/local/bin/python ]
+then
+	doas ln -s /usr/local/bin/python3 /usr/local/bin/python
+fi
+ 
+# doas reboot

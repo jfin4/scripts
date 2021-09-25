@@ -1,0 +1,4 @@
+#!/bin/sh
+# do in background
+
+"$@" > /dev/null 2>&1 &

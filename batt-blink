@@ -1,0 +1,15 @@
+#! /bin/sh
+# blink battery warning
+
+status=$(xprop -root -notype -f WM_NAME "8u" \
+    | sed -n -r 's/WM_NAME = \"(.*)\"/ \| \1/p')
+status_blink=$(print "$status" \
+    | sed -r 's/(.*)/LOW BATTERY\1/')
+
+while true
+do
+    xsetroot -name "$status"
+    sleep 0.5
+    xsetroot -name "$status_blink"
+    sleep 0.5
+done

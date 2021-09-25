@@ -1,0 +1,4 @@
+#!/bin/sh
+# go to remote mirror of $PWD
+
+cd "$(network-to-drive "$PWD")"

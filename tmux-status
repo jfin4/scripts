@@ -1,0 +1,11 @@
+#! /bin/ksh
+# toggle tmux status bar
+
+if [[ ! -e /tmp/tmux-status-off ]]
+then
+    tmux set-window-option status off
+    touch /tmp/tmux-status-off
+else
+    tmux set-window-option status on
+    rm /tmp/tmux-status-off
+fi

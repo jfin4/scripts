@@ -1,0 +1,91 @@
+#! /bin/sh
+# status bar
+
+# colors and blocks
+# colors{{{
+red="%{F#ff0000}"
+yellow="%{F#ffff00}"
+gray="%{F#808080}"
+uncolor="%{F-}"
+#}}}
+# unicode blocks{{{
+block14='\xe2\x96\x82' 
+block24='\xe2\x96\x84' 
+block34='\xe2\x96\x86' 
+block44='\xe2\x96\x88' 
+#}}}
+
+# bar items
+# network{{{
+Net() {
+	dbm=$(iwctl station wlan0 show | awk '/AverageRSSI/ { print $2 }')
+	sig=$(( 2 * ( $dbm + 100 )))
+	if [ $wired = "active" ]
+	then
+		var=""
+	elif [ $sig -ge 90 ]
+	then
+		var="$block14$block24$block34$block44 "
+	elif [ $sig -ge 80 ]
+	then
+		var="$block14$block24$block34$gray$block44$uncolor "
+	elif [ $sig -ge 70 ]
+	then
+		var="$block14$block24$gray$block34$block44$uncolor "
+	elif [ $sig -ge 60 ]
+	then
+		var="$block14$gray$block24$block34$block44$uncolor "
+	elif [ $sig -ge 50 ]
+	then
+		var="$gray$block14$block24$block34$block44$uncolor "
+	else
+		var="$yellow$block14$block24$block34$block44$uncolor "
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# battery{{{
+Bat() {
+	stat=$(< /sys/class/power_supply/BAT0/status)
+	cap=$(< /sys/class/power_supply/BAT0/capacity)
+	if [ "$stat" = Charging ]
+	then
+		var=""
+	elif [ "$cap" -ge 90 ]
+	then
+		var="$block44$block44$block44$block44 "
+	elif [ "$cap" -ge 75 ]
+	then
+		var="$block44$block44$block44$gray$block44$uncolor "
+	elif [ "$cap" -ge 50 ]
+	then
+		var="$block44$block44$gray$block44$block44$uncolor "
+	elif [ "$cap" -ge 25 ]
+	then
+		var="$block44$gray$block44$block44$block44$uncolor "
+	elif [ "$cap" -ge 10 ]
+	then
+		var="$yellow$block44$uncolor$gray$block44$block44$block44$uncolor "
+	else
+		var="$red$block44$block44$block44$block44$uncolor "
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# time{{{
+Time() {
+	var="$(date '+%H:%M') "
+	printf '%s' "$var" 
+}
+#}}}
+
+# print loop
+trap : HUP #{{{
+while true
+do
+	printf '%s\n' "%{r}$(Net)$(Bat)$(Time)"
+	sleep 60 &
+	wait
+done
+#}}}
+

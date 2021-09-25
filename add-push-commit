@@ -1,0 +1,13 @@
+#!/bin/sh
+# add, commit, and push dotfile changes
+
+if [ -z "$*" ]
+then 
+	git status 
+	echo -e "\nRun \"${0##*/} <commit message>\" to commit changes"
+	exit
+fi
+
+git add .
+git commit -m "$*"
+git push

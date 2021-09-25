@@ -1,25 +1,5 @@
 #!/bin/sh
 
-if [ -e /sys/class/backlight/intel_backlight ]
-then
-	graphics=intel_backlight
-	low=512
-else
-	graphics=nvidia_0
-	low=64
-fi
-
-current=$(</sys/class/backlight/$graphics/brightness)
+current=$(</sys/class/backlight/amdgpu_bl0/brightness)
 lower=$(expr $current / 2)
-max=$(</sys/class/backlight/$graphics/max_brightness)
-
-if [ $current -eq  $max ]; then
-	 lower=$low
-fi
-
-if [ $lower -ge 1 ]; then
-	echo $lower > /sys/class/backlight/$graphics/brightness
-else
-	echo 0 > /sys/class/backlight/$graphics/brightness
-fi
-
+echo $lower > /sys/class/backlight/amdgpu_bl0/brightness
