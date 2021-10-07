@@ -8,6 +8,6 @@ then
 	exit
 fi
 
-git --git-dir=$HOME/.dot.git/ --work-tree=$HOME add -f $(< .dotfiles)
+git --git-dir=$HOME/.dot.git/ --work-tree=$HOME add -u
 git --git-dir=$HOME/.dot.git/ --work-tree=$HOME commit -m "$*"
 git --git-dir=$HOME/.dot.git/ --work-tree=$HOME push

@@ -13,16 +13,61 @@ block14='\xe2\x96\x82'
 block24='\xe2\x96\x84' 
 block34='\xe2\x96\x86' 
 block44='\xe2\x96\x88' 
+block14l='\xe2\x96\x8e' 
+bolt='\xe2\x9a\xa1'
 #}}}
 
 # bar items
+# volume{{{
+Vol() {
+	vol=$(pamixer --get-volume)
+	if $(pamixer --get-mute)
+	then
+		var="$red$block14$uncolor "
+	elif [ $vol -eq 100 ]
+	then
+		var="$block44 "
+	elif [ $vol -ge 75 ]
+	then
+		var="$block34 "
+	elif [ $vol -ge 50 ]
+	then
+		var="$block24 "
+	elif [ $vol -ge 25 ]
+	then
+		var="$block14 "
+	else
+		var="$gray$block14$uncolor "
+	fi
+
+	printf '%b' "$var"
+}
+#}}}
 # network{{{
 Net() {
-	dbm=$(iwctl station wlan0 show | awk '/AverageRSSI/ { print $2 }')
-	sig=$(( 2 * ( $dbm + 100 )))
+
+	wired=inactive
+	wireless=active
+	if [ "$(ip address show enp2s0f0 | grep inet)" ]
+	then
+		wired=active
+	elif [ "$(ip address show enp5s0f3u2 | grep inet)" ]
+	then
+		wired=active
+	elif [ "$(ip address show wlan0 | grep inet)" ]
+	then
+		dbm=$(iwctl station wlan0 show | awk '/AverageRSSI/ { print $2 }')
+		sig=$(( 2 * ( $dbm + 100 )))
+	else
+		wireless=inactive
+	fi
+
 	if [ $wired = "active" ]
 	then
 		var=""
+	elif [ $wireless = "inactive" ]
+	then
+		var="$red$block14$block24$block34$block44$uncolor "
 	elif [ $sig -ge 90 ]
 	then
 		var="$block14$block24$block34$block44 "
@@ -79,11 +124,15 @@ Time() {
 }
 #}}}
 
+# message
+# msg="The only way out is through."
+msg=""
+
 # print loop
 trap : HUP #{{{
 while true
 do
-	printf '%s\n' "%{r}$(Net)$(Bat)$(Time)"
+	printf '%s\n' "$msg%{r}$(Vol)$(Net)$(Bat)$(Time)"
 	sleep 60 &
 	wait
 done

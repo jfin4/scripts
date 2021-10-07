@@ -1,0 +1,23 @@
+#!/bin/sh
+
+
+if [ -z ${1+x} ]
+then
+	tag=""
+else
+	tag="$1"
+fi
+
+day=$(date +'%y-%j')
+n=1
+padn=$(printf '%02d' "$n")
+note=$day-$padn
+
+while [ -e $HOME/notes/${note}.md ]
+do
+	n=$(( n + 1 ))
+	padn=$(printf '%02d' "$n")
+	note=$day-$padn
+done
+
+vim $HOME/notes/${note}-"$tag".md
