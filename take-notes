@@ -1,23 +1,37 @@
 #!/bin/sh
 
+dir="$PWD"
+cd ~/notes
 
-if [ -z ${1+x} ]
+pat="$*"
+
+if [ "$pat" = "." ]
 then
-	tag=""
-else
-	tag="-$*"
+	dayno=$(date +'%y-%j')
+
+	i=1
+	while [ -e $HOME/notes/${dayno}-${i}* ]
+	do
+		i=$(( i + 1 ))
+	done
+
+	vim $HOME/notes/${dayno}-${i}.txt
+
+	exit
 fi
 
-day=$(date +'%y-%j')
-n=1
-padn=$(printf '%02d' "$n")
-note=$day-$padn
+if [ -z "$pat" ]
+then
+	pat="."
+fi
 
-while [ -e $HOME/notes/${note}.md ]
-do
-	n=$(( n + 1 ))
-	padn=$(printf '%02d' "$n")
-	note=$day-$padn
-done
+file=$(grep --exclude-dir=".*" -r "$pat" \
+	| fzy \
+	| sed -e 's/:.*//')
 
-vim $HOME/notes/${note}"$tag".md
+if [ -n "$file" ]
+then
+	vim "$file"
+fi
+
+cd "$dir"
