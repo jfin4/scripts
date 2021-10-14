@@ -7,13 +7,15 @@ cd
 if [ "$1" = pull ]
 then
 	git --git-dir=$HOME/.dot.git/ --work-tree=$HOME pull
+	cd scripts
 	git pull
-	cd notes
+	cd ../notes
 	git pull
 else
 	sync-repo-dot
+	cd scripts
 	sync-repo
-	cd notes
+	cd ../notes
 	sync-repo
 fi
 
