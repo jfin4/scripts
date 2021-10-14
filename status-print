@@ -93,7 +93,7 @@ Net() {
 Bat() {
 	stat=$(< /sys/class/power_supply/BAT0/status)
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
-	if [ "$stat" = Charging ]
+	if [ $stat = Charging -o $stat = Full ]
 	then
 		var=""
 	elif [ "$cap" -ge 90 ]

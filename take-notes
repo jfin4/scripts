@@ -5,7 +5,7 @@ if [ -z ${1+x} ]
 then
 	tag=""
 else
-	tag="$1"
+	tag="-$*"
 fi
 
 day=$(date +'%y-%j')
@@ -20,4 +20,4 @@ do
 	note=$day-$padn
 done
 
-vim $HOME/notes/${note}-"$tag".md
+vim $HOME/notes/${note}"$tag".md

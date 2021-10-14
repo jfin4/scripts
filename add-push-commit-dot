@@ -3,11 +3,11 @@
 
 if [ -z "$*" ]
 then 
-	git --git-dir=$HOME/.dot.git/ --work-tree=$HOME status
-	echo -e "\nRun \"${0##*/} <commit message>\" to commit changes"
-	exit
+	msg=$(date)
+else
+	msg="$*"
 fi
 
-git --git-dir=$HOME/.dot.git/ --work-tree=$HOME add .
-git --git-dir=$HOME/.dot.git/ --work-tree=$HOME commit -m "$*"
+git --git-dir=$HOME/.dot.git/ --work-tree=$HOME add -u
+git --git-dir=$HOME/.dot.git/ --work-tree=$HOME commit -m "$msg"
 git --git-dir=$HOME/.dot.git/ --work-tree=$HOME push
