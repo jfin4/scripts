@@ -36,6 +36,6 @@ do
 	then
 		# -n: no clobber; -v: verbose output
 		mv -nv "$1" "$new_name"
-		shift
 	fi
+	shift
 done < $temp
