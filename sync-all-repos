@@ -12,7 +12,7 @@ then
 	cd ../notes
 	git pull
 else
-	sync-repo-dot
+	sync-dot-repo
 	cd scripts
 	sync-repo
 	cd ../notes
