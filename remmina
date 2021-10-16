@@ -1,6 +1,0 @@
-#!/bin/sh
-# remmina wrapper
-# resets freerdp config
-
-rm -r ~/.config/freerdp
-/usr/bin/remmina

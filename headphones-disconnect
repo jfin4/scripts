@@ -1,3 +1,0 @@
-#!/bin/ksh
-
-bluetoothctl disconnect 70:26:05:CF:75:A1

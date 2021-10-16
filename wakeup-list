@@ -1,4 +1,0 @@
-LID	  S4	*disabled  platform:PNP0C0D:00
-SLPB	  S3	*disabled  platform:PNP0C0E:00
-IGBE	  S4	*disabled  pci:0000:00:1f.6
-XHCI	  S3	*disabled  pci:0000:00:14.0

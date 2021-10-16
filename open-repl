@@ -1,0 +1,14 @@
+#!/bin/sh
+
+case $1 in
+	r) command=start-r
+		;;
+	shell) command=ksh
+		;;
+	python) command=ipython
+esac
+
+tmux split-window -h -c '#{pane_current_path}' $command
+tmux move-pane -t {bottom-right}
+tmux select-layout main-vertical
+tmux select-pane -t {last}

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ "$(setxkbmap -query | grep swap_alt_win)" ]; then
-	setxkbmap -option 
-else
-	setxkbmap -option altwin:swap_alt_win
-fi

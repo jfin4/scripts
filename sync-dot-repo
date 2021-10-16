@@ -1,0 +1,13 @@
+#!/bin/sh
+# add, commit, and push dotfile changes
+
+if [ -z "$*" ]
+then 
+	msg=$(date)
+else
+	msg="$*"
+fi
+
+git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME add -u
+git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME commit -m "$msg"
+git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME push

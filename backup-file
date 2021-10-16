@@ -4,5 +4,6 @@ time="$(date +'%Y%m%d%H%S')"
 
 for file in "$@"
 do
+	file=${file%/}
 	mv "$file" "$file"-"$time"
 done
