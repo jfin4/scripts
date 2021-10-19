@@ -1,7 +1,7 @@
 #!/bin/sh
 
 get_args() {
-	arg=$(find -path "*${1/\./}*" | fzy)
+	arg=$(find -ipath "*${1/\./}*" | fzy)
 	[ -z "$arg" ] && read -p 'arg: ' arg
 	args="$args $arg"
 	[ -n "$1" ] && shift
