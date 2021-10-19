@@ -11,7 +11,7 @@ get_args() {
 if [ "${1:-.}" == "." ]
 then
 	file=$(find -path "*" | fzy)
-	[ -n "$file" ] && copy-path "$file"
+	[ -n "$file" ] && xsel -p -b "$file"
 	exit
 fi
 
