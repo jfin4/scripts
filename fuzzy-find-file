@@ -1,28 +1,21 @@
 #!/bin/sh
 
-if [ "$1" == "." ]
+get_args() {
+	arg=$(find -path "*${1/\./}*" | fzy)
+	[ -z "$arg" ] && read -p 'arg: ' arg
+	args="$args $arg"
+	[ -n "$1" ] && shift
+	[ -n "$1" ] && get_args "$@"
+}
+
+if [ "${1:-.}" == "." ]
 then
-	# show only hidden files
-	file=$(find -path "*/.*" | fzy)
-	shift
-else
-	# show only non-hidden files
-	file=$(find -path "*/.*" -prune -o -print | fzy)
+	file=$(find -path "*" | fzy)
+	[ -n "$file" ] && copy-path "$file"
+	exit
 fi
 
-if [ -n "$1" ]
-then
-	command=$1 
-	shift
-else
-	command=echo
-fi
-
-if [ -n "$file" ]
-then
-	old_dir="$PWD"
-	cd "${file%/*}"
-	$command "${file##*/}" "$@"
-fi
-
-cd "$old_dir"
+command="$1"
+shift
+get_args "$@"
+$command $args
