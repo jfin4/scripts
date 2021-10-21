@@ -6,7 +6,7 @@ cd
 
 if [ "$1" = pull ]
 then
-	git --git-dir=$HOME/.dot.git/ --work-tree=$HOME pull
+	git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME pull
 	cd scripts
 	git pull
 	cd ../notes
