@@ -68,6 +68,6 @@ fi
 # exit #########################################################################
 if [ "$1" != "in" -a "$1" != "out" ]
 then
-    echo -e "${red}error${unred}: Arg 1 must be 'pull' or 'push'."
+    echo -e "${red}error${unred}: Arg 1 must be 'in' or 'out'."
 fi
 
