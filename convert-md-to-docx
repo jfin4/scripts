@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# convert markdown docx
+
+if [ $# -eq 0 ]
+then
+    printf '%s\n' "Usage: ${0##*/} <file-to-convert>.md"
+    exit 1
+fi
+
+doc="${1%.md}"
+
+pandoc --reference-doc=$HOME/templates/word.docx --output="${doc}".docx "${doc}".md 

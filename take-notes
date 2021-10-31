@@ -1,0 +1,51 @@
+#!/bin/sh
+
+new=false
+copy=false
+OPTIND=1
+while getopts 'nc' arg
+do
+    case "${arg}" in
+        n) new=true ;;
+        c) copy=true ;;
+        *) return ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if $new
+then
+    dayno=$(date +'%y-%j')
+
+    i=1
+    while [ -e $HOME/notes/${dayno}-${i}.txt ]
+    do
+        i=$(( i + 1 ))
+    done
+
+    print -s vim $HOME/notes/${dayno}-${i}.txt
+    vim $HOME/notes/${dayno}-${i}.txt
+
+    return
+fi
+
+cd $HOME/notes
+file=$(grep -ir "${1:-.}"\
+    | sort -r\
+    | fzy\
+    | sed -e 's/:.*//')
+cd "$OLDPWD"
+
+if [ -z "$file" ]
+then
+    return
+fi
+
+if $copy
+then
+    print -n $HOME/notes/$file > /dev/clipboard
+    return
+fi
+
+print -s vim $HOME/notes/$file
+vim $HOME/notes/$file

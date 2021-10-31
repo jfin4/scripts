@@ -1,0 +1,9 @@
+#!/bin/sh
+
+youtube-dl\
+    --ignore-errors\
+    --output "%(playlist_index)s-%(title)s.%(ext)s"\
+    --extract-audio\
+    --audio-format "mp3"\
+    --audio-quality 0\
+    "$@"

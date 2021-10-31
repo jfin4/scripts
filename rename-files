@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# Edit file names in a text editor
+
+# If no files are specified ...
+if [ -z "$*" ] 
+then 
+    # ... then set positional parameters to all files
+    set -- *
+fi
+
+# Exit if there are no matching files
+for file in "$@"
+do
+    if [ ! -e "$file" ]
+    then
+        echo "$file does not exist"
+        has_typo=1
+    fi
+done
+
+if [ $has_typo ]
+then
+        exit
+fi
+
+# Setting IFS to <newline> ...
+# this method is POSIX
+IFS='
+'
+temp=$(mktemp)
+# put each arg of "$*" on a new line
+echo "$*" > $temp
+vim $temp
+
+# Setting IFS to <nul> prevents word splitting
+IFS=
+# -r: treat "\" literally rather than escape character
+while read -r fname
+do
+    if [ "$fname" != "$1" ]
+    then
+        # -n: no clobber; -v: verbose output
+        mv -nv "$1" "$fname"
+    fi
+    shift
+done < $temp

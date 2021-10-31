@@ -1,0 +1,81 @@
+#!/bin/sh
+
+ask_if_again() {
+    question="Again? ([y] or n): "
+    printf '%s' "$question"
+    read q 
+    case $q in
+        "") : ;;
+        y) : ;;
+        n) quit ;;
+        *) ask_if_again
+    esac
+}
+
+quit() {
+    if [ $(pgrep -f ffplay) ]
+    then
+        pkill -f ffplay
+    fi
+    if [ -e ffplay.exe.stackdump ]
+    then
+        rm ffplay.exe.stackdump
+    fi
+    exit
+}
+
+trap quit INT
+
+while getopts 'q' opt
+do
+    case "${opt}" in
+        q) quiet=true ;;
+        *) exit ;;
+    esac
+done
+shift $((OPTIND-1))
+
+start=$1
+set wind rain water waves
+case $start in
+    "") : ;;
+    wind) : ;;
+    rain) shift 1 ;;
+    water) shift 2 ;;
+    waves) shift 3 ;;
+    *) echo "$start: no such sound" ;;
+esac
+dir="$HOME/music/focus-playlist"
+minutes=25
+
+while true
+do
+    if ! $quiet
+    then
+        ffplay -nodisp $dir/$1.mp3 > /dev/null 2>&1 &
+    fi
+
+    i=$minutes
+    while [ $i -gt 0 ]
+    do
+        echo $i
+        i=$(( $i - 1 ))
+        sleep 60
+    done
+
+    if $quiet
+    then
+        cygstart $HOME/.times-up.txt
+    else
+        pkill -f ffplay
+    fi
+
+    ask_if_again
+
+    if [ $1 = waves ]
+    then
+        set wind rain water waves
+    else
+        shift
+    fi
+done

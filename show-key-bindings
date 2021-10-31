@@ -1,0 +1,36 @@
+#!/bin/sh
+
+clear
+echo '
+    CURSOR
+    .        bwd        fwd
+    char     ^b         ^f
+    word     ^[b        ^[f
+    line     ^a         ^e
+
+    KILL
+    .        bwd        fwd
+    char     ^h         ^d
+    word     ^w         ^[d
+    line     ^u         ^k
+
+    HISTORY
+    .        prev       next
+    move     ^p         ^n
+    search   ^r         ^s
+
+    TRANSPOSE
+    .        char       word
+    .        ^t         ^[t
+
+    CASE
+    .        up         down
+    .        ^[c        ^[l
+
+    MISC
+    .        args       ^[0..^[9
+    .        clear      ^l
+    .        undo       ^_
+    .        yank       ^y
+    .        yank-pop   ^[y
+'

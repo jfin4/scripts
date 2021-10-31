@@ -1,0 +1,17 @@
+#!/bin/sh
+# connect network drives
+
+red='\033[0;31m'
+unred='\033[0m'
+
+echo -n 'Connect H drive...'
+cmd //c 'net use h: \\wb-rb3-file-01\home$\JInman /y' > /dev/null 2>&1
+(( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+echo -n 'Connect R drive...'
+cmd //c 'net use r: \\wb-rb3-file-01\RB /y' > /dev/null 2>&1
+(( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+echo -n 'Connect S drive...'
+cmd //c 'net use s: \\ca.epa.local\SB /y' > /dev/null 2>&1
+(( $? )) && echo -e "${red}ERROR${unred} " || echo success

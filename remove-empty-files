@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for f in *
+do
+    if [ ! -d "$f" ] && [ ! -s "$f" ]
+    then
+        rm "$f"
+    fi
+done
