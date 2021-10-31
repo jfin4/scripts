@@ -1,0 +1,14 @@
+#!/bin/sh
+
+timestamp=$(date +'%Y%m%d%H%M%S')
+
+for path in "$@";
+do
+    file=${path##*/}
+    if [ ! -e "$HOME/trash/$file" ]
+    then
+        mv "$path" "$HOME"/trash
+    else
+        mv "$path" "$HOME/trash/${file}-${timestamp}"
+    fi
+done

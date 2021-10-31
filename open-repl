@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$1" == close ]
+then
+	tmux kill-pane -t {bottom-right}
+	exit
+fi
+
+tmux split-window -c "#{pane_current_path}" $1
+tmux move-pane -t {bottom-right}
+tmux select-layout main-vertical
+tmux select-pane -t {last}

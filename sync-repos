@@ -1,0 +1,74 @@
+#!/bin/sh
+
+# set up #######################################################################
+red='\033[0;31m'
+unred='\033[0m'
+
+# pull #########################################################################
+if [ "$1" = "in" ]
+then
+    unset way
+    dir="$PWD"
+    cd
+    echo
+    echo PULLING
+
+    # dotfiles
+    echo -n "dotfiles..."
+    wrap-git-dot stash -- .histfile > /dev/null 2>&1
+    wrap-git-dot pull > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+    # scripts
+    echo -n "scripts..."
+    cd scripts
+    git pull > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+    # waterboard
+    echo -n "waterboard..."
+    cd
+    git pull > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    cd "$dir"
+fi
+
+# push #########################################################################
+if [ "$1" = "out" ]
+then
+    dir="$PWD"
+    cd
+    echo
+    echo PUSHING
+
+    # dotfiles
+    echo -n "dotfiles..."
+    wrap-git-dot add -u > /dev/null 2>&1
+    wrap-git-dot commit -m updates > /dev/null 2>&1
+    wrap-git-dot push > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+    # scripts
+    echo -n "scripts..."
+    cd scripts
+    git add . > /dev/null 2>&1
+    git commit -m updates > /dev/null 2>&1
+    git push > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+
+    # waterboard
+    echo -n "waterboard..."
+    cd
+    git add . > /dev/null 2>&1
+    git commit -m updates > /dev/null 2>&1
+    git push > /dev/null 2>&1
+    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    cd "$dir"
+fi
+
+# exit #########################################################################
+if [ "$1" != "in" -a "$1" != "out" ]
+then
+    echo -e "${red}error${unred}: Arg 1 must be 'in' or 'out'."
+fi
+
