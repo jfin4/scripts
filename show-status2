@@ -1,0 +1,70 @@
+#! /bin/sh
+# status bar
+
+# unicode blocks
+sld18='\xe2\x96\x81' 
+sld14='\xe2\x96\x82' 
+sld24='\xe2\x96\x84' 
+sld34='\xe2\x96\x86' 
+sld44='\xe2\x96\x88' 
+shd44='\xe2\x96\x91'
+
+
+# bar items
+# network
+Net() {
+    sig=0
+	if [ "$(ip address show wlan0 | grep inet)" ]
+	then
+		dbm=$(iwctl station wlan0 show | awk '/AverageRSSI/ { print $2 }')
+		sig=$(( 2 * ( $dbm + 100 )))
+	fi
+
+	if [ $sig -ge 90 ]
+	then
+		var="$sld14$sld24$sld34$sld44 $sig% "
+	elif [ $sig -ge 80 ]
+	then
+		var="$sld14$sld24$sld34$sld18 $sig% "
+	elif [ $sig -ge 70 ]
+	then
+		var="$sld14$sld24$sld18$sld18 $sig% "
+	elif [ $sig -ge 60 ]
+	then
+		var="$sld14$sld18$sld18$sld18 $sig% "
+	else
+		var="$sld18$sld18$sld18$sld18 $sig% "
+	fi
+	echo -e "$var"
+}
+
+# battery
+Bat() {
+	cap=$(< /sys/class/power_supply/BAT0/capacity)
+	if [ "$cap" -ge 90 ]
+	then
+		var="$sld44$sld44$sld44$sld44 $cap% "
+	elif [ "$cap" -ge 75 ]
+	then
+		var="$sld44$sld44$sld44$shd44 $cap% "
+	elif [ "$cap" -ge 50 ]
+	then
+		var="$sld44$sld44$shd44$shd44 $cap% "
+	elif [ "$cap" -ge 25 ]
+	then
+		var="$sld44$shd44$shd44$shd44 $cap% "
+	else
+		var="$shd44$shd44$shd44$shd44 $cap% "
+	fi
+	echo -e "$var"
+}
+
+# time
+Time() {
+	var="$(date '+%H:%M') "
+	echo "$var" 
+}
+
+echo "$(Net)$(Bat)$(Time)"
+
+
