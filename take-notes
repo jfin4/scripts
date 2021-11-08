@@ -1,8 +1,11 @@
 #!/bin/sh
 
+dir="$PWD"
 cd ~/notes
 
-if [ "$1" = "." ]
+pat="$*"
+
+if [ "$pat" = "." ]
 then
 	dayno=$(date +'%y-%j')
 
@@ -17,7 +20,12 @@ then
 	exit
 fi
 
-file=$(grep --exclude-dir=".*" -r "${1:-.}"\
+if [ -z "$pat" ]
+then
+	pat="."
+fi
+
+file=$(grep -iar "$pat"\
 	| sort -r\
 	| fzy\
 	| sed -e 's/:.*//')
@@ -25,7 +33,6 @@ file=$(grep --exclude-dir=".*" -r "${1:-.}"\
 if [ -n "$file" ]
 then
 	vim "$file"
-else
-	exit
 fi
 
+cd "$dir"

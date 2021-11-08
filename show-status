@@ -22,18 +22,18 @@ Net() {
 
 	if [ $sig -ge 90 ]
 	then
-		var="$sld14$sld24$sld34$sld44 $sig% "
+		var="$sld14$sld24$sld34$sld44 "
 	elif [ $sig -ge 80 ]
 	then
-		var="$sld14$sld24$sld34$sld18 $sig% "
+		var="$sld14$sld24$sld34$sld18 "
 	elif [ $sig -ge 70 ]
 	then
-		var="$sld14$sld24$sld18$sld18 $sig% "
+		var="$sld14$sld24$sld18$sld18 "
 	elif [ $sig -ge 60 ]
 	then
-		var="$sld14$sld18$sld18$sld18 $sig% "
+		var="$sld14$sld18$sld18$sld18 "
 	else
-		var="$sld18$sld18$sld18$sld18 $sig% "
+		var="$sld18$sld18$sld18$sld18 "
 	fi
 	echo -e "$var"
 }
@@ -43,18 +43,18 @@ Bat() {
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
 	if [ "$cap" -ge 90 ]
 	then
-		var="$sld44$sld44$sld44$sld44 $cap% "
+		var="$sld44$sld44$sld44$sld44 "
 	elif [ "$cap" -ge 75 ]
 	then
-		var="$sld44$sld44$sld44$shd44 $cap% "
+		var="$sld44$sld44$sld44$shd44 "
 	elif [ "$cap" -ge 50 ]
 	then
-		var="$sld44$sld44$shd44$shd44 $cap% "
+		var="$sld44$sld44$shd44$shd44 "
 	elif [ "$cap" -ge 25 ]
 	then
-		var="$sld44$shd44$shd44$shd44 $cap% "
+		var="$sld44$shd44$shd44$shd44 "
 	else
-		var="$shd44$shd44$shd44$shd44 $cap% "
+		var="$shd44$shd44$shd44$shd44 "
 	fi
 	echo -e "$var"
 }
@@ -65,6 +65,4 @@ Time() {
 	echo "$var" 
 }
 
-echo "$(Net)$(Bat)$(Time)"
-
-
+notify-send "$(Net)$(Bat)$(Time)"

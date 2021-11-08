@@ -1,12 +1,12 @@
 #!/bin/sh
 
-case $1 in
-	r) command=start-r
-		;;
-	shell) command=ksh
-		;;
-	python) command=ipython
-esac
+command=$1
+
+if [ "$command" = close ]
+then
+    tmux kill-pane -t {bottom-right}
+    exit
+fi
 
 tmux split-window -h -c '#{pane_current_path}' $command
 tmux move-pane -t {bottom-right}
