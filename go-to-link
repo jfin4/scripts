@@ -4,8 +4,11 @@ pat="$@"
 tag=$(grep "${pat:-.}" $HOME/index.csv | sed 's/,.\+$//' | fzy )
 link=$(grep "$tag" $HOME/index.csv | sed 's/^.\+, \+//')
 [ -z "$link" ] && exit
+
 ftype=$(echo "$link" | cut -c1-4)
 [ "$ftype" != "http" ] && ftype=${link##*.}
+[ "$ftype" != "http" ] && [ ! -e "$link" ] && connect-network-drives
+
 case "$ftype" in
     "pdf") command=SumatraPDF ;;
     "http") command=firefox ;;

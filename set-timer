@@ -1,0 +1,10 @@
+#!/bin/sh
+
+i=${1:-0}
+while [ $i -gt 0 ]
+do
+    echo $i
+    i=$( expr $i - 1 )
+    sleep 60
+done
+echo "Time's up!"
