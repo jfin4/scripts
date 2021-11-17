@@ -6,8 +6,9 @@ efibootmgr --disk /dev/nvme0n1\
     --label "Arch Linux"\
     --loader /vmlinuz-linux\
     --unicode\
-    'root=PARTUUID=493f7be6-7c26-fa43-beef-43cd2b6add0d
-        rw
-        initrd=\intel-ucode.img
-        initrd=\initramfs-linux.img'\
+        'root=PARTUUID=0c6aba77-bb0d-614c-a5f8-decf894e3d44
+         resume=PARTUUID=7a961d3e-68a2-524c-b0c8-f6fb810bb0df
+         rw
+         initrd=\initramfs-linux.img'\
     --verbose
+

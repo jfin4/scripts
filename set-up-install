@@ -1,32 +1,12 @@
 #!/bin/sh
 # set up new install
 
-# install programs
-pacman -Syu --noconfirm
-
-# list generated via "pacman -Qe"
-pacman -S --noconfirm --needed\
-	base\
-	git\
-	man-db\
-	mksh\
-	python\
-	python-pip\
-	rsync\
-	tmux\
-	cygutils\
-	procps\
-	vim
 
 # checkout dotfiles into new home dir
-git config --global user.name "John Inman"
-git config --global user.email jfinmaniv@icloud.com
-git config --global credential.helper store
-
-git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dot.git
+git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dotfiles.git
 
 function dot {
-   git --git-dir=$HOME/.dot.git/ --work-tree=$HOME "$@"
+   git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME "$@"
 }
 
 dot checkout msys
@@ -43,11 +23,6 @@ else
 		| xargs -I{} mv {} dotfiles.bak/{}
 fi
 
-dot checkout msys
+dot checkout arch
 dot config --local status.showUntrackedFiles no
-dot push --set-upstream origin msys
-
-mkdir .vim/{backup,swap,undo}
-
-# terminus font
-curl --output terminus.zip https://files.ax86.net/terminus-ttf/files/latest-windows.zip
+dot push --set-upstream origin arch
