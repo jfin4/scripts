@@ -13,5 +13,5 @@ then
 	sudo -u jfin \
 		DISPLAY=:0 \
 		DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
-		notify-send "LOW BATTERY"
+        notify-send "LOW BATTERY (${capacity}%)"
 fi

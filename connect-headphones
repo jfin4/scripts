@@ -3,10 +3,10 @@
 if [ $1 == on ]
 then
     sudo systemctl start bluetooth.service
-	bluetoothctl power on
-	bluetoothctl connect 70:26:05:CF:75:A1
+    bluetoothctl power on
+    bluetoothctl connect 70:26:05:CF:75:A1
 elif [ $1 == off ]
 then
-	bluetoothctl disconnect 70:26:05:CF:75:A1
-	bluetoothctl power off
+    bluetoothctl disconnect 70:26:05:CF:75:A1
+    bluetoothctl power off
 fi

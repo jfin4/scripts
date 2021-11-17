@@ -2,38 +2,39 @@
 # status bar
 
 # unicode blocks
-sld18='\xe2\x96\x81' 
-sld14='\xe2\x96\x82' 
-sld24='\xe2\x96\x84' 
-sld34='\xe2\x96\x86' 
-sld44='\xe2\x96\x88' 
-shd44='\xe2\x96\x91'
-
+bar18='\xe2\x96\x81' 
+bar14='\xe2\x96\x82' 
+bar24='\xe2\x96\x84' 
+bar34='\xe2\x96\x86' 
+bar44='\xe2\x96\x88' 
+shade='\xe2\x96\x91'
 
 # bar items
 # network
 Net() {
     sig=0
-	if [ "$(ip address show wlan0 | grep inet)" ]
+	if [ "$(ip address show wlan0 | grep 'inet[^6]')" ]
 	then
-		dbm=$(iwctl station wlan0 show | awk '/AverageRSSI/ { print $2 }')
+		dbm=$(iw dev wlan0 link | awk '/signal/ { print $2 }')
 		sig=$(( 2 * ( $dbm + 100 )))
 	fi
-
 	if [ $sig -ge 90 ]
 	then
-		var="$sld14$sld24$sld34$sld44 "
+		var="$bar14$bar24$bar34$bar44 "
 	elif [ $sig -ge 80 ]
 	then
-		var="$sld14$sld24$sld34$sld18 "
+		var="$bar14$bar24$bar34$bar18 "
 	elif [ $sig -ge 70 ]
 	then
-		var="$sld14$sld24$sld18$sld18 "
+		var="$bar14$bar24$bar18$bar18 "
 	elif [ $sig -ge 60 ]
 	then
-		var="$sld14$sld18$sld18$sld18 "
-	else
-		var="$sld18$sld18$sld18$sld18 "
+		var="$bar14$bar18$bar18$bar18 "
+	elif [ $sig -ge 50 ]
+	then
+		var="$bar18$bar18$bar18$bar18 "
+    else
+        var="$bar18$bar18$bar18$bar18 (${sig}%) "
 	fi
 	echo -e "$var"
 }
@@ -43,20 +44,23 @@ Bat() {
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
 	if [ "$cap" -ge 90 ]
 	then
-		var="$sld44$sld44$sld44$sld44 "
+		var="$bar44$bar44$bar44$bar44 "
 	elif [ "$cap" -ge 75 ]
 	then
-		var="$sld44$sld44$sld44$shd44 "
+		var="$bar44$bar44$bar44$shade "
 	elif [ "$cap" -ge 50 ]
 	then
-		var="$sld44$sld44$shd44$shd44 "
+		var="$bar44$bar44$shade$shade "
 	elif [ "$cap" -ge 25 ]
 	then
-		var="$sld44$shd44$shd44$shd44 "
+		var="$bar44$shade$shade$shade "
+	elif [ "$cap" -ge 10 ]
+	then
+		var="$shade$shade$shade$shade "
 	else
-		var="$shd44$shd44$shd44$shd44 "
+        var="$shade$shade$shade$shade ($cap%) "
 	fi
-	echo -e "$var"
+    echo -e "$var"
 }
 
 # time

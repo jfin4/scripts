@@ -1,38 +1,51 @@
 #!/bin/sh
 
-dir="$PWD"
-cd ~/notes
+new=false
+copy=false
+OPTIND=1
+while getopts 'nc' arg
+do
+    case "${arg}" in
+        n) new=true ;;
+        c) copy=true ;;
+        *) return ;;
+    esac
+done
+shift $((OPTIND-1))
 
-pat="$*"
-
-if [ "$pat" = "." ]
+if $new
 then
-	dayno=$(date +'%y-%j')
+    dayno=$(date +'%y-%j')
 
-	i=1
-	while [ -e $HOME/notes/${dayno}-${i}* ]
-	do
-		i=$(( i + 1 ))
-	done
+    i=1
+    while [ -e $HOME/notes/${dayno}-${i}.txt ]
+    do
+        i=$(( i + 1 ))
+    done
 
-	vim $HOME/notes/${dayno}-${i}.txt
+    print -s vim $HOME/notes/${dayno}-${i}.txt
+    vim $HOME/notes/${dayno}-${i}.txt
 
-	exit
+    return
 fi
 
-if [ -z "$pat" ]
+cd $HOME/notes
+file=$(grep -ir "${1:-.}"\
+    | sort -r\
+    | fzy\
+    | sed -e 's/:.*//')
+cd "$OLDPWD"
+
+if [ -z "$file" ]
 then
-	pat="."
+    return
 fi
 
-file=$(grep -iar "$pat"\
-	| sort -r\
-	| fzy\
-	| sed -e 's/:.*//')
-
-if [ -n "$file" ]
+if $copy
 then
-	vim "$file"
+    print -n $HOME/notes/$file > /dev/clipboard
+    return
 fi
 
-cd "$dir"
+print -s vim $HOME/notes/$file
+vim $HOME/notes/$file
