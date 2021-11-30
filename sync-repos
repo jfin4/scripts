@@ -10,25 +10,23 @@ then
     unset way
     dir="$PWD"
     cd
-    echo
-    echo PULLING
 
     # dotfiles
-    echo -n "dotfiles..."
-    wrap-git-dot pull > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    echo
+    echo "pulling dotfiles..."
+    wrap-git-dot pull
 
     # scripts
-    echo -n "scripts..."
+    echo
+    echo "pulling scripts..."
     cd scripts
-    git pull > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    git pull
 
     # waterboard
-    echo -n "waterboard..."
+    echo
+    echo "pulling waterboard..."
     cd
-    git pull > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    git pull
     cd "$dir"
 fi
 
@@ -37,31 +35,29 @@ if [ "$1" = "out" ]
 then
     dir="$PWD"
     cd
-    echo
-    echo PUSHING
 
     # dotfiles
-    echo -n "dotfiles..."
-    wrap-git-dot add -u > /dev/null 2>&1
-    wrap-git-dot commit -m updates > /dev/null 2>&1
-    wrap-git-dot push > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    echo
+    echo "pushing dotfiles..."
+    wrap-git-dot add -u
+    wrap-git-dot commit -m updates
+    wrap-git-dot push
 
     # scripts
-    echo -n "scripts..."
+    echo
+    echo "pushing scripts..."
     cd scripts
-    git add . > /dev/null 2>&1
-    git commit -m updates > /dev/null 2>&1
-    git push > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    git add .
+    git commit -m updates
+    git push
 
     # waterboard
-    echo -n "waterboard..."
+    echo
+    echo "pushing waterboard..."
     cd
-    git add . > /dev/null 2>&1
-    git commit -m updates > /dev/null 2>&1
-    git push > /dev/null 2>&1
-    (( $? )) && echo -e "${red}ERROR${unred} " || echo success
+    git add .
+    git commit -m updates
+    git push
     cd "$dir"
 fi
 
