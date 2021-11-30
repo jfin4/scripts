@@ -13,18 +13,18 @@ then
 
     # dotfiles
     echo
-    echo "pulling dotfiles..."
+    echo "PULLING DOTFILES"
     wrap-git-dot pull
 
     # scripts
     echo
-    echo "pulling scripts..."
+    echo "PULLING SCRIPTS"
     cd scripts
     git pull
 
     # waterboard
     echo
-    echo "pulling waterboard..."
+    echo "PULLING WATERBOARD"
     cd
     git pull
     cd "$dir"
@@ -38,14 +38,14 @@ then
 
     # dotfiles
     echo
-    echo "pushing dotfiles..."
+    echo "PUSHING DOTFILES"
     wrap-git-dot add -u
     wrap-git-dot commit -m updates
     wrap-git-dot push
 
     # scripts
     echo
-    echo "pushing scripts..."
+    echo "PUSHING SCRIPTS"
     cd scripts
     git add .
     git commit -m updates
@@ -53,7 +53,7 @@ then
 
     # waterboard
     echo
-    echo "pushing waterboard..."
+    echo "PUSHING WATERBOARD"
     cd
     git add .
     git commit -m updates
