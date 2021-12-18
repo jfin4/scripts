@@ -77,12 +77,12 @@ run([
 run([
     "pamixer",
     "--set-volume",
-    "50",
+    "80",
 ])
 run([
     "mpv",
     "--no-resume-playback",
-    "/home/jfin/music/vivaldi/four-seasons.mp3"
+    "/home/jfin/music/beethoven/quartetto-italiano/late-quartets/op-127-2.mp3"
 ])
 
 # # https://www.timeanddate.com/sun/usa/san-luis-obispo

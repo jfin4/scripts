@@ -12,16 +12,19 @@ shade='\xe2\x96\x91'
 # bar items
 # network
 Net() {
-    sig=0
+    sig=none
 	if [ "$(ip address show wlan0 | grep 'inet[^6]')" ]
 	then
 		dbm=$(iw dev wlan0 link | awk '/signal/ { print $2 }')
 		sig=$(( 2 * ( $dbm + 100 )))
 	fi
-	if [ $sig -ge 90 ]
-	then
-		var="$bar14$bar24$bar34$bar44 "
-	elif [ $sig -ge 80 ]
+    if [ $sig = "none" ]
+    then
+        var="____"
+    elif [ $sig -ge 90 ]
+    then
+        var="$bar14$bar24$bar34$bar44 "
+    elif [ $sig -ge 80 ]
 	then
 		var="$bar14$bar24$bar34$bar18 "
 	elif [ $sig -ge 70 ]
@@ -30,11 +33,8 @@ Net() {
 	elif [ $sig -ge 60 ]
 	then
 		var="$bar14$bar18$bar18$bar18 "
-	elif [ $sig -ge 50 ]
-	then
-		var="$bar18$bar18$bar18$bar18 "
     else
-        var="$bar18$bar18$bar18$bar18 (${sig}%) "
+        var="$bar18$bar18$bar18$bar18 "
 	fi
 	echo -e "$var"
 }
@@ -42,23 +42,20 @@ Net() {
 # battery
 Bat() {
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
-	if [ "$cap" -ge 90 ]
+	if [ "$cap" -ge 88 ]
 	then
 		var="$bar44$bar44$bar44$bar44 "
-	elif [ "$cap" -ge 75 ]
+	elif [ "$cap" -ge 63 ]
 	then
 		var="$bar44$bar44$bar44$shade "
-	elif [ "$cap" -ge 50 ]
+	elif [ "$cap" -ge 38 ]
 	then
 		var="$bar44$bar44$shade$shade "
-	elif [ "$cap" -ge 25 ]
+	elif [ "$cap" -ge 13 ]
 	then
 		var="$bar44$shade$shade$shade "
-	elif [ "$cap" -ge 10 ]
-	then
-		var="$shade$shade$shade$shade "
 	else
-        var="$shade$shade$shade$shade ($cap%) "
+        var="$shade$shade$shade$shade "
 	fi
     echo -e "$var"
 }
