@@ -1,7 +1,7 @@
 #!/bin/sh
 
 pat="$@"
-tag=$(grep "${pat:-.}" $HOME/index.csv | sed 's/,.\+$//' | fzy )
+tag=$(cat $HOME/index.csv | sed 's/,.\+$//' | grep "${pat:-.}" | fzy )
 [ -z "$tag" ] && exit
 link=$(grep "$tag" $HOME/index.csv | sed 's/^.\+, \+//')
 
