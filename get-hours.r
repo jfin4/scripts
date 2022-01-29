@@ -1,25 +1,43 @@
-# get hours worked today
-
+# get hours worked per day
 month <- format(Sys.time(), '%y-%m')
-today <- format(Sys.time(), '%m%d')
-file <- paste0('hours/', month, '.csv')
+home <- 'C:/Users/JInman/msys/home/jfin/'
+file <- paste0(home, 'hours/', month, '.csv')
 data <- read.csv(file, strip.white=T, colClasses = "character")
-data_today <- data[data$date == today, ]
-data_today$from <- as.POSIXlt(data_today$from, format = "%H%M")
-data_today$to <- as.POSIXlt(data_today$to, format = "%H%M")
-
-diffs_tot <- difftime(data_today$to, data_today$from, units = "hours")
-hours_tot <- as.numeric(sum(diffs_tot))
-
-data_today_misc <- data_today[data_today$task == "misc", ]
-diffs_misc <- difftime(data_today_misc$to, data_today_misc$from, units = "hours")
-hours_misc <- as.numeric(sum(diffs_misc))
-
-data_today_work <- data_today[data_today$task != "misc", ]
-diffs_work <- difftime(data_today_work$to, data_today_work$from, units = "hours")
-hours_work <- as.numeric(sum(diffs_work))
-
-hours <- c(hours_misc, hours_work, hours_tot)
-names(hours) <- c("Misc", "Worked", "Total")
-print(hours)
-
+data$from <- as.POSIXlt(data$from, format = "%H%M")
+data$to <- as.POSIXlt(data$to, format = "%H%M")
+data$diff <- as.numeric(difftime(data$to, data$from, units = "hours"))
+misc <- data$task == "misc"
+work <- data$task != "misc"
+df_misc <- aggregate(diff ~ date, data[misc, ], sum)
+df_work <- aggregate(diff ~ date, data[work, ], sum)
+df_tot <- aggregate(diff ~ date, data, sum)
+hours_mw <- merge(df_misc, df_work, by = 1, all = T)
+hours <- merge(hours_mw, df_tot, by = 1, all = T)
+hours[is.na(hours)] <- 0
+names(hours) <- c("DATE", "MISC", "WORK", "TOTAL")
+# aggregate does not work if date is converted first
+date <- as.Date(hours$DATE, format = "%m%d")
+hours$DAY <- format(date, "%a")
+hours$DATE <- format(date, "%m/%d")
+hours$WORKVIS <- sapply(hours$WORK, \(x) paste0(rep("#", x), collapse = ""))
+hours[2:4] <- as.data.frame(lapply(hours[2:4], \(x) sprintf("%.2f", x)))
+hours[2:5] <- format(hours[2:5], width = 6, justify = "right")
+hours[6] <- format(hours[6], justify = "left")
+week1_dates <- as.Date(as.character(1:7), format = "%d")
+week1_days <- format(week1_dates , "%a")
+mon_char <- match("Sun", week1_days)
+mon_date <- as.Date(as.character(mon_char), format = "%d")
+mon <- seq(mon_date, by = 7, length.out = 5)
+for (i in 1:length(mon)) {
+    out <- hours[date >= mon[i - 1] & date < mon[i], ]
+    if (nrow(out) > 0) {
+        mean_work <- mean(as.numeric(out[[3]])) 
+        mean_tot <- mean(as.numeric(out[[4]])) 
+        mean_prop <- mean_work / mean_tot # mean proportion of work per day
+        mean_norm <- mean_prop  * 8 # normalize by 8 hour day
+        mean <- sprintf("%.2f", mean_norm) 
+        out <- rbind(out, c("Mean:", "", mean, "", "", ""))
+        print(out, row.names = F)
+        names(hours) <- NULL
+    }
+}
