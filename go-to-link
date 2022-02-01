@@ -1,13 +1,13 @@
 #!/bin/sh
 
 pat="$@"
-tag=$(cat $HOME/index.csv | sed 's/,.\+$//' | grep "${pat:-.}" | fzy )
+desc=$(cat $HOME/index.csv | sed 's/,.\+$//' | grep "${pat:-.}" | fzy )
 [ -z "$tag" ] && exit
-link=$(grep "$tag" $HOME/index.csv | sed 's/^.\+, \+//')
+link=$(grep "$desc" $HOME/index.csv | sed 's/^.\+, \+//')
 
 ftype=$(echo "$link" | cut -c1-4)
 [ "$ftype" != "http" ] && ftype=${link##*.}
-# [ "$ftype" != "http" ] && [ ! -e "$link" ] && connect-network-drives
+[ "$ftype" != "http" ] && [ ! -e "$link" ] && connect-network-drives
 
 case "$ftype" in
     "pdf") command=SumatraPDF ;;

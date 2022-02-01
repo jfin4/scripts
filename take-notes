@@ -15,23 +15,29 @@ shift $((OPTIND-1))
 
 if $new
 then
-    dayno=$(date +'%y-%j')
+    dayno=$(date +'%y%j')
 
-    i=1
-    while [ -e $HOME/notes/${dayno}-${i}.txt ]
+    i=a
+    while [ -e $HOME/notes/${dayno}${i}.txt ]
     do
-        i=$(( i + 1 ))
+        if [ $i = "z" ]
+        then
+            echo "too many notes today"
+            return 1
+        else
+            i=$(echo $i | tr "a-y" "b-z")
+        fi
     done
 
-    print -s vim $HOME/notes/${dayno}-${i}.txt
-    vim $HOME/notes/${dayno}-${i}.txt
+    print -s vim $HOME/notes/${dayno}${i}.txt
+    vim $HOME/notes/${dayno}${i}.txt
 
     return
 fi
 
 cd $HOME/notes
 file=$(grep -ir "${1:-.}"\
-    | sort -r\
+    | sort -k2\
     | fzy\
     | sed -e 's/:.*//')
 cd "$OLDPWD"

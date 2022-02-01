@@ -25,11 +25,11 @@ hours[2:5] <- format(hours[2:5], width = 6, justify = "right")
 hours[6] <- format(hours[6], justify = "left")
 week1_dates <- as.Date(as.character(1:7), format = "%d")
 week1_days <- format(week1_dates , "%a")
-mon_char <- match("Sun", week1_days)
-mon_date <- as.Date(as.character(mon_char), format = "%d")
-mon <- seq(mon_date, by = 7, length.out = 5)
-for (i in 1:length(mon)) {
-    out <- hours[date >= mon[i - 1] & date < mon[i], ]
+sun_char <- match("Sun", week1_days)
+sun_date <- as.Date(as.character(sun_char), format = "%d")
+sun <- seq(sun_date, by = 7, length.out = 6)
+for (i in 1:length(sun)) {
+    out <- hours[date >= sun[i - 1] & date < sun[i], ]
     if (nrow(out) > 0) {
         mean_work <- mean(as.numeric(out[[3]])) 
         mean_tot <- mean(as.numeric(out[[4]])) 
