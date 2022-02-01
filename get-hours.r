@@ -2,7 +2,10 @@
 month <- format(Sys.time(), '%y-%m')
 home <- 'C:/Users/JInman/msys/home/jfin/'
 file <- paste0(home, 'hours/', month, '.csv')
-data <- read.csv(file, strip.white=T, colClasses = "character")
+data <- read.csv(file, 
+                 strip.white=T, 
+                 colClasses = "character",
+                 comment.char = "#")
 data$from <- as.POSIXlt(data$from, format = "%H%M")
 data$to <- as.POSIXlt(data$to, format = "%H%M")
 data$diff <- as.numeric(difftime(data$to, data$from, units = "hours"))
@@ -27,9 +30,14 @@ week1_dates <- as.Date(as.character(1:7), format = "%d")
 week1_days <- format(week1_dates , "%a")
 sun_char <- match("Sun", week1_days)
 sun_date <- as.Date(as.character(sun_char), format = "%d")
-sun <- seq(sun_date, by = 7, length.out = 6)
-for (i in 1:length(sun)) {
-    out <- hours[date >= sun[i - 1] & date < sun[i], ]
+N <- 6
+sun <- seq(sun_date, by = 7, length.out = N)
+for (i in 1:N) {
+    if (i == 1) {
+        out <- hours[date < sun[i], ]
+    } else {
+        out <- hours[date >= sun[i - 1] & date < sun[i], ]
+    }
     if (nrow(out) > 0) {
         mean_work <- mean(as.numeric(out[[3]])) 
         mean_tot <- mean(as.numeric(out[[4]])) 
