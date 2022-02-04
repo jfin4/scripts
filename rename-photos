@@ -1,0 +1,23 @@
+#!/bin/sh
+
+for pic in *.*
+do
+    datecolon=$(exiftool -CreateDate $pic | awk '{print $4}')
+    date=${datecolon//:/-}
+    if [ -e ${date}-001.jpg ]
+    then
+        for existing in ${date}*
+        do
+            max=$existing
+        done
+        countext=${max##*-}
+        count=${countext%.*}
+        inccount=$(expr $count + 1)
+        incpad=$(printf '%03d\n' $inccount)
+        newname=${date}-${incpad}.jpg
+    else
+        newname=${date}-001.jpg
+    fi
+    mv $pic $newname
+done
+

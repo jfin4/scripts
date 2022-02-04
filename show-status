@@ -20,7 +20,7 @@ Net() {
 	fi
     if [ $sig = "none" ]
     then
-        var="____"
+        var="____ "
     elif [ $sig -ge 90 ]
     then
         var="$bar14$bar24$bar34$bar44 "
@@ -62,7 +62,7 @@ Bat() {
 
 # time
 Time() {
-	var="$(date '+%H:%M') "
+	var="$(date '+%a %m/%d %H:%M') "
 	echo "$var" 
 }
 
