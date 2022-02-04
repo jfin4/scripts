@@ -9,12 +9,6 @@ else
     ftype=${link##*.}
 fi
 
-# if [ "$ftype" != "http" -a ! -e "$link" ]
-# then
-#     echo "Cannot find file. Are network drives connected?"
-#     exit
-# fi
-
 case "$ftype" in
     "pdf") command=SumatraPDF ;;
     "http") command=firefox ;;
