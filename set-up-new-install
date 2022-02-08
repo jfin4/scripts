@@ -20,10 +20,10 @@ pacman -S --noconfirm --needed\
 
 # checkout dotfiles into new home dir
 git config --global user.name "John Inman"
-git config --global user.email jfinmaniv@icloud.com
+git config --global user.email john@johninman.dev
 git config --global credential.helper store
 
-git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dot.git
+git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dotfiles.git
 
 function dot {
    git --git-dir=$HOME/.dot.git/ --work-tree=$HOME "$@"
@@ -41,9 +41,9 @@ else
         | egrep "\s+\." \
         | awk {'print $branch'} \
         | xargs -I{} mv {} dotfiles.bak/{}
+    dot checkout msys
 fi
 
-dot checkout msys
 dot config --local status.showUntrackedFiles no
 dot push --set-upstream origin msys
 

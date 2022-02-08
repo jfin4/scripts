@@ -3,10 +3,19 @@
 summary="$(LC_CTYPE=English\
     /c/Program\ Files/R/R-4.1.2/bin/Rscript.exe \
     $HOME/scripts/get-summary.r)"
+
+day=$(date +"%a")
+if [ $day = "Fri" ]
+then
+    closing="Have an excellent weekend"
+else
+    closing="Have a pleasant evening"
+fi
+
 echo "Hi Mary,
 
 I worked on these tasks today:
 
 $summary
 
-Have a pleasant evening :)," > /dev/clipboard
+$closing :)," > /dev/clipboard
