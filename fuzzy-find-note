@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# process options
 new=false
 copy=false
 OPTIND=1
@@ -13,10 +14,10 @@ do
 done
 shift $((OPTIND-1))
 
+# if new note, edit new file and quit when finished
 if $new
 then
     dayno=$(date +'%y%j')
-
     i=a
     while [ -e $HOME/notes/${dayno}${i}.txt ]
     do
@@ -28,30 +29,33 @@ then
             i=$(echo $i | tr "a-y" "b-z")
         fi
     done
-
     print -s vim $HOME/notes/${dayno}${i}.txt
     vim $HOME/notes/${dayno}${i}.txt
-
     return
 fi
 
+# otherwise, select file
 cd $HOME/notes
 file=$(grep -ir "${1:-.}"\
+    | sed -e 's/: */:/'\
     | sort -k2\
-    | fzy\
+    | fzy -l20\
     | sed -e 's/:.*//')
 cd "$OLDPWD"
 
+# if none selected, then do nothing and quit
 if [ -z "$file" ]
 then
     return
 fi
 
+# if all we want is the path, then send it to the clipboard and quit
 if $copy
 then
     print -n $HOME/notes/$file > /dev/clipboard
     return
 fi
 
+# edit the selected file
 print -s vim $HOME/notes/$file
 vim $HOME/notes/$file

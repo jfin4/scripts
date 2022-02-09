@@ -1,9 +1,11 @@
 #!/bin/sh
 
-for f in *
+
+for f in ${1:-.}/*
 do
     if [ ! -d "$f" ] && [ ! -s "$f" ]
     then
-        rm "$f"
+        echo "tp $f"
+        tp "$f"
     fi
 done
