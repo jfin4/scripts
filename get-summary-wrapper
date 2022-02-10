@@ -2,7 +2,7 @@
 
 summary="$(LC_CTYPE=English\
     /c/Program\ Files/R/R-4.1.2/bin/Rscript.exe \
-    $HOME/scripts/get-summary.r)"
+    $HOME/scripts/get-summary.r $1)"
 
 day=$(date +"%a")
 if [ $day = "Fri" ]
@@ -19,3 +19,5 @@ I worked on these tasks today:
 $summary
 
 $closing :)," > /dev/clipboard
+
+echo summary copied to clipboard

@@ -6,6 +6,6 @@ do
     if [ ! -d "$f" ] && [ ! -s "$f" ]
     then
         echo "tp $f"
-        tp "$f"
+        move-to-trash "$f"
     fi
 done
