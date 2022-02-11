@@ -11,7 +11,7 @@ fi
 
 case "$ftype" in
     "pdf") command=SumatraPDF ;;
-    "http") command=firefox ;;
+    "http") command=brave ;;
     *) command=cygstart ;;
 esac
 
