@@ -13,9 +13,9 @@ shade='\xe2\x96\x91'
 # network
 Net() {
     sig=none
-	if [ "$(ip address show wlan0 | grep 'inet[^6]')" ]
+	if [ "$(ip address show wlp3s0 | grep 'inet[^6]')" ]
 	then
-		dbm=$(iw dev wlan0 link | awk '/signal/ { print $2 }')
+		dbm=$(iw dev wlp3s0 link | awk '/signal/ { print $2 }')
 		sig=$(( 2 * ( $dbm + 100 )))
 	fi
     if [ $sig = "none" ]
@@ -62,7 +62,7 @@ Bat() {
 
 # time
 Time() {
-	var="$(date '+%a %m/%d %H:%M') "
+	var="$(date '+%a, %b %d, %H:%M')"
 	echo "$var" 
 }
 

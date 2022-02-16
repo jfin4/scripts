@@ -4,7 +4,6 @@
 # more here:
 # https://wiki.archlinux.org/title/Desktop_notifications#Usage_in_programing
 
-
 capacity=$(cat /sys/class/power_supply/BAT0/capacity)
 status=$(cat /sys/class/power_supply/BAT0/status)
 
@@ -13,5 +12,5 @@ then
 	sudo -u jfin \
 		DISPLAY=:0 \
 		DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
-        notify-send "LOW BATTERY (${capacity}%)"
+        notify-send --urgency=critical "Battery ${capacity}%"
 fi

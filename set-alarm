@@ -3,7 +3,7 @@
 time=$1
 if [ -z $time ]
 then
-    time=0530
+    time=0630
 fi
 
 if [ $(date +'%p') == "AM" ]

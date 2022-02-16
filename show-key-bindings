@@ -10,7 +10,7 @@ echo '
                    C+n 
    C-a  M-b  C-b cur|sor C-f  M-f  C-e
 <------------------C+l------------------->
-   C-u  M-H  C-h  ed|it  C-d  M-d  C-k
+   C-u  C-w  C-h  ed|it  C-d  M-d  C-k
                   (C+_)
                    C+y 
                    M+y
