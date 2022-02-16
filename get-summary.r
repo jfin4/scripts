@@ -9,4 +9,6 @@ date <- ifelse(length(arg) == 1, arg, today)
 data_date <- data_all[data_all$date == date, ]
 data_work <- data_date[data_date$task != "misc", ]
 out <- unique(data_work[[4]])
-cat(paste("\t", out, "\n"))
+for (i in 1:length(out)) {
+    cat(paste("\t", out[i], "\n"))
+}

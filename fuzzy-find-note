@@ -36,11 +36,12 @@ fi
 
 # otherwise, select file
 cd $HOME/notes
-file=$(grep -ir "${1:-.}"\
+match=$(grep -ir "${1:-.}"\
     | sed -e 's/: */:/'\
     | sort -k2\
-    | fzy -l20\
-    | sed -e 's/:.*//')
+    | fzy -l20)
+file=${match%%:*}
+line=${match##*:}
 cd "$OLDPWD"
 
 # if none selected, then do nothing and quit
@@ -58,4 +59,4 @@ fi
 
 # edit the selected file
 print -s vim $HOME/notes/$file
-vim $HOME/notes/$file
+vim -c "call search(\"$line\")" $HOME/notes/$file
