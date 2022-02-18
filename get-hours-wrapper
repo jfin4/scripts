@@ -1,3 +1,0 @@
-#!/bin/sh
-
-LC_CTYPE=English /c/Program\ Files/R/R-4.1.2/bin/Rscript.exe $HOME/scripts/get-hours.r

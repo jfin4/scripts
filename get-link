@@ -3,5 +3,4 @@
 pat="$@"
 desc="$(cat $HOME/index.csv | sed 's/,.*//' | grep "${pat:-.}" | fzy ),"
 [ -z "$desc" ] && exit
-link=$(grep "$desc" $HOME/index.csv | sed 's/.*, *//')
-open-link "$link"
+grep "$desc" $HOME/index.csv | sed 's/.*, *//'

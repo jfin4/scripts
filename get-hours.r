@@ -3,9 +3,9 @@ month <- format(Sys.time(), '%y-%m')
 home <- 'C:/Users/JInman/msys/home/jfin/'
 file <- paste0(home, 'hours/', month, '.csv')
 data <- read.csv(file, 
-                 strip.white=T, 
-                 colClasses = "character",
-                 comment.char = "#")
+                strip.white=T, 
+                colClasses = "character",
+                comment.char = "#")
 data$from <- as.POSIXlt(data$from, format = "%H%M")
 data$to <- as.POSIXlt(data$to, format = "%H%M")
 data$diff <- as.numeric(difftime(data$to, data$from, units = "hours"))

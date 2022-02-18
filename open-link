@@ -2,7 +2,7 @@
 
 link="$1"
 head=$(echo "$link" | cut -c1-4)
-if [ "$head" == "http" ] 
+if [ "$head" = "http" ] 
 then
     ftype="http"
 else
