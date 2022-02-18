@@ -4,6 +4,13 @@
 red='\033[0;31m'
 unred='\033[0m'
 
+git_dot() { 
+    git --bare \
+        --git-dir=$HOME/.dotfiles.git/ \
+        --work-tree=$HOME \
+        "$@"
+}
+
 # pull #########################################################################
 if [ "$1" = "in" ]
 then
@@ -14,7 +21,7 @@ then
     # dotfiles
     echo
     echo "PULLING DOTFILES"
-    wrap-git-dot pull
+    git_dot pull
 
     # scripts
     echo
@@ -39,9 +46,9 @@ then
     # dotfiles
     echo
     echo "PUSHING DOTFILES"
-    wrap-git-dot add -u
-    wrap-git-dot commit -m updates
-    wrap-git-dot push
+    git_dot add -u
+    git_dot commit -m updates
+    git_dot push
 
     # scripts
     echo
