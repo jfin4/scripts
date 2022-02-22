@@ -1,5 +1,5 @@
 #!/bin/sh
 
-git-dot add -u
-git-dot commit -m updates
-git-dot push
+run-dot-git add -u
+run-dot-git commit -m updates
+run-dot-git push

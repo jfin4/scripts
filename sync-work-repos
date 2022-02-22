@@ -3,7 +3,7 @@
 if [ "$1" = "in" ]
 then
     echo -e "Pulling dot repo"
-    git-dot pull
+    run-dot-git pull
     echo -e "\nPulling scripts repo"
     git -C $HOME/scripts pull
     echo -e "\nPulling water board repo"
