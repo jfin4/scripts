@@ -2,20 +2,20 @@
 
 if [ "$1" = "in" ]
 then
-    echo -e "Pulling dot repo."
+    echo -e "Pulling dot repo"
     git-dot pull
-    echo -e "\nPulling scripts repo."
+    echo -e "\nPulling scripts repo"
     git -C $HOME/scripts pull
-    echo -e "\nPulling water board repo."
+    echo -e "\nPulling water board repo"
     git -C $HOME pull
 fi
 
 if [ "$1" = "out" ]
 then
-    echo -e "Pushing dot repo."
+    echo -e "Pushing dot repo"
     sync-dot-repo
-    echo -e "Pushing scripts repo."
+    echo -e "\nPushing scripts repo"
     sync-repo $HOME/scripts
-    echo -e "Pushing water board repo."
+    echo -e "\nPushing water board repo"
     sync-repo $HOME
 fi
