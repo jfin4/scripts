@@ -1,21 +1,26 @@
 #!/bin/sh
 
+color="\033[1;30m"
+uncolor="\033[0m"
+
 if [ "$1" = "in" ]
 then
-    echo -e "Pulling dot repo"
+    echo -e "Pulling dot repo${color}"
     run-dot-git pull
-    echo -e "\nPulling scripts repo"
+    echo -e "\n${uncolor}Pulling scripts repo${color}"
     git -C $HOME/scripts pull
-    echo -e "\nPulling water board repo"
+    echo -e "\n${uncolor}Pulling water board repo${color}"
     git -C $HOME pull
+    echo -e "${uncolor}"
 fi
 
 if [ "$1" = "out" ]
 then
-    echo -e "Pushing dot repo"
+    echo -e "Pushing dot repo${color}"
     sync-dot-repo
-    echo -e "\nPushing scripts repo"
+    echo -e "${uncolor}\nPushing scripts repo${color}"
     sync-repo $HOME/scripts
-    echo -e "\nPushing water board repo"
+    echo -e "${uncolor}\nPushing water board repo${color}"
     sync-repo $HOME
+    echo -e "${uncolor}"
 fi
