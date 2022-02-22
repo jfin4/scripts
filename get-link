@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pat="$@"
-desc="$(cat $HOME/index.csv | sed 's/,.*//' | grep "${pat:-.}" | fzy ),"
+desc="$(cat $HOME/index.csv | sed 's/,.*//' | grep "${*:-.}" | fzy ),"
 [ -z "$desc" ] && exit
-grep "$desc" $HOME/index.csv | sed 's/.*, *//'
+link=$(grep "$desc" $HOME/index.csv | sed 's/.*, *//')
+open-link "$link"

@@ -36,7 +36,7 @@ fi
 
 # otherwise, select file
 cd $HOME/notes
-match=$(grep -ir "${1:-.}"\
+match=$(grep -ir "${*:-.}"\
     | sed -e 's/: */:/'\
     | sort -k2\
     | fzy -l20)
