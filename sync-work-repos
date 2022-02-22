@@ -22,5 +22,5 @@ then
     sync-repo $HOME/scripts
     echo -e "${uncolor}\nPushing water board repo${color}"
     sync-repo $HOME
-    echo -e "${uncolor}"
+    echo -en "${uncolor}"
 fi
