@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ "$1" = "in" ]
+then
+    git-dot pull
+    git -C $HOME/scripts pull
+    git -C $HOME pull
+fi
+
+if [ "$1" = "out" ]
+then
+    sync-repo-dot
+    sync-repo $HOME/scripts
+    sync-repo $HOME
+fi
