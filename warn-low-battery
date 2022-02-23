@@ -4,10 +4,10 @@
 # more here:
 # https://wiki.archlinux.org/title/Desktop_notifications#Usage_in_programing
 
-capacity=$(cat /sys/class/power_supply/BAT0/capacity)
-status=$(cat /sys/class/power_supply/BAT0/status)
+capacity=$(< /sys/class/power_supply/BAT0/capacity)
+status=$(< /sys/class/power_supply/BAT0/status)
 
-if [ $capacity -le 10 -a $status == Discharging ]
+if [ $status = Discharging -a $capacity -le 5 ]
 then
 	sudo -u jfin \
 		DISPLAY=:0 \

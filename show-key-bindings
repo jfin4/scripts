@@ -1,18 +1,36 @@
 #!/bin/sh
 
-# see man bash, READLINE section
-
+clear
 echo '
-                    ^     
-                    |
-                   C+r
-                   C+p
-                   C+n 
-   C-a  M-b  C-b cur|sor C-f  M-f  C-e
-<------------------C+l------------------->
-   C-u  C-w  C-h  ed|it  C-d  M-d  C-k
-                  (C+_)
-                   C+y 
-                   M+y
-                    |
-                    v'
+    CURSOR
+    .        bwd        fwd
+    char     ^b         ^f
+    word     ^[b        ^[f
+    line     ^a         ^e
+
+    KILL
+    .        bwd        fwd
+    char     ^h         ^d
+    word     ^w         ^[d
+    line     ^u         ^k
+
+    HISTORY
+    .        prev       next
+    move     ^p         ^n
+    search   ^r         ^s
+
+    TRANSPOSE
+    .        char       word
+    .        ^t         ^[t
+
+    CASE
+    .        up         down
+    .        ^[c        ^[l
+
+    MISC
+    .        args       ^[0..^[9
+    .        clear      ^l
+    .        undo       ^_
+    .        yank       ^y
+    .        yank-pop   ^[y
+'

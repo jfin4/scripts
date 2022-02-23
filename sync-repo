@@ -1,13 +1,12 @@
 #!/bin/sh
 # add, commit, and push dotfile changes
 
-if [ -z "$*" ]
+dir=.
+if [ -n "$1" ]
 then 
-	msg=$(date)
-else
-	msg="$*"
+	dir="$1"
 fi
 
-git add .
-git commit -m "$msg"
-git push
+git -C "$dir" add .
+git -C "$dir" commit -m "updates"
+git -C "$dir" push

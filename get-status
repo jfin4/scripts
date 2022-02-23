@@ -8,56 +8,94 @@ bar24='\xe2\x96\x84'
 bar34='\xe2\x96\x86' 
 bar44='\xe2\x96\x88' 
 shade='\xe2\x96\x91'
+# wired='\xF0\x9F\x96\xA7'
+# last three are "variation selector"
+# https://stackoverflow.com/questions/9626115/color-in-the-unicode-standard
+# https://www.utf8-chartable.de/
+# https://apps.timwhitlock.info/unicode/inspect?s=%E2%9A%A1
+# lbolt='\xe2\x9a\xa1\xef\xb8\x8e'
+# lbolt='\xe2\x8c\x81'
 
 # bar items
 # network
 Net() {
-    sig=none
-	if [ "$(ip address show wlp3s0 | grep 'inet[^6]')" ]
-	then
-		dbm=$(iw dev wlp3s0 link | awk '/signal/ { print $2 }')
-		sig=$(( 2 * ( $dbm + 100 )))
-	fi
-    if [ $sig = "none" ]
+    info=$(< /proc/net/wireless)
+    dbmp=$(echo "$info" | awk 'FNR == 3 { print $4 }')
+    dbm=${dbmp%.}
+    # if no dbm then sig will be 0
+    dbm0=${dbm:--100}
+    sig=$(( 2 * ( $dbm0 + 100 )))
+    eth=$(< /sys/class/net/enp6s0/operstate)
+
+    # set first char
+    if [ $eth = up ]
     then
-        var="____ "
+        first="e"
+	elif [ $sig -eq 0 ]
+    then
+        first="_"
+	elif [ "$sig" -ge 60 ]
+    then
+        first="$bar14"
+    else
+        first="$bar18"
+    fi
+
+    if [ $sig -eq 0 ]
+    then
+        var="${first}___ "
     elif [ $sig -ge 90 ]
     then
-        var="$bar14$bar24$bar34$bar44 "
+        var="$first$bar24$bar34$bar44 "
     elif [ $sig -ge 80 ]
 	then
-		var="$bar14$bar24$bar34$bar18 "
+		var="$first$bar24$bar34$bar18 "
 	elif [ $sig -ge 70 ]
 	then
-		var="$bar14$bar24$bar18$bar18 "
+		var="$first$bar24$bar18$bar18 "
 	elif [ $sig -ge 60 ]
 	then
-		var="$bar14$bar18$bar18$bar18 "
+		var="$first$bar18$bar18$bar18 "
     else
-        var="$bar18$bar18$bar18$bar18 "
+        var="$first$bar18$bar18$bar18 "
 	fi
 	echo -e "$var"
+
 }
 
 # battery
 Bat() {
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
+	state=$(< /sys/class/power_supply/BAT0/status)
+
+    # set first char
+    if [ "$state" != Discharging ]
+    then
+        first="c"
+	elif [ "$cap" -ge 13 ]
+    then
+        first="$bar44"
+    else
+        first="$shade"
+    fi
+
 	if [ "$cap" -ge 88 ]
 	then
-		var="$bar44$bar44$bar44$bar44 "
+		var="$first$bar44$bar44$bar44 "
 	elif [ "$cap" -ge 63 ]
 	then
-		var="$bar44$bar44$bar44$shade "
+		var="$first$bar44$bar44$shade "
 	elif [ "$cap" -ge 38 ]
 	then
-		var="$bar44$bar44$shade$shade "
+		var="$first$bar44$shade$shade "
 	elif [ "$cap" -ge 13 ]
 	then
-		var="$bar44$shade$shade$shade "
+		var="$first$shade$shade$shade "
 	else
-        var="$shade$shade$shade$shade "
+        var="$first$(printf "%02d" "$cap")% "
 	fi
     echo -e "$var"
+    
 }
 
 # time
