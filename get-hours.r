@@ -1,7 +1,9 @@
 # get hours worked per day
+
 month <- format(Sys.time(), '%y-%m')
 home <- 'C:/Users/JInman/msys/home/jfin/'
 file <- paste0(home, 'hours/', month, '.csv')
+
 data <- read.csv(file, 
                 strip.white=T, 
                 colClasses = "character",
@@ -9,29 +11,37 @@ data <- read.csv(file,
 data$from <- as.POSIXlt(data$from, format = "%H%M")
 data$to <- as.POSIXlt(data$to, format = "%H%M")
 data$diff <- as.numeric(difftime(data$to, data$from, units = "hours"))
+
 misc <- data$task == "misc"
 work <- data$task != "misc"
+
 df_misc <- aggregate(diff ~ date, data[misc, ], sum)
 df_work <- aggregate(diff ~ date, data[work, ], sum)
 df_tot <- aggregate(diff ~ date, data, sum)
+
 hours_mw <- merge(df_misc, df_work, by = 1, all = T)
 hours <- merge(hours_mw, df_tot, by = 1, all = T)
 hours[is.na(hours)] <- 0
+
 names(hours) <- c("DATE", "MISC", "WORK", "TOTAL")
+
 # aggregate does not work if date is converted first
 date <- as.Date(hours$DATE, format = "%m%d")
+
 hours$DAY <- format(date, "%a")
 hours$DATE <- format(date, "%m/%d")
-hours$BAR <- sapply(hours$WORK, \(x) paste0(rep("#", x), collapse = ""))
+hours$BARCHART <- sapply(hours$WORK, \(x) paste0(rep("#", x), collapse = ""))
 hours[2:4] <- as.data.frame(lapply(hours[2:4], \(x) sprintf("%.2f", x)))
 hours[2:5] <- format(hours[2:5], width = 6, justify = "right")
-hours[6] <- format(hours[6], justify = "left")
+hours[6] <- format(hours[6], width = 8, justify = "left")
+
 week1_dates <- as.Date(as.character(1:7), format = "%d")
 week1_days <- format(week1_dates , "%a")
 sun_char <- match("Sun", week1_days)
 sun_date <- as.Date(as.character(sun_char), format = "%d")
 N <- 6
 sun <- seq(sun_date, by = 7, length.out = N)
+
 for (i in 1:N) {
     if (i == 1) {
         out <- hours[date < sun[i], ]
