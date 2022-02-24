@@ -1,0 +1,5 @@
+#!/bin/sh
+
+tmpfile=$(mktemp --suffix=.html)
+cat "$1" > $tmpfile
+brave "$tmpfile" > /dev/null 2>&1
