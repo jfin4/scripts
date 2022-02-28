@@ -19,15 +19,31 @@ shade='\xe2\x96\x91'
 # bar items
 # network
 Net() {
-    info=$(< /proc/net/wireless)
-    dbmp=$(echo "$info" | awk 'FNR == 3 { print $4 }')
-    dbm=${dbmp%.}
-    # if no dbm then sig will be 0
-    dbm0=${dbm:--100}
-    sig=$(( 2 * ( $dbm0 + 100 )))
     eth=$(< /sys/class/net/enp6s0/operstate)
 
-    # set first char
+    if [ "$eth" != "up" ]
+    then
+        info=$(< /proc/net/wireless)
+        dbm_dot=$(echo "$info" | awk 'FNR == 3 { print $4 }')
+        dbm=${dbm_dot%.}
+        dbm_if_zero=${dbm:--100}
+        sig=$(( 2 * ( $dbm_if_zero + 100 )))
+    fi
+
+    if [ "$sig" -eq 0 ]
+    then
+        modem_path=$(mmcli -L | awk '{ print $1 }')
+        modem=${modem_path##*/}
+        sig_percent=$(mmcli -m "$modem" | grep signal | awk '{ print $4 }')
+        sig_double=${sig_percent%\%}
+        if [ "$sig_double" -eq 0 ]
+        then
+            sig=0
+        else
+            sig=$(( sig_double / 2 + 50 ))
+        fi
+    fi
+
     if [ $eth = up ]
     then
         first="e"
@@ -59,8 +75,8 @@ Net() {
     else
         var="$first$bar18$bar18$bar18 "
 	fi
-	echo -e "$var"
 
+    echo -e "$var"
 }
 
 # battery
