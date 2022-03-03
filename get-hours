@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/c/Program\ Files/R/R-4.1.2/bin/Rscript.exe $HOME/scripts/get-hours.r
+/c/Program\ Files/R/R-4.1.2/bin/Rscript.exe $HOME/scripts/get-hours.r "$1"

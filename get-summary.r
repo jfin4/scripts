@@ -1,11 +1,13 @@
 # get hours worked per day
-month <- format(Sys.time(), '%y-%m')
+
+args <- commandArgs(trailingOnly=TRUE)
+month <- ifelse(args[1] == "", format(Sys.time(), '%y-%m'), args[1])
 home <- 'C:/Users/JInman/msys/home/jfin/'
 file <- paste0(home, 'hours/', month, '.csv')
 data_all <- read.csv(file, strip.white=T, colClasses = "character")
-arg <- commandArgs(trailingOnly = T)
 today <- format(Sys.time(), '%m%d')
-date <- ifelse(length(arg) == 1, arg, today) 
+date <- ifelse(length(arg) == 1, today, arg[2]) 
+date <- today
 data_date <- data_all[data_all$date == date, ]
 data_work <- data_date[data_date$task != "misc", ]
 out <- unique(data_work[[4]])
