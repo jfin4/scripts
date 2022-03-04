@@ -1,14 +1,19 @@
-#!/bin/sh
+#!/usr/bin/zsh
+# makes use of zsh-specific "print" command to print to command history
 
 # process options
 new=false
 copy=false
+key=1
+reverse=reverse
+pattern="${*:-.}"
 OPTIND=1
-while getopts 'nc' arg
+while getopts 'nct' arg
 do
     case "${arg}" in
         n) new=true ;;
         c) copy=true ;;
+        t) key=2; reverse=""; pattern="#todo" ;;
         *) return ;;
     esac
 done
@@ -36,10 +41,11 @@ fi
 
 # otherwise, select file
 cd $HOME/notes
-match=$(grep -ir "${*:-.}"\
-    | sed -e 's/: */:/'\
-    | sort -k2\
-    | fzy -l20)
+clear
+match=$(grep -ir "$pattern"\
+    | sed -e 's/: \+/:/'\
+    | sort --key=${key} --${reverse}\
+    | fzy -l$(( LINES - 1 )))
 file=${match%%:*}
 line=${match##*:}
 cd "$OLDPWD"
@@ -53,10 +59,10 @@ fi
 # if all we want is the path, then send it to the clipboard and quit
 if $copy
 then
-    print -n $HOME/notes/$file > /dev/clipboard
+    echo -n $HOME/notes/$file > /dev/clipboard
     return
 fi
 
 # edit the selected file
 print -s vim $HOME/notes/$file
-vim -c "call search(\"$line\")" $HOME/notes/$file
+vim -c "call search(\"$line\$\")" $HOME/notes/$file
