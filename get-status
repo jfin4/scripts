@@ -1,82 +1,52 @@
 #! /bin/sh
 # status bar
 
-# unicode blocks
-bar18='\xe2\x96\x81' 
-bar14='\xe2\x96\x82' 
-bar24='\xe2\x96\x84' 
-bar34='\xe2\x96\x86' 
-bar44='\xe2\x96\x88' 
-shade='\xe2\x96\x91'
-# wired='\xF0\x9F\x96\xA7'
-# last three are "variation selector"
-# https://stackoverflow.com/questions/9626115/color-in-the-unicode-standard
-# https://www.utf8-chartable.de/
-# https://apps.timwhitlock.info/unicode/inspect?s=%E2%9A%A1
-# lbolt='\xe2\x9a\xa1\xef\xb8\x8e'
-# lbolt='\xe2\x8c\x81'
+# unicode chars
+bar18=$(echo -e '\xe2\x96\x81')
+bar14=$(echo -e '\xe2\x96\x82') 
+bar24=$(echo -e '\xe2\x96\x84') 
+bar34=$(echo -e '\xe2\x96\x86') 
+bar44=$(echo -e '\xe2\x96\x88') 
+shade=$(echo -e '\xe2\x96\x91')
 
 # bar items
 # network
 Net() {
-    eth=$(< /sys/class/net/enp6s0/operstate)
+    device=$(nmcli | awk '/connected/ { print $1 }' | tr -d :)
 
-    if [ "$eth" != "up" ]
-    then
-        info=$(< /proc/net/wireless)
-        dbm_dot=$(echo "$info" | awk 'FNR == 3 { print $4 }')
-        dbm=${dbm_dot%.}
-        dbm_if_zero=${dbm:--100}
-        sig=$(( 2 * ( $dbm_if_zero + 100 )))
-    fi
-
-    if [ "$sig" -eq 0 ]
-    then
-        modem_path=$(mmcli -L | awk '{ print $1 }')
-        modem=${modem_path##*/}
-        sig_percent=$(mmcli -m "$modem" | grep signal | awk '{ print $4 }')
-        sig_double=${sig_percent%\%}
-        if [ "$sig_double" -eq 0 ]
-        then
-            sig=0
-        else
-            sig=$(( sig_double / 2 + 50 ))
-        fi
-    fi
-
-    if [ $eth = up ]
-    then
-        first="e"
-	elif [ $sig -eq 0 ]
-    then
-        first="_"
-	elif [ "$sig" -ge 60 ]
-    then
-        first="$bar14"
+    # get signal
+    if [ "$device" = wlp3s0 ]; then
+        dbm=$(iw dev wlp3s0 link | awk '/signal/ { print $2 }')
+        sig=$(( 2 * ( $dbm + 100 ) ))
+    elif [ "$device" = wwan0mbim0 ]; then
+        modem=$(mmcli -L | awk '{ print $1 }' | sed 's/.*\///')
+        sig_r=$(mmcli -m "$modem" | awk '/signal/ { print $4 }' | tr -d %)
+        sig=$(( sig_r / 2 + 50 ))
     else
-        first="$bar18"
+        sig=0
     fi
 
-    if [ $sig -eq 0 ]
-    then
-        var="${first}___ "
-    elif [ $sig -ge 90 ]
-    then
-        var="$first$bar24$bar34$bar44 "
-    elif [ $sig -ge 80 ]
-	then
-		var="$first$bar24$bar34$bar18 "
-	elif [ $sig -ge 70 ]
-	then
-		var="$first$bar24$bar18$bar18 "
-	elif [ $sig -ge 60 ]
-	then
-		var="$first$bar18$bar18$bar18 "
+    # get shape
+    if [ "$sig" -ge 90 ]; then
+        var="$bar14$bar24$bar34$bar44"
+    elif [ "$sig" -ge 80 ]; then
+		var="$bar14$bar24$bar34$bar18"
+	elif [ "$sig" -ge 70 ]; then
+		var="$bar14$bar24$bar18$bar18"
+	elif [ "$sig" -ge 60 ]; then
+		var="$bar14$bar24$bar18$bar18"
+    elif [ "$sig" -gt 0 ]; then
+        var="$bar18$(printf "%02d" "$sig")%"
     else
-        var="$first$bar18$bar18$bar18 "
+        var="____"
 	fi
 
-    echo -e "$var"
+    # if wired
+    if [ "$device" = enp6s0 ]; then
+        var=e${var#?}
+    fi
+
+    echo "$var"
 }
 
 # battery
@@ -84,34 +54,24 @@ Bat() {
 	cap=$(< /sys/class/power_supply/BAT0/capacity)
 	state=$(< /sys/class/power_supply/BAT0/status)
 
-    # set first char
-    if [ "$state" != Discharging ]
-    then
-        first="c"
-	elif [ "$cap" -ge 13 ]
-    then
-        first="$bar44"
-    else
-        first="$shade"
+	if [ "$cap" -ge 88 ]; then
+		var="$bar44$bar44$bar44$bar44"
+	elif [ "$cap" -ge 63 ]; then
+		var="$bar44$bar44$bar44$shade"
+	elif [ "$cap" -ge 38 ]; then
+		var="$bar44$bar44$shade$shade"
+	elif [ "$cap" -ge 13 ]; then
+		var="$bar44$shade$shade$shade"
+	else
+        var="$shade$(printf "%02d" "$cap")%"
+	fi
+
+    # if plugged in
+    if [ "$state" != Discharging ]; then
+        var=c${var#?}
     fi
 
-	if [ "$cap" -ge 88 ]
-	then
-		var="$first$bar44$bar44$bar44 "
-	elif [ "$cap" -ge 63 ]
-	then
-		var="$first$bar44$bar44$shade "
-	elif [ "$cap" -ge 38 ]
-	then
-		var="$first$bar44$shade$shade "
-	elif [ "$cap" -ge 13 ]
-	then
-		var="$first$shade$shade$shade "
-	else
-        var="$first$(printf "%02d" "$cap")% "
-	fi
-    echo -e "$var"
-    
+    echo "$var"
 }
 
 # time
@@ -120,4 +80,4 @@ Time() {
 	echo "$var" 
 }
 
-notify-send "$(Net)$(Bat)$(Time)"
+notify-send "$(Net) $(Bat) $(Time)"

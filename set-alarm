@@ -13,7 +13,7 @@ else
     date=$(date --date="tomorrow" +'%Y%m%d')
 fi
 
-sudo rtcwake --date ${date}${time}00 -m mem
+sudo rtcwake --date ${date}${time}00 -m disk
     
 pamixer --set-volume 80
 

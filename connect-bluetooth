@@ -1,0 +1,34 @@
+#!/bin/sh
+
+get_arg () {
+    read -p '(a)irpods, (w)h-1000xm3, (h)ands-free, or (o)ff? ' arg
+    case $arg in
+        a | w | h | o) return ;;
+        *) get_arg ;;
+    esac
+}
+
+case "$1" in
+    a | w | h | o) arg="$1" ;;
+    *) get_arg ;;
+esac
+
+case "$arg" in
+    a) mac="8C:7A:AA:C5:FB:9D" ;;
+    w) mac="70:26:05:CF:75:A1" ;;
+    h) mac="0C:D9:C1:CA:36:4F" ;;
+    *) echo unknown mac address ;;
+esac
+
+temp=$(mktemp)
+
+if [ "$arg" = o ]; then
+    bluetoothctl power off > "$temp"
+    cat "$temp" | awk '! /^\[/ { print }'
+else
+    # sudo systemctl restart bluetooth.service 
+    bluetoothctl power on > "$temp"
+    cat "$temp" | awk '! /^\[/ { print }'
+    bluetoothctl connect "$mac" > "$temp"
+    cat "$temp" | awk '! /^\[/ { print }'
+fi
