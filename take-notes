@@ -1,32 +1,28 @@
 #!/bin/sh
 
-new=false
-copy=false
 OPTIND=1
 while getopts 'nc' arg
 do
     case "${arg}" in
-        n) new=true ;;
-        c) copy=true ;;
+        n) new=yes ;;
+        c) copy=yes ;;
         *) return ;;
     esac
 done
 shift $((OPTIND-1))
 
-if $new
-then
-    dayno=$(date +'%y-%j')
-
+if [ "$new" = yes ]; then
+    dayno=$(date +'%y%j')
     i=1
     while [ -e $HOME/notes/${dayno}-${i}.txt ]
     do
         i=$(( i + 1 ))
     done
 
-    print -s vim $HOME/notes/${dayno}-${i}.txt
     vim $HOME/notes/${dayno}-${i}.txt
+    echo print -s vim $HOME/notes/${dayno}-${i}.txt >> .zsh_history
 
-    return
+    exit
 fi
 
 cd $HOME/notes

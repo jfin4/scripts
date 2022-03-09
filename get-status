@@ -12,7 +12,7 @@ shade=$(echo -e '\xe2\x96\x91')
 # bar items
 # network
 Net() {
-    device=$(nmcli | awk '/connected/ { print $1 }' | tr -d :)
+    device=$(nmcli | awk '/connected [^(]/ { print $1 }' | tr -d :)
 
     # get signal
     if [ "$device" = wlp3s0 ]; then
