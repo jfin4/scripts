@@ -1,68 +1,68 @@
-#!/usr/bin/zsh
-# makes use of zsh-specific "print" command to print to command history
+#!/bin/sh
 
 # process options
-new=false
-copy=false
-key=1
-reverse=reverse
-pattern="${*:-.}"
 OPTIND=1
-while getopts 'nct' arg
-do
+unset new copy todo
+while getopts 'nct' arg; do
     case "${arg}" in
-        n) new=true ;;
-        c) copy=true ;;
-        t) key=2; reverse=""; pattern="#todo" ;;
-        *) return ;;
+        n) new=yes ;;
+        c) copy=yes ;;
+        t) todo=yes ;;
+        *) echo unknown option; exit ;;
     esac
 done
 shift $((OPTIND-1))
 
 # if new note, edit new file and quit when finished
-if $new
-then
+if [ "$new" = yes ]; then
     dayno=$(date +'%y%j')
     i=a
     while [ -e $HOME/notes/${dayno}${i}.txt ]
     do
-        if [ $i = "z" ]
-        then
+        if [ $i = "z" ]; then
             echo "too many notes today"
-            return 1
+            exit 1
         else
             i=$(echo $i | tr "a-y" "b-z")
         fi
     done
-    print -s vim $HOME/notes/${dayno}${i}.txt
     vim $HOME/notes/${dayno}${i}.txt
-    return
+    echo vim $HOME/notes/${dayno}${i}.txt >> $HOME/.zsh_history
+    exit
 fi
 
-# otherwise, select file
+# if todo, set pattern etc
+if [ "$todo" = yes ]; then
+    pattern="#todo"
+    key="--key=2"
+else
+    pattern="${*:-.}"
+    reverse=--reverse
+fi
+
+# select file
 cd $HOME/notes
 clear
 match=$(grep -ir "$pattern"\
     | sed -e 's/: \+/:/'\
-    | sort --key=${key} --${reverse}\
+    | sort $key $reverse\
     | fzy -l$(( LINES - 1 )))
 file=${match%%:*}
 line=${match##*:}
 cd "$OLDPWD"
 
 # if none selected, then do nothing and quit
-if [ -z "$file" ]
-then
-    return
+if [ -z "$file" ]; then
+    exit
 fi
 
 # if all we want is the path, then send it to the clipboard and quit
-if $copy
-then
+if [ "$copy" = yes ]; then
     echo -n $HOME/notes/$file > /dev/clipboard
-    return
+    echo path copied to clipboard
+    exit
 fi
 
 # edit the selected file
-print -s vim $HOME/notes/$file
 vim -c "call search(\"$line\$\")" $HOME/notes/$file
+echo vim $HOME/notes/$file >> $HOME/.zsh_history
