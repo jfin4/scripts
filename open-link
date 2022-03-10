@@ -1,18 +1,6 @@
 #!/bin/sh
 
-link="$1"
-head=$(echo "$link" | cut -c1-4)
-if [ "$head" = "http" ] 
-then
-    ftype="http"
-else
-    ftype=${link##*.}
-fi
-
-case "$ftype" in
-    "pdf") command=SumatraPDF ;;
-    "http") command=brave ;;
-    *) command=cygstart ;;
-esac
-
-"$command" "$link" > /dev/null 2>&1 &
+desc="$(cat $HOME/index.csv | sed 's/,.*//' | grep "${*:-.}" | fzy ),"
+[ -z "$desc" ] && exit
+link=$(grep "$desc" $HOME/index.csv | sed 's/.*, *//')
+cygstart "$link"

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+files="$@"
+for last; do 
+    true
+done
+
+trap 'pkill ffplay; exit' QUIT
+trap 'pkill ffplay' INT
+
+while true; do
+    ffplay -autoexit "$1" > /dev/null 2>&1 &
+    echo playing "$1"
+    wait "$!"
+    if [ "$1" = "$last" ]; then
+        set $files
+    else
+        shift
+    fi
+done
+

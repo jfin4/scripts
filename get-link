@@ -1,6 +1,0 @@
-#!/bin/sh
-
-desc="$(cat $HOME/index.csv | sed 's/,.*//' | grep "${*:-.}" | fzy ),"
-[ -z "$desc" ] && exit
-link=$(grep "$desc" $HOME/index.csv | sed 's/.*, *//')
-open-link "$link"
