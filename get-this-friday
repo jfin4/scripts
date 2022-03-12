@@ -1,4 +1,0 @@
-#!/bin/sh
-# https://unix.stackexchange.com/questions/222368/get-date-of-next-saturday-from-a-given-date
-
-date -d "+ $(( ( (6 + 5 - $(date +%u)) % 7) + 1 )) days" +'%m-%d'
