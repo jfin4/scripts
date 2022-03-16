@@ -1,0 +1,4 @@
+#!/bin/sh
+
+hash=$(git log --pretty=format:"%h %cd" --date=short | fzy | awk '{ print $1 }')
+git show $hash:$1

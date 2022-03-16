@@ -1,0 +1,4 @@
+#!/bin/sh
+
+hash=$(run-dot-git log --pretty=format:"%h %cd" --date=short | fzy | awk '{ print $1 }')
+run-dot-git show $hash:$1
