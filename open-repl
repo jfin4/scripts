@@ -8,11 +8,7 @@ case "$1" in
         command="R --quiet --no-save"
         ;;
     sh)
-        command=""
-        ;;
-    close)
-        tmux kill-pane -t {bottom-right}
-        exit
+        command="zsh"
         ;;
 esac
 
