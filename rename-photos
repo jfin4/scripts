@@ -1,23 +1,36 @@
 #!/bin/sh
 
-for pic in *.*
-do
-    datecolon=$(exiftool -CreateDate $pic | awk '{print $4}')
-    date=${datecolon//:/-}
-    if [ -e ${date}-001.jpg ]
-    then
-        for existing in ${date}*
-        do
-            max=$existing
-        done
-        countext=${max##*-}
-        count=${countext%.*}
-        inccount=$(expr $count + 1)
-        incpad=$(printf '%03d\n' $inccount)
-        newname=${date}-${incpad}.jpg
-    else
-        newname=${date}-001.jpg
+function rename_photo () {
+    ext=$(echo ${pic##*.} | tr '[:upper:]' '[:lower:]')
+    date=$(exiftool "$pic" | awk '/^Date\/Time Original *:/ { print $4 }' | head -n 1 | tr ':' '-')
+    if [ -z "$date" ]; then
+        date=$(exiftool "$pic" | awk '/^Create Date *:/ { print $4 }' | head -n 1 | tr ':' '-')
     fi
-    mv $pic $newname
-done
 
+    if [ -e "$out/$date-001.$ext" ]; then
+        for last in $out/$date-*.$ext; do
+            true
+        done
+        current=$(echo $last | sed 's/.\+-0*\([0-9]\+\)\..\+/\1/')
+        next=$(printf '%03d' $(( current + 1 )) )
+        name=$date-$next.$ext
+    else
+        name=$date-001.$ext
+    fi
+
+    cp --no-clobber --verbose "$pic" $out/$name
+
+    if [ "$?" != 0 ]; then
+        echo "$pic" >> $out/rename-photos.log
+    fi
+}
+
+for dir in "${@:-$PWD}"; do
+    out=$dir-out
+    if [ ! -d "$out" ]; then
+        mkdir "$out"
+    fi
+    for pic in $dir/*.*; do
+        rename_photo
+    done
+done

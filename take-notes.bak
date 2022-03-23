@@ -3,10 +3,11 @@
 # process options
 OPTIND=1
 unset new copy todo
-while getopts 'nc' arg; do
+while getopts 'nct' arg; do
     case "${arg}" in
         n) new=yes ;;
         c) copy=yes ;;
+        t) todo=yes ;;
         *) echo unknown option; exit ;;
     esac
 done
@@ -30,12 +31,21 @@ if [ "$new" = yes ]; then
     exit
 fi
 
+# if todo, set pattern etc
+if [ "$todo" = yes ]; then
+    pattern="#todo"
+    key="--key=2"
+else
+    pattern="${*:-.}"
+    reverse=--reverse
+fi
+
 # select file
 cd $HOME/notes
 clear
-match=$(grep -ir --exclude-dir=".git" --exclude="README.md" "${*:-.}"\
+match=$(grep -ir "$pattern"\
     | sed -e 's/: \+/:/'\
-    | sort --reverse\
+    | sort $key $reverse\
     | fzy -l$(( LINES - 1 )))
 file=${match%%:*}
 line=${match##*:}

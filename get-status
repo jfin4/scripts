@@ -34,7 +34,9 @@ Net() {
 	elif [ "$sig" -ge 70 ]; then
 		var="$bar14$bar24$bar18$bar18"
 	elif [ "$sig" -ge 60 ]; then
-		var="$bar14$bar24$bar18$bar18"
+		var="$bar14$bar18$bar18$bar18"
+	elif [ "$sig" -ge 50 ]; then
+		var="$bar18$bar18$bar18$bar18"
     elif [ "$sig" -gt 0 ]; then
         var="$bar18$(printf "%02d" "$sig")%"
     else

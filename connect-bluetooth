@@ -17,7 +17,7 @@ case "$arg" in
     a) mac="8C:7A:AA:C5:FB:9D" ;;
     w) mac="70:26:05:CF:75:A1" ;;
     h) mac="0C:D9:C1:CA:36:4F" ;;
-    *) echo unknown mac address ;;
+    *) : ;;
 esac
 
 temp=$(mktemp)
