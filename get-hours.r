@@ -1,9 +1,8 @@
 # get hours worked per day
 
-args = commandArgs(trailingOnly=TRUE)
-month <- ifelse(args [1] == "", format(Sys.time(), '%y-%m'), args[1])
-home <- 'C:/Users/JInman/msys/home/jfin/'
-file <- paste0(home, 'hours/', month, '.csv')
+dir <- 'C:/Users/jinman/msys/home/jfin/hours'
+files <- list.files(dir)
+file <- file.path(dir, files[length(files)])
 
 data <- read.csv(file, 
                 strip.white=T, 
