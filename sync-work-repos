@@ -1,26 +1,45 @@
 #!/bin/sh
 
-color="\033[1;30m"
-uncolor="\033[0m"
 
-if [ "$1" = "in" ]
-then
-    echo -e "Pulling dot repo${color}"
+get_dir() {
+    if [ "$1" = "in" -o "$1" = "out" ]; then
+        dir=$1
+    else
+        read -p'"in" or "out"? ' dir
+        get_dir "$dir"
+    fi
+}
+
+get_dir "$1"
+
+if [ "$dir" = "in" ]; then
+    echo "Dotfiles:"
     run-dot-git pull
-    echo -e "\n${uncolor}Pulling scripts repo${color}"
+    echo
+    echo "Scripts:"
     git -C $HOME/scripts pull
-    echo -e "\n${uncolor}Pulling water board repo${color}"
+    echo
+    echo "Work:"
     git -C $HOME pull
-    echo -e "${uncolor}"
-fi
-
-if [ "$1" = "out" ]
-then
-    echo -e "Pushing dot repo${color}"
+    echo
+    echo "Todo:"
+    git -C $HOME/todo pull
+    echo
+    echo "Passwords:"
+    git -C $HOME/.passwords  pull
+elif [ "$dir" = "out" ]; then
+    echo "Dotfiles:"
     sync-dot-repo
-    echo -e "${uncolor}\nPushing scripts repo${color}"
+    echo
+    echo "Scripts:"
     sync-repo $HOME/scripts
-    echo -e "${uncolor}\nPushing water board repo${color}"
+    echo
+    echo "Work:"
     sync-repo $HOME
-    echo -en "${uncolor}"
+    echo
+    echo "Todo:"
+    sync-repo $HOME/todo
+    echo
+    echo "Passwords:"
+    sync-repo $HOME/.passwords
 fi
