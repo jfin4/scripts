@@ -21,7 +21,7 @@ if [ "$new" = yes ]; then
     do
         if [ $i = "z" ]; then
             echo "too many notes today"
-            exit 1
+            exit
         else
             i=$(echo $i | tr "a-y" "b-z")
         fi
@@ -42,8 +42,13 @@ fi
 
 # select file
 cd $HOME/notes
+matches=$(grep -ir "$pattern")
+if [ -z "$matches" ]; then
+	echo "no notes on \"$pattern\""
+	exit
+fi
 clear
-match=$(grep -ir "$pattern"\
+match=$(echo "$matches"\
     | sed -e 's/: \+/:/'\
     | sort $key $reverse\
     | fzy -l$(( LINES - 1 )))
