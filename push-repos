@@ -28,3 +28,6 @@ push-repo $HOME/.passwords
 echo
 echo "todo: "
 push-repo $HOME/todo
+echo
+echo "reminders: "
+push-repo $HOME/.remind
