@@ -18,13 +18,13 @@ echo "dotfiles: "
 push-dot-repo
 echo
 echo "scripts: "
-git -C $HOME/scripts 
+push-repo $HOME/scripts 
 echo
 echo "notes: "
-git -C $HOME/notes
+push-repo $HOME/notes
 echo
 echo "passwords: "
-git -C $HOME/.passwords
+push-repo $HOME/.passwords
 echo
 echo "todo: "
-git -C $HOME/todo
+push-repo $HOME/todo
