@@ -26,7 +26,7 @@ if [ "$new" = yes ]; then
         fi
     done
     vim $HOME/notes/${dayno}${i}.txt
-    echo vim $HOME/notes/${dayno}${i}.txt >> $HOME/.zsh_history
+    print -s vim $HOME/notes/${dayno}${i}.txt
     exit
 fi
 
@@ -55,4 +55,4 @@ fi
 
 # edit the selected file
 vim -c "call search(\"$line\$\")" $HOME/notes/$file
-echo vim $HOME/notes/$file >> $HOME/.zsh_history
+print -s vim $HOME/notes/$file
