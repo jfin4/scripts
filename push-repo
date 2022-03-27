@@ -1,0 +1,8 @@
+#!/bin/sh
+# add, commit, and push dotfile changes
+
+repo=${1:-.}
+
+git -C "$repo" add .
+git -C "$repo" commit -m "updates"
+git -C "$repo" push

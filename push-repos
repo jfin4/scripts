@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# check_dir () {
+#     if [ "$setting" != "in" -a "$setting" != "out" ]; then
+#         read -p "(i)n or (o)ut? " arg
+#         case $arg in
+#             i) dir=in ;;
+#             o) dir=o ;;
+#             *) check_dir ;;
+#         esac
+#     fi
+# }
+
+# dir="$1"
+# check_dir
+
+echo "dotfiles: "
+push-dot-repo
+echo
+echo "scripts: "
+git -C $HOME/scripts 
+echo
+echo "notes: "
+git -C $HOME/notes
+echo
+echo "passwords: "
+git -C $HOME/.passwords
+echo
+echo "todo: "
+git -C $HOME/todo
