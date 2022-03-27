@@ -1,3 +1,25 @@
 #!/bin/sh
 
+if [ "$1" = "in" ]
+then
+    echo -e "Pulling dot repo${color}"
+    run-dot-git pull
+    echo -e "\n${uncolor}Pulling scripts repo${color}"
+    git -C $HOME/scripts pull
+    echo -e "\n${uncolor}Pulling water board repo${color}"
+    git -C $HOME pull
+    echo -e "${uncolor}"
+fi
+
+if [ "$1" = "out" ]
+then
+    echo -e "Pushing dot repo${color}"
+    sync-dot-repo
+    echo -e "${uncolor}\nPushing scripts repo${color}"
+    sync-repo $HOME/scripts
+    echo -e "${uncolor}\nPushing water board repo${color}"
+    sync-repo $HOME
+    echo -en "${uncolor}"
+fi
+
 wg-quick up mullvad-us195
