@@ -1,0 +1,5 @@
+#!/bin/sh
+
+$USERPROFILE/software/set-default-browser/setdefaultbrowser Chrome
+# $USERPROFILE/software/set-user-fta/SetUserFTA get
+$USERPROFILE/software/set-user-fta/setuserfta .pdf 'Applications\SumatraPDF.exe'

@@ -19,4 +19,5 @@ closing <- ifelse(dow == "Fri",
                   "\n\nHave a pleasant evening,")
 message <- paste0(opening, summary, closing)
 writeClipboard(message)
-cat("summary copied to clipboard\n")
+cat("summary copied to clipboard:\n\n")
+cat(paste0(message, '\n'))
