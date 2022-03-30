@@ -11,7 +11,7 @@ set_direction () {
 get_direction () {
 	if ! echo push s pull l | grep --word-regexp --quiet "$1"; then 
 		read -p'"pu(s)h" or "pu(l)l"? ' arg
-        direction=$(set_direction "$arg")
+        set_direction "$arg"
         get_direction "$direction"
 	fi
 }
