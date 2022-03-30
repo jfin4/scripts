@@ -1,45 +1,50 @@
 #!/bin/sh
 
 
-get_dir() {
-    if [ "$1" = "in" -o "$1" = "out" ]; then
-        dir=$1
-    else
-        read -p'"in" or "out"? ' dir
-        get_dir "$dir"
-    fi
+set_direction () {
+	case "$1" in
+		push|s) direction=push ;;
+		pull|l) direction=pull ;;
+		*) get_direction "$1" ;;
+	esac
+}
+get_direction () {
+	if ! echo push s pull l | grep --word-regexp --quiet "$1"; then 
+		read -p'"pu(s)h" or "pu(l)l"? ' arg
+        direction=$(set_direction "$arg")
+        get_direction "$direction"
+	fi
 }
 
-get_dir "$1"
-
-if [ "$dir" = "in" ]; then
-    echo "Dotfiles:"
+set_direction "$1"
+if [ "$direction" = "pull" ]; then
+    echo "dotfiles:"
     run-dot-git pull
     echo
-    echo "Scripts:"
+    echo "scripts:"
     git -C $HOME/scripts pull
     echo
-    echo "Work:"
+    echo "work:"
     git -C $HOME pull
     echo
-    echo "Todo:"
+    echo "todo:"
     git -C $HOME/todo pull
     echo
-    echo "Passwords:"
+    echo "passwords:"
     git -C $HOME/.passwords  pull
-elif [ "$dir" = "out" ]; then
-    echo "Dotfiles:"
+elif [ "$direction" = "push" ]; then
+    echo "dotfiles:"
     sync-dot-repo
     echo
-    echo "Scripts:"
+    echo "scripts:"
     sync-repo $HOME/scripts
     echo
-    echo "Work:"
+    echo "work:"
     sync-repo $HOME
     echo
-    echo "Todo:"
+    echo "todo:"
     sync-repo $HOME/todo
     echo
-    echo "Passwords:"
+    echo "passwords:"
     sync-repo $HOME/.passwords
 fi
