@@ -1,7 +1,11 @@
 #!/bin/sh
 
 ffplay=$(cygpath $USERPROFILE/software/ffmpeg/ffplay)
-files="$@"
+
+if [ -d "$1" ]; then
+	set "$1"/*
+fi
+
 for last; do 
     true
 done
@@ -10,8 +14,8 @@ trap "pkill ffplay; exit" QUIT
 trap "pkill ffplay" INT
 
 while true; do
+    echo playing "${1##*/}"
     $ffplay -autoexit "$1" > /dev/null 2>&1 &
-    echo playing "$1"
     wait "$!"
     if [ "$1" = "$last" ]; then
         set $files
