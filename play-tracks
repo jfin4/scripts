@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# process options
+OPTIND=1
+unset new copy todo
+while getopts 'n' arg; do
+    case "${arg}" in
+        n) nodisp=-nodisp ;;
+        *) echo unknown option; exit ;;
+    esac
+done
+shift $(( OPTIND - 1))
+
 ffplay=$(cygpath $USERPROFILE/software/ffmpeg/ffplay)
 
 if [ -d "$1" ]; then
@@ -11,11 +22,11 @@ for last; do
 done
 
 trap "pkill ffplay; exit" QUIT
-trap "pkill ffplay" INT
+trap "pkill ffplay; read -p 'paused... '" INT
 
 while true; do
     echo playing "${1##*/}"
-    $ffplay -autoexit "$1" > /dev/null 2>&1 &
+    $ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
     wait "$!"
     if [ "$1" = "$last" ]; then
         set $files
