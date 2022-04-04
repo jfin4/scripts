@@ -19,7 +19,7 @@ get_direction () {
 set_direction "$1"
 if [ "$direction" = "pull" ]; then
     echo "dotfiles:"
-    run-dot-git pull
+    git-dot pull
     echo
     echo "scripts:"
     git -C $HOME/scripts pull
@@ -34,7 +34,7 @@ if [ "$direction" = "pull" ]; then
     git -C $HOME/.passwords  pull
 elif [ "$direction" = "push" ]; then
     echo "dotfiles:"
-    sync-dot-repo
+    sync-repo -d
     echo
     echo "scripts:"
     sync-repo $HOME/scripts
