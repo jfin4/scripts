@@ -1,5 +1,0 @@
-#!/bin/sh
-
-run-dot-git add -u
-run-dot-git commit -m updates
-run-dot-git push

@@ -1,4 +1,27 @@
 #!/bin/sh
 
-hash=$(git log --pretty=format:"%h %cd" --date=short | fzy | awk '{ print $1 }')
-git show $hash:$1
+
+git_command=git
+
+# process options
+OPTIND=1
+while getopts 'd' arg; do
+	case "${arg}" in
+		d) 
+			git_command=git-dot 
+			;;
+		*) 
+			echo unknown option \"$arg\"
+			exit 
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
+hash=$($git_command \
+		--pretty=format:"%h %cd" \
+		--date=short \
+	| fzy \
+	| awk '{ print $1 }')
+
+$git_command show $hash:$1
