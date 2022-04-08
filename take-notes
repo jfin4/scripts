@@ -64,7 +64,7 @@ fi
 # if all we want is the path, then send it to the clipboard and quit
 if [ "$copy" = yes ]; then
     echo -n $HOME/notes/$file > /dev/clipboard
-    echo path copied to clipboard
+    echo copied \"$HOME/notes/$file\"
     exit
 fi
 

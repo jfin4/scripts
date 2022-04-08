@@ -9,7 +9,7 @@ today <- format(Sys.time(), '%m%d')
 date <- ifelse(is.na(args[1]), today, args[1]) 
 data <- data[data$date == date, ]
 data <- data[data$task != "misc", ]
-opening <- "Hi Mary, \n\nI worked on these tasks today:\n\n"
+opening <- "Hi Mary and Daniel, \n\nI worked on these tasks today:\n\n"
 summary <- unique(data[[4]])
 summary <- paste0("\t", summary)
 summary <- paste0(summary, collapse='\n')

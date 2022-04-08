@@ -18,7 +18,7 @@ while getopts 'd' arg; do
 done
 shift $((OPTIND-1))
 
-hash=$($git_command \
+hash=$($git_command log \
 		--pretty=format:"%h %cd" \
 		--date=short \
 	| fzy \
