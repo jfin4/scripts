@@ -1,6 +1,7 @@
 #!/bin/sh
 
-youtube-dl\
+ffmpeg=/c/Users/jinman/software/ffmpeg/bin
+PATH="$ffmpeg:$PATH" youtube-dl\
     --ignore-errors\
     --output "%(playlist_index)s-%(title)s.%(ext)s"\
     --extract-audio\

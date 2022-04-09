@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -z "$3" ]; then
+	echo "Usage: ${0##*/} <from page number> <to page number> <PDF document>"
+	exit
+fi
+
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+   -dFirstPage=$1 \
+   -dLastPage=$2 \
+   -sOutputFile="${3%.pdf}-extract.pdf" \
+   "$3"
+
+
+
