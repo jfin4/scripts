@@ -11,8 +11,6 @@ while getopts 'n' arg; do
 done
 shift $(( OPTIND - 1))
 
-ffplay=$(cygpath $USERPROFILE/software/ffmpeg/ffplay)
-
 if [ -d "$1" ]; then
 	set "$1"/*
 fi
@@ -26,7 +24,7 @@ trap "pkill ffplay; read -p 'paused... '" INT
 
 while true; do
     echo playing "${1##*/}"
-    $ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
+    ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
     wait "$!"
     if [ "$1" = "$last" ]; then
         set $files
