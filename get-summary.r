@@ -15,8 +15,8 @@ summary <- paste0("\t", summary)
 summary <- paste0(summary, collapse='\n')
 dow <- format(as.Date(date, '%m%d'), '%a')
 closing <- ifelse(dow == "Fri", 
-                  "\n\nHave an excellent weekend,", 
-                  "\n\nHave a pleasant evening,")
+                  "\n\nThank you and good day,", 
+                  "\n\nThank you and happy Friday,")
 message <- paste0(opening, summary, closing)
 writeClipboard(message)
 cat("summary copied to clipboard:\n\n")
