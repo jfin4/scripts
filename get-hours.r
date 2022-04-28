@@ -1,11 +1,17 @@
 # get hours worked per day
 
-dir <- 'C:/Users/jinman/msys/home/jfin/hours'
-files <- list.files(dir)
-file <- file.path(dir, files[length(files)])
+args = commandArgs(trailingOnly=TRUE)
+pat <- ".*(\\d{2}-\\d{2}).*"
+dir <- 'C:/Users/JInman/msys/home/jfin/hours'
+month <- ifelse(is.na(args[1]), 
+                format(Sys.Date(), "%y-%m"),
+                sub(pat, "\\1", args[1]))
+file <- ifelse(is.na(args[1]), 
+               file.path(dir, "current.csv"),
+               file.path(dir, paste0(month, ".csv")))
 
-data <- read.csv(file, 
-                strip.white=T, 
+data <- read.csv(file,
+                strip.white=T,
                 colClasses = "character",
                 comment.char = "#")
 data$from <- as.POSIXlt(data$from, format = "%H%M")
@@ -42,10 +48,10 @@ hours[2:5] <- format(hours[2:5], width = 6, justify = "right")
 hours[6] <- format(hours[6], width = 32, justify = "left")
 names(hours)[6] <- "BARCHART                          "
 
-week1_dates <- as.Date(as.character(1:7), format = "%d")
+week1_dates <- as.Date(paste0(month, "-", 1:7), format = "%y-%m-%d")
 week1_days <- format(week1_dates , "%a")
 sun_char <- match("Sun", week1_days)
-sun_date <- as.Date(as.character(sun_char), format = "%d")
+sun_date <- as.Date(paste0(month, "-", sun_char), format = "%y-%m-%d")
 N <- 6
 sun <- seq(sun_date, by = 7, length.out = N)
 
@@ -56,11 +62,11 @@ for (i in 1:N) {
         out <- hours[date >= sun[i - 1] & date < sun[i], ]
     }
     if (nrow(out) > 0) {
-        mean_work <- mean(as.numeric(out[[3]])) 
-        mean_tot <- mean(as.numeric(out[[4]])) 
+        mean_work <- mean(as.numeric(out[[3]]))
+        mean_tot <- mean(as.numeric(out[[4]]))
         mean_prop <- mean_work / mean_tot # mean proportion of work per day
         mean_norm <- mean_prop  * 8 # normalize by 8 hour day
-        mean <- sprintf("%.2f", mean_norm) 
+        mean <- sprintf("%.2f", mean_norm)
         out <- rbind(out, c("Mean:", "", mean, "", "", "                       ^          "))
         print(out, row.names = F)
         names(hours) <- NULL

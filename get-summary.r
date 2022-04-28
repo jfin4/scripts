@@ -1,21 +1,42 @@
 # get hours worked per day
 
+dir <- 'C:/Users/JInman/msys/home/jfin/hours'
 args <- commandArgs(trailingOnly=TRUE)
-dir <- 'C:/Users/jinman/msys/home/jfin/hours'
-files <- list.files(dir)
-file <- file.path(dir, files[length(files)])
+if (! is.na(args[1])) {
+    mm_dd <- substr(args[1], 6, 10)
+    mmdd <- sub("-", "", mm_dd)
+    pat <- paste0("^", mmdd)
+    for (f in list.files(dir)) {
+        YY <- substr(f, 1, 2)
+        yy <- substr(args[1], 3, 4)
+        if (YY != yy & YY != "cu") {
+            next
+        }
+        mmdd_is_in_f <- any(grepl(pat, readLines(file.path(dir, f))))
+        if (mmdd_is_in_f) {
+            file <- file.path(dir, f)
+            date <- mmdd
+            opening <- paste0("Hi Mary and Daniel, \n\nI worked on these tasks on ", 
+                              format(as.Date(args[1]), "%A, %B %d, %Y"),
+                              ":\n\n")
+            break
+        }
+    }
+} else {
+    file <- file.path(dir, "current.csv")
+    date <- format(Sys.time(), '%m%d')
+    opening <- "Hi Mary and Daniel, \n\nI worked on these tasks today:\n\n"
+}
+
 data <- read.csv(file, strip.white=T, colClasses = "character", comment.char = "#")
-today <- format(Sys.time(), '%m%d')
-date <- ifelse(is.na(args[1]), today, args[1]) 
 data <- data[data$date == date, ]
 data <- data[data$task != "misc", ]
-opening <- "Hi Mary and Daniel, \n\nI worked on these tasks today:\n\n"
 summary <- unique(data[[4]])
 summary <- paste0("\t", summary)
 summary <- paste0(summary, collapse='\n')
 dow <- format(as.Date(date, '%m%d'), '%a')
-closing <- ifelse(dow == "Fri", 
-                  "\n\nThank you and happy Friday,", 
+closing <- ifelse(dow == "Fri",
+                  "\n\nThank you and happy Friday,",
                   "\n\nThank you and good day,")
 message <- paste0(opening, summary, closing)
 writeClipboard(message)
