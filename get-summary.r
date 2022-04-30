@@ -16,7 +16,7 @@ if (! is.na(args[1])) {
         if (mmdd_is_in_f) {
             file <- file.path(dir, f)
             date <- mmdd
-            opening <- paste0("Hi Mary and Daniel, \n\nI worked on these tasks on ", 
+            opening <- paste0("Hi Daniel, \n\nI worked on these tasks on ", 
                               format(as.Date(args[1]), "%A, %B %d, %Y"),
                               ":\n\n")
             break
@@ -25,7 +25,7 @@ if (! is.na(args[1])) {
 } else {
     file <- file.path(dir, "current.csv")
     date <- format(Sys.time(), '%m%d')
-    opening <- "Hi Mary and Daniel, \n\nI worked on these tasks today:\n\n"
+    opening <- "Hi Daniel, \n\nI worked on these tasks today:\n\n"
 }
 
 data <- read.csv(file, strip.white=T, colClasses = "character", comment.char = "#")
