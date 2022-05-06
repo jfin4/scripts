@@ -15,6 +15,8 @@ if [ -d "$1" ]; then
 	set "$1"/*
 fi
 
+tracks="$@"
+
 for last; do 
     true
 done
@@ -26,10 +28,10 @@ while true; do
     echo playing "${1##*/}"
     ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
     wait "$!"
-    if [ "$1" = "$last" ]; then
-        set $files
-    else
-        shift
-    fi
+	if [ "$1" = "$last" ]; then
+		set $tracks
+	else
+		shift
+	fi
 done
 

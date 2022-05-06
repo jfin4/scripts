@@ -25,7 +25,9 @@ if (! is.na(args[1])) {
 } else {
     file <- file.path(dir, "current.csv")
     date <- format(Sys.time(), '%m%d')
-    opening <- "Hi Daniel, \n\nI worked on these tasks today:\n\n"
+    opening <- paste0("Hi Daniel, \n\nI worked on these tasks today, ", 
+                        format(Sys.Date(), "%A, %B %d, %Y"),
+                        ":\n\n")
 }
 
 data <- read.csv(file, strip.white=T, colClasses = "character", comment.char = "#")
