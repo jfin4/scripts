@@ -3,13 +3,18 @@
 # process options
 OPTIND=1
 unset new copy todo
-while getopts 'n' arg; do
+while getopts 'q' arg; do
     case "${arg}" in
-        n) nodisp=-nodisp ;;
+        q) nodisp=-nodisp ;;
         *) echo unknown option; exit ;;
     esac
 done
 shift $(( OPTIND - 1))
+
+if [ -z "$1" ]; then
+	echo "Play what?"
+	exit
+fi
 
 if [ -d "$1" ]; then
 	set "$1"/*
