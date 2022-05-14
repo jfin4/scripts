@@ -3,6 +3,7 @@
 args = commandArgs(trailingOnly=TRUE)
 pat <- ".*(\\d{2}-\\d{2}).*"
 dir <- 'C:/Users/JInman/msys/home/jfin/hours'
+# dir <- 'C:/msys64/home/jfin/hours'
 month <- ifelse(is.na(args[1]), 
                 format(Sys.Date(), "%y-%m"),
                 sub(pat, "\\1", args[1]))

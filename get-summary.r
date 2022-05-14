@@ -1,6 +1,7 @@
 # get hours worked per day
 
 dir <- 'C:/Users/JInman/msys/home/jfin/hours'
+# dir <- 'C:/msys64/home/jfin/hours'
 args <- commandArgs(trailingOnly=TRUE)
 if (! is.na(args[1])) {
     mm_dd <- substr(args[1], 6, 10)

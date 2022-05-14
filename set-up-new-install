@@ -7,6 +7,7 @@ pacman -Syu --noconfirm
 # list generated via "pacman -Qe"
 pacman -S --noconfirm --needed\
     base\
+	fzy\
     git\
     man-db\
     mksh\
@@ -26,7 +27,7 @@ git config --global credential.helper store
 git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dotfiles.git
 
 function dot {
-   git --git-dir=$HOME/.dot.git/ --work-tree=$HOME "$@"
+   git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME "$@"
 }
 
 dot checkout msys
@@ -47,7 +48,7 @@ fi
 dot config --local status.showUntrackedFiles no
 dot push --set-upstream origin msys
 
-mkdir .vim/{backup,swap,undo}
+mkdir -p .vim/{backup,swap,undo}
 
 # terminus font
 curl --output terminus.zip https://files.ax86.net/terminus-ttf/files/latest-windows.zip
