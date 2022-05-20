@@ -1,8 +1,0 @@
-#!/bin/sh
-
-time=$(date +'%Y%m%d%H%M%S')
-
-for file in "$@"
-do
-	mv "$file" "$file"-"$time"
-done

@@ -4,5 +4,6 @@ time="$(date +'%Y%m%d%H%S')"
 
 for file in "$@"
 do
-	mv "$file" "$file"-"$time"
+	file=${file%/}
+	cp -r "$file" "$file"-"$time"
 done

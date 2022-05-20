@@ -1,0 +1,22 @@
+#!/bin/sh
+
+
+dir="$PWD"
+cd
+
+if [ "$1" = pull ]
+then
+	git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME pull
+	cd scripts
+	git pull
+	cd ../notes
+	git pull
+else
+	sync-dot-repo
+	cd scripts
+	sync-repo
+	cd ../notes
+	sync-repo
+fi
+
+cd "$dir"

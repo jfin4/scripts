@@ -3,10 +3,11 @@
 # process options
 OPTIND=1
 unset new copy todo
-while getopts 'nc' arg; do
+while getopts 'nct' arg; do
     case "${arg}" in
         n) new=yes ;;
         c) copy=yes ;;
+        t) todo=yes ;;
         *) echo unknown option; exit ;;
     esac
 done
@@ -26,16 +27,25 @@ if [ "$new" = yes ]; then
         fi
     done
     vim $HOME/notes/${dayno}${i}.txt
-    print -s vim $HOME/notes/${dayno}${i}.txt
+    echo vim $HOME/notes/${dayno}${i}.txt >> $HOME/.zsh_history
     exit
+fi
+
+# if todo, set pattern etc
+if [ "$todo" = yes ]; then
+    pattern="#todo"
+    key="--key=2"
+else
+    pattern="${*:-.}"
+    reverse=--reverse
 fi
 
 # select file
 cd $HOME/notes
 clear
-match=$(grep -ir --exclude-dir=".git" --exclude="README.md" "${*:-.}"\
+match=$(grep -ir "$pattern"\
     | sed -e 's/: \+/:/'\
-    | sort --reverse\
+    | sort $key $reverse\
     | fzy -l$(( LINES - 1 )))
 file=${match%%:*}
 line=${match##*:}
@@ -55,4 +65,4 @@ fi
 
 # edit the selected file
 vim -c "call search(\"$line\$\")" $HOME/notes/$file
-print -s vim $HOME/notes/$file
+echo vim $HOME/notes/$file >> $HOME/.zsh_history

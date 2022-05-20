@@ -1,8 +1,0 @@
-#!/bin/sh
-# restore backup
-
-
-for file in "$@"
-do
-	mv "$file" "${file%-*}"
-done

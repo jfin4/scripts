@@ -1,3 +1,0 @@
-#!/bin/sh
-
-libreoffice /tmp/view.xlsx

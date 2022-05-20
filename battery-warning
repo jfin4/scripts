@@ -1,9 +1,0 @@
-#!/bin/sh
-
-while true; do
-	CAPACITY=$(</sys/class/power_supply/BAT0/capacity)
-	if [ $CAPACITY -le 10 ]; then
-		notify-send -t 60000 -i $HOME/pictures/other/warning.ico "Battery ${CAPACITY}%"
-	fi
-	sleep 60
-done

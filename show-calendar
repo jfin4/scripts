@@ -1,0 +1,3 @@
+#!/bin/sh
+
+remind -cu$1 .remind $2 $3 | col | less

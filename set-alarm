@@ -1,0 +1,21 @@
+#!/bin/sh
+
+time=$1
+if [ -z $time ]
+then
+    time=0630
+fi
+
+if [ $(date +'%p') == "AM" ]
+then
+    date=$(date +'%Y%m%d')
+else
+    date=$(date --date="tomorrow" +'%Y%m%d')
+fi
+
+sudo rtcwake --date ${date}${time}00 -m disk
+    
+pamixer --set-volume 80
+
+mpv --no-resume-playback \
+    $HOME/music/beethoven/quartetto-italiano/late-quartets/op-127-2.mp3

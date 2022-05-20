@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$(IFS=":" ls $PATH | sort | fzy)

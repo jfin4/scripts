@@ -1,5 +1,0 @@
-#!/bin/sh
-# tex wrapper
-
-mupdf "${1%.tex}.pdf" &
-ls * | entr tex2pdf "$1"

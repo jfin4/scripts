@@ -1,8 +1,0 @@
-#!/bin/sh
-# tex wrapper
-
-pdflatex -interaction=nonstopmode "$1"
-bibtex main.aux
-pdflatex -interaction=nonstopmode "$1"
-pdflatex -interaction=nonstopmode "$1"
-pkill -HUP mupdf

@@ -1,8 +1,0 @@
-#! /bin/ksh
-
-if [[ -n $1 ]]; then
-	/usr/local/bin/lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss $@
-else
-	/usr/local/bin/lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss
-fi
-

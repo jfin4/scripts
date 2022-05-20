@@ -1,4 +1,0 @@
-#!/bin/sh
-
-iwctl --passphrase jollyearth812 station wlan0 connect NETGEAR85
-dhclient wlan0

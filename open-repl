@@ -1,0 +1,18 @@
+#!/bin/sh
+
+case "$1" in
+    python)
+        command=python
+        ;;
+    r)
+        command="R --quiet --no-save"
+        ;;
+    sh)
+        command="zsh"
+        ;;
+esac
+
+tmux split-window -c "#{pane_current_path}" "$command"
+tmux move-pane -t {bottom-right}
+tmux select-layout main-vertical
+tmux select-pane -t {last}

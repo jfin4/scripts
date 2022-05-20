@@ -1,4 +1,0 @@
-#!/bin/sh
-# go to local mirror of $PWD
-
-cd "$(remote-to-local "$PWD")"

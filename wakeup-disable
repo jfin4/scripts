@@ -1,7 +1,0 @@
-#!/bin/sh
-
-while read line
-do
-    echo "$line" > /proc/acpi/wakeup
-done < /home/jfin/scripts/wakeup-list
-

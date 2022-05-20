@@ -1,9 +1,0 @@
-#!/bin/sh
-
-DOC="${1%.md}"
-
-/usr/bin/pandoc "${DOC}".md -o "${DOC}".pdf \
-	-V geometry:margin=1.5in \
-	-V fontsize=12pt \
-	-V pagestyle=empty \
-	-V fontfamily=palatino

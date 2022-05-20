@@ -1,0 +1,21 @@
+#!/bin/sh
+
+get_args() {
+	arg=$(find -ipath "*${1/\./}*" | fzy)
+	[ -z "$arg" ] && read -p 'arg: ' arg
+	args="$args $arg"
+	[ -n "$1" ] && shift
+	[ -n "$1" ] && get_args "$@"
+}
+
+if [ "${1:-.}" == "." ]
+then
+	file=$(find -path "*" | fzy)
+	[ -n "$file" ] && xsel -p -b "$file"
+	exit
+fi
+
+command="$1"
+shift
+get_args "$@"
+$command $args
