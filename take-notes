@@ -13,11 +13,13 @@ while getopts 'nct' arg; do
 done
 shift $((OPTIND-1))
 
+dir=$HOME/waterboard/notes
+
 # if new note, edit new file and quit when finished
 if [ "$new" = yes ]; then
     dayno=$(date +'%y%j')
     i=a
-    while [ -e $HOME/notes/${dayno}${i}.txt ]
+    while [ -e $dir/${dayno}${i}.txt ]
     do
         if [ $i = "z" ]; then
             echo "too many notes today"
@@ -26,8 +28,8 @@ if [ "$new" = yes ]; then
             i=$(echo $i | tr "a-y" "b-z")
         fi
     done
-    vim $HOME/notes/${dayno}${i}.txt
-    echo vim $HOME/notes/${dayno}${i}.txt >> $HOME/.zsh_history
+    vim $dir/${dayno}${i}.txt
+    echo vim $dir/${dayno}${i}.txt >> $HOME/.zsh_history
     exit
 fi
 
@@ -41,7 +43,7 @@ else
 fi
 
 # select file
-cd $HOME/notes
+cd $dir
 matches=$(grep -ir "$pattern")
 if [ -z "$matches" ]; then
 	echo "no notes on \"$pattern\""
@@ -63,11 +65,11 @@ fi
 
 # if all we want is the path, then send it to the clipboard and quit
 if [ "$copy" = yes ]; then
-    echo -n $HOME/notes/$file > /dev/clipboard
-    echo copied \"$HOME/notes/$file\"
+    echo -n $dir/$file > /dev/clipboard
+    echo copied \"$dir/$file\"
     exit
 fi
 
 # edit the selected file
-vim -c "call search(\"$line\$\")" $HOME/notes/$file
-echo vim $HOME/notes/$file >> $HOME/.zsh_history
+vim -c "call search(\"$line\$\")" $dir/$file
+echo vim $dir/$file >> $HOME/.zsh_history
