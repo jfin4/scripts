@@ -31,7 +31,10 @@ if [ "$direction" = "pull" ]; then
     git -C $HOME/todo pull
     echo
     echo "passwords:"
-    git -C $HOME/.passwords  pull
+    git -C $HOME/passwords  pull
+    echo
+    echo "reminders:"
+    git -C $HOME/reminders  pull
 elif [ "$direction" = "push" ]; then
     echo "dotfiles:"
     sync-repo -d
@@ -46,5 +49,8 @@ elif [ "$direction" = "push" ]; then
     sync-repo $HOME/todo
     echo
     echo "passwords:"
-    sync-repo $HOME/.passwords
+    sync-repo $HOME/passwords
+    echo
+    echo "reminders:"
+    sync-repo $HOME/reminders
 fi
