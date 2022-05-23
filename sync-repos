@@ -24,8 +24,8 @@ if [ "$direction" = "pull" ]; then
     echo "scripts:"
     git -C $HOME/scripts pull
     echo
-    echo "work:"
-    git -C $HOME pull
+    echo "waterboard:"
+    git -C $HOME/waterboard pull
     echo
     echo "todo:"
     git -C $HOME/todo pull
@@ -39,8 +39,8 @@ elif [ "$direction" = "push" ]; then
     echo "scripts:"
     sync-repo $HOME/scripts
     echo
-    echo "work:"
-    sync-repo $HOME
+    echo "waterboard:"
+    sync-repo $HOME/waterboard
     echo
     echo "todo:"
     sync-repo $HOME/todo
