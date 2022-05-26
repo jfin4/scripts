@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for f in $HOME/waterboard/notes/*; do
+    if [ ! -s "$f" ]; then
+        echo "rm $f"
+        move-to-trash "$f"
+    fi
+done
