@@ -2,12 +2,12 @@
 
 args = commandArgs(trailingOnly=TRUE)
 pat <- ".*(\\d{2}-\\d{2}).*"
-dir <- 'C:/Users/JInman/msys/home/jfin/hours'
+dir <- args[1]
 # dir <- 'C:/msys64/home/jfin/hours'
-month <- ifelse(is.na(args[1]), 
+month <- ifelse(is.na(args[2]), 
                 format(Sys.Date(), "%y-%m"),
-                sub(pat, "\\1", args[1]))
-file <- ifelse(is.na(args[1]), 
+                sub(pat, "\\1", args[2]))
+file <- ifelse(is.na(args[2]), 
                file.path(dir, "current.csv"),
                file.path(dir, paste0(month, ".csv")))
 

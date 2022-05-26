@@ -1,15 +1,17 @@
 # get hours worked per day
 
-dir <- 'C:/Users/JInman/msys/home/jfin/hours'
-# dir <- 'C:/msys64/home/jfin/hours'
+
 args <- commandArgs(trailingOnly=TRUE)
-if (! is.na(args[1])) {
+
+dir <- args[1]
+
+if (! is.na(args[2])) {
     mm_dd <- substr(args[1], 6, 10)
     mmdd <- sub("-", "", mm_dd)
     pat <- paste0("^", mmdd)
     for (f in list.files(dir)) {
         YY <- substr(f, 1, 2)
-        yy <- substr(args[1], 3, 4)
+        yy <- substr(args[2], 3, 4)
         if (YY != yy & YY != "cu") {
             next
         }
@@ -18,7 +20,7 @@ if (! is.na(args[1])) {
             file <- file.path(dir, f)
             date <- mmdd
             opening <- paste0("Hi Daniel, \n\nI worked on these tasks on ", 
-                              format(as.Date(args[1]), "%A, %B %d, %Y"),
+                              format(as.Date(args[2]), "%A, %B %d, %Y"),
                               ":\n\n")
             break
         }
