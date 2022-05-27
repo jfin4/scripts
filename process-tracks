@@ -79,8 +79,8 @@
 
 ffmpeg -i pink.mp3 -ss 60 -t 600 -q:a 0 -c:a libmp3lame a.mp3
 echo "" > tracks.txt
-for i in 1 2 3 4 5 6 7 8 9; do
+for i in $(seq 1 12); do
 	echo "file a.mp3" >> tracks.txt
 done
-ffmpeg -f concat -i tracks.txt -c copy out.mp3
-rm a.mp3 tracks.txt 
+ffmpeg -y -f concat -i tracks.txt -c copy pink.mp3
+rm a.mp3 tracks.txt
