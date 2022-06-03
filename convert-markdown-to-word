@@ -1,0 +1,39 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	echo "need input file"
+	exit
+else
+	input="$1"
+	shift
+fi
+
+if [ -z "$1" ]; then
+	echo "need output name"
+	exit
+else
+	output="$1"
+	shift
+fi
+
+refdoc="$HOME/waterboard/templates/custom-reference.docx"
+
+convert_and_check () {
+
+	pandoc \
+		--from markdown \
+		--to docx \
+		--reference-doc="$refdoc" \
+		--output "$output" \
+		"$input"
+
+	if [ "$?" -gt 0 ]; then
+		read -p "close $output..."
+		convert_and_check
+	fi
+
+}
+
+convert_and_check
+
+cygstart "$output"
