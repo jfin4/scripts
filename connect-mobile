@@ -1,4 +1,6 @@
 #!/bin/sh
 
+sudo xbps-install --yes ModemManager
+sudo sv restart NetworkManager
 nmcli radio wwan on
-nmcli connection up "T-Mobile LTE 1"
+nmcli connection up mobile

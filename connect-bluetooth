@@ -1,7 +1,7 @@
 #!/bin/sh
 
 get_arg () {
-    read -p '(a)irpods, (w)h-1000xm3, (h)ands-free, or (o)ff? ' arg
+    read -p '(a)pple, (s)sony, (h)onda, or (o)ff? ' arg
     case $arg in
         a | w | h | o) return ;;
         *) get_arg ;;
@@ -24,11 +24,13 @@ temp=$(mktemp)
 
 if [ "$arg" = o ]; then
     bluetoothctl power off > "$temp"
+	status=$?
     cat "$temp" | awk '! /^\[/ { print }'
 else
-    # sudo systemctl restart bluetooth.service 
     bluetoothctl power on > "$temp"
     cat "$temp" | awk '! /^\[/ { print }'
     bluetoothctl connect "$mac" > "$temp"
+	status=$?
     cat "$temp" | awk '! /^\[/ { print }'
 fi
+

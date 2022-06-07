@@ -1,10 +1,8 @@
 #!/bin/sh
 
 # wait until tmux is operational
-while true
-do
-	if [ $TMUX ]
-	then
+while true; do
+	if [ -n "$TMUX" ]; then
 		win_w=$(tmux display-message -p '#{window_width}')
 		pane_w=$(( $win_w * 6 / 10 ))
 		tmux set-window-option -g main-pane-width $pane_w 

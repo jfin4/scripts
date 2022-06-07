@@ -1,21 +1,24 @@
 #!/bin/sh
 
-time=$1
-if [ -z $time ]
+hour=$1
+if [ -z $hour ]
 then
-    time=0630
+    hour=0630
 fi
 
-if [ $(date +'%p') == "AM" ]
-then
-    date=$(date +'%Y%m%d')
+wake_s=$(date --date="today $hour" +%s)
+current_s=$(date +%s)
+if [ $wake_s -le $current_s ]; then
+	waketime=$(date --date="tomorrow $hour" +%Y%m%d%H%M%S)
 else
-    date=$(date --date="tomorrow" +'%Y%m%d')
+	waketime=$(date --date="today $hour" +%Y%m%d%H%M%S)
 fi
 
-sudo rtcwake --date ${date}${time}00 -m disk
+sudo rtcwake --date $waketime -m disk
     
-pamixer --set-volume 80
+pactl set-sink-volume 0 80%
 
 mpv --no-resume-playback \
-    $HOME/music/beethoven/quartetto-italiano/late-quartets/op-127-2.mp3
+	$HOME/music/beethoven/quartetto-italiano/late-quartets/op-127-2.mp3
+
+sudo ZZZ

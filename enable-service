@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo ln -s /etc/sv/$1 /var/service/

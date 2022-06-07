@@ -1,0 +1,22 @@
+#!/bin/sh
+
+rsync \
+	--archive \
+	--verbose \
+	--include=/audiobooks \
+	--include=/books \
+	--include=/games \
+	--include=/movies \
+	--include=/music \
+	--include=/notes \
+	--include=/pictures \
+	--include=/projects \
+	--include=/records \
+	--include=/reference \
+	--include=/scripts \
+	--include=/software \
+	--include=/todo \
+	--include=/torrents \
+	--exclude=/* \
+	/home/jfin/ \
+	/mnt/nas/jfin

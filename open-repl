@@ -1,15 +1,10 @@
 #!/bin/sh
 
 case "$1" in
-    python)
-        command=python
-        ;;
-    r)
-        command="R --quiet --no-save"
-        ;;
-    sh)
-        command="zsh"
-        ;;
+    python) command=python ;;
+    r) command="R --quiet --no-save" ;;
+    sh) command="zsh" ;;
+    scheme) command="racket" ;;
 esac
 
 tmux split-window -c "#{pane_current_path}" "$command"
