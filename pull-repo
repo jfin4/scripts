@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	dir=.
+else
+	dir="$1"
+fi
+
+if [ "$dir" = "$HOME" ]; then
+    git-dot pull
+else
+	git -C "$dir" pull
+fi

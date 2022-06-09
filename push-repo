@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	dir=.
+else
+	dir="$1"
+fi
+
+if [ "$dir" = "$HOME" ]; then
+	git-dot add -u
+	git-dot commit -m "$(date)"
+	git-dot push
+else
+	git -C "$dir" add .
+	git -C "$dir" commit -m "$(date)"
+	git -C "$dir" push
+fi

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git-dot add -u
+git-dot commit -m "$(date)"
+git-dot push

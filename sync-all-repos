@@ -1,0 +1,29 @@
+#!/bin/sh
+
+if [ "$1" = "pull" ]; then
+	git_command=pull-repo
+elif [ "$1" = "push" ]; then
+	git_command=push-repo
+fi
+
+repos="\
+	$HOME
+	$HOME/scripts
+	$HOME/hours
+	$HOME/notes
+	$HOME/todo
+	$HOME/reminders
+	$HOME/passwords
+	"
+	
+for repo in $repos; do
+	echo "$repo"
+	$git_command "$repo"
+	echo
+done
+
+if [ "$1" = "push" ]; then
+	shared='/r/RB3/Shared/WQ Control Planning/JI Notes'
+	git -C $HOME/notes push shared main
+	git --git-dir="$shared" --work-tree="$shared" checkout main
+fi
