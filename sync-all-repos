@@ -17,14 +17,14 @@ repos="\
 	"
 	
 for repo in $repos; do
-	echo "$1 ${repo##*/}"
+	echo "$1 ${repo##*/}" | tr '[:lower:]' '[:upper:]'
 	$git_command "$repo"
 	echo
 done
 
 if [ "$1" = "push" ]; then
 	shared='/r/RB3/Shared/WQ Control Planning/JI Notes'
-	echo "push notes to shared drive"
+	echo "PUSH NOTES TO SHARED DRIVE"
 	git -C $HOME/notes push shared main
 	git --git-dir="$shared" --work-tree="$shared" checkout main
 fi
