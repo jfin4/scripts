@@ -7,23 +7,24 @@ elif [ "$1" = "push" ]; then
 fi
 
 repos="\
+	$HOME/notes
+	$HOME/hours
 	$HOME
 	$HOME/scripts
-	$HOME/hours
-	$HOME/notes
 	$HOME/todo
 	$HOME/reminders
 	$HOME/passwords
 	"
 	
 for repo in $repos; do
-	echo "$repo"
+	echo "$git_command $repo"
 	$git_command "$repo"
 	echo
 done
 
 if [ "$1" = "push" ]; then
 	shared='/r/RB3/Shared/WQ Control Planning/JI Notes'
+	echo "push notes to shared drive"
 	git -C $HOME/notes push shared main
 	git --git-dir="$shared" --work-tree="$shared" checkout main
 fi
