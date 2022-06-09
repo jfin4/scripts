@@ -24,7 +24,6 @@ done
 
 if [ "$1" = "push" ]; then
 	shared='/r/RB3/Shared/WQ Control Planning/JI Notes'
-	echo "PUSH NOTES TO SHARED DRIVE"
-	git -C $HOME/notes push shared main
-	git --git-dir="$shared" --work-tree="$shared" checkout main
+	echo "SHARE NOTES"
+	pull-repo "$shared"
 fi
