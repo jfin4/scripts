@@ -13,7 +13,7 @@ while getopts 'nct' arg; do
 done
 shift $((OPTIND-1))
 
-dir=$HOME/waterboard/notes
+dir=$HOME/notes
 
 # if new note, edit new file and quit when finished
 if [ "$new" = yes ]; then

@@ -15,6 +15,7 @@ get_direction () {
         get_direction "$direction"
 	fi
 }
+shared='/r/RB3/Shared/WQ Control Planning/JI Notes'
 
 set_direction "$1"
 if [ "$direction" = "pull" ]; then
@@ -24,8 +25,11 @@ if [ "$direction" = "pull" ]; then
     echo "scripts:"
     git -C $HOME/scripts pull
     echo
-    echo "waterboard:"
-    git -C $HOME/waterboard pull
+    echo "hours:"
+    git -C $HOME/hours pull
+    echo
+    echo "notes:"
+    git -C $HOME/notes pull
     echo
     echo "todo:"
     git -C $HOME/todo pull
@@ -42,8 +46,13 @@ elif [ "$direction" = "push" ]; then
     echo "scripts:"
     sync-repo $HOME/scripts
     echo
-    echo "waterboard:"
-    sync-repo $HOME/waterboard
+    echo "hours:"
+    sync-repo $HOME/hours
+    echo
+    echo "notes:"
+    sync-repo $HOME/notes
+	git push shared main
+	git --git-dir=$shared --work-tree=$shared checkout main
     echo
     echo "todo:"
     sync-repo $HOME/todo

@@ -16,7 +16,7 @@ else
 	shift
 fi
 
-refdoc="$HOME/waterboard/templates/custom-reference.docx"
+refdoc="$HOME/templates/custom-reference.docx"
 
 convert_and_check () {
 
