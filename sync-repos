@@ -52,7 +52,7 @@ elif [ "$direction" = "push" ]; then
     echo "notes:"
     sync-repo $HOME/notes
 	git push shared main
-	git --git-dir=$shared --work-tree=$shared checkout main
+	git --git-dir="$shared" --work-tree=$shared checkout main
     echo
     echo "todo:"
     sync-repo $HOME/todo
