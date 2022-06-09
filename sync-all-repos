@@ -17,7 +17,7 @@ repos="\
 	"
 	
 for repo in $repos; do
-	echo "$git_command $repo"
+	echo "$1 ${repo##*/}"
 	$git_command "$repo"
 	echo
 done
