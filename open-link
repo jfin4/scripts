@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dir=$HOME/waterboard
+dir=$HOME/notes
 desc="$(cat $dir/index.csv | sed 's/,.*//' | grep "${*:-.}" | fzy ),"
 [ "$desc" = "," ] && exit
 link=$(grep "$desc" $dir/index.csv | sed 's/.*, *//')
