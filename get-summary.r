@@ -19,7 +19,7 @@ if (! is.na(args[2])) {
         if (mmdd_is_in_f) {
             file <- file.path(dir, f)
             date <- mmdd
-            opening <- paste0("Hi Daniel, \n\nI worked on these tasks on ", 
+            opening <- paste0("Hi Daniel, \n\nI worked on these tasks and projects on ", 
                               format(as.Date(args[2]), "%A, %B %d, %Y"),
                               ":\n\n")
             break
@@ -28,7 +28,7 @@ if (! is.na(args[2])) {
 } else {
     file <- file.path(dir, "current.csv")
     date <- format(Sys.time(), '%m%d')
-    opening <- paste0("Hi Daniel, \n\nI worked on these tasks today, ", 
+    opening <- paste0("Hi Daniel, \n\nI worked on these tasks and projects today, ", 
                         format(Sys.Date(), "%A, %B %d, %Y"),
                         ":\n\n")
 }
@@ -46,4 +46,5 @@ closing <- ifelse(dow == "Fri",
 message <- paste0(opening, summary, closing)
 writeClipboard(message)
 cat("summary copied to clipboard:\n\n")
-cat(paste0(message, '\n'))
+cat(paste0(message, '\n\n'))
+cat("Did you push-all?\n")
