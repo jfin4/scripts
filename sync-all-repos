@@ -17,7 +17,12 @@ repos="\
 	"
 	
 for repo in $repos; do
-	echo "$1 ${repo##*/}" | tr '[:lower:]' '[:upper:]'
+	if [ $repo = $HOME ]; then
+		repo_name=dotfiles
+	else
+		repo_name=$repo
+	fi
+	echo "$1 ${repo_name##*/}" | tr '[:lower:]' '[:upper:]'
 	$git_command "$repo"
 	echo
 done
@@ -25,7 +30,10 @@ done
 if [ "$1" = "push" ]; then
 	shared_notes='/r/RB3/Shared/WQ Control Planning/JI Notes'
 	local_agendas=$(cygpath "$USERPROFILE/Individual Meetings")
+
 	echo "SHARE NOTES"
 	rsync -av "$HOME/notes/" "$shared_notes"
+
+	echo "BACKUP AGENDAS"
 	rsync -av "$local_agendas" "/h/Individual Meetings"
 fi
