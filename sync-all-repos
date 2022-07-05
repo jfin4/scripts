@@ -28,20 +28,20 @@ for repo in $repos; do
 done
 
 if [ "$1" = "push" ]; then
-	shared_notes='/r/RB3/Shared/WQ Control Planning/JI Notes'
+	user_profile=$(cygpath $USERPROFILE)
 
 	echo "SHARE NOTES"
-	rsync -av --exclude=".*" "$HOME/notes/" "$shared_notes"
+	rsync -av --exclude=".*" "$HOME/notes/" '/r/RB3/Shared/WQ Control Planning/JI Notes'
 	echo
 
 	echo "BACKUP MUSIC"
-	rsync -av --exclude=".*" "$USERPROFILE/Music/" "$shared_notes"
+	rsync -av "$user_profile/Music/" '/h/Music'
 	echo
 
 	echo "BACKUP TEMPLATES"
-	rsync -av --exclude=".*" "$USERPROFILE/Templates/" "$shared_notes"
+	rsync -av "$user_profile/Templates/" '/h/Templates'
 	echo
 
 	echo "BACKUP AGENDAS"
-	rsync -av "$USERPROFILE/Individual Meetings" "/h/Individual Meetings"
+	rsync -av "$user_profile/Individual Meetings" "/h/Individual Meetings"
 fi
