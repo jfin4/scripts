@@ -32,7 +32,8 @@ if [ "$1" = "push" ]; then
 	local_agendas=$(cygpath "$USERPROFILE/Individual Meetings")
 
 	echo "SHARE NOTES"
-	rsync -av "$HOME/notes/" "$shared_notes"
+	rsync -av --exclude=".*" "$HOME/notes/" "$shared_notes"
+	echo
 
 	echo "BACKUP AGENDAS"
 	rsync -av "$local_agendas" "/h/Individual Meetings"
