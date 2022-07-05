@@ -24,7 +24,8 @@ done
 
 if [ "$1" = "push" ]; then
 	shared_notes='/r/RB3/Shared/WQ Control Planning/JI Notes'
+	local_agendas=$(cygpath "$USERPROFILE/Individual Meetings")
 	echo "SHARE NOTES"
 	rsync -av "$HOME/notes/" "$shared_notes"
-	rsync -av "$USERPROFILE/Individual Meetings" "/h/Individual Meetings"
+	rsync -av "$local_agendas" "/h/Individual Meetings"
 fi
