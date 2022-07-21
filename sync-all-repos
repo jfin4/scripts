@@ -42,6 +42,10 @@ if [ "$1" = "push" ]; then
 	rsync -av "$user_profile/Templates/" '/h/Templates'
 	echo
 
+	echo "BP REMEDIATION
+	rsync -av "$user_profile/BP Remediation/" '/r/RB3/Shared/WQ Control Planning/Basin Plan/BP Remdiation'
+	echo
+
 	echo "BACKUP AGENDAS"
 	rsync -av "$user_profile/Individual Meetings/" '/h/Individual Meetings'
 fi
