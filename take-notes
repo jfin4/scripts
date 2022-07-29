@@ -3,11 +3,12 @@
 # process options
 OPTIND=1
 unset new copy todo
-while getopts 'nct' arg; do
+while getopts 'nctp' arg; do
     case "${arg}" in
         n) new=yes ;;
         c) copy=yes ;;
         t) todo=yes ;;
+        p) project=yes ;;
         *) echo unknown option; exit ;;
     esac
 done
@@ -35,16 +36,22 @@ fi
 
 # if todo, set pattern etc
 if [ "$todo" = yes ]; then
-    pattern="#todo"
+    pattern1="#todo"
+    pattern2="${*:-.}"
     key="--key=2"
+elif [ "$project" = yes ]; then
+    pattern1="#proj"
+    pattern2="${*:-.}"
+    reverse=--reverse
 else
-    pattern="${*:-.}"
+    pattern1="${*:-.}"
+	pattern2=.
     reverse=--reverse
 fi
 
 # select file
 cd $dir
-matches=$(grep -ir "$pattern")
+matches=$(grep -ir "$pattern1" | grep -i "$pattern2")
 if [ -z "$matches" ]; then
 	echo "no notes on \"$pattern\""
 	exit
