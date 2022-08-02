@@ -39,10 +39,10 @@ if (! is.na(args[2])) {
             break
         }
     }
-    if (date == format(Sys.time(), '%m%d')) {
-        cat(paste0('No data for ', args[2], '.\n'))
-        quit()
-    }
+    # if (date == format(Sys.time(), '%m%d')) {
+    #     cat(paste0('No data for ', args[2], '.\n'))
+    #     quit()
+    # }
 } 
 
 data <- read.csv(file, strip.white=T, colClasses = "character", comment.char = "#")

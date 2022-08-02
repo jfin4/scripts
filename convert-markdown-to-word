@@ -1,7 +1,11 @@
 #!/bin/sh
 
 if [ -z "$1" ]; then
-	echo "need input file"
+	echo 
+	echo "Usage: mdd INPUT OUTPUT TEMPLATE"
+	echo 
+	echo "Available templates:"
+	ls $USERPROFILE/Templates
 	exit
 else
 	input="$1"
@@ -16,7 +20,14 @@ else
 	shift
 fi
 
-refdoc="$USERPROFILE/Templates/custom-reference.docx"
+if [ -z "$1" ]; then
+	echo "No template specified. Using \"blank.docx\""
+	refdoc="$USERPROFILE/Templates/blank.docx"
+else
+	refdoc="$USERPROFILE/Templates/$1"
+	shift
+fi
+
 
 convert_and_check () {
 
