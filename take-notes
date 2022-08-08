@@ -5,11 +5,11 @@ OPTIND=1
 unset new copy todo
 while getopts 'nctp' arg; do
     case "${arg}" in
-        n) new=yes ;;
-        c) copy=yes ;;
-        t) todo=yes ;;
-        p) project=yes ;;
-        *) echo unknown option; exit ;;
+        n) new=true ;;
+        c) copy_path=true ;;
+        t) todo=true ;;
+        p) project=true ;;
+        *) echo "unknown option \"${arg}\""; exit ;;
     esac
 done
 shift $((OPTIND-1))
@@ -17,7 +17,7 @@ shift $((OPTIND-1))
 dir=$HOME/notes
 
 # if new note, edit new file and quit when finished
-if [ "$new" = yes ]; then
+if "${new:-false}"; then
     dayno=$(date +'%y%j')
     i=a
     while [ -e $dir/${dayno}${i}.txt ]
@@ -35,35 +35,31 @@ if [ "$new" = yes ]; then
 fi
 
 # if todo, set pattern etc
-if [ "$todo" = yes ]; then
-    pattern1="#todo"
-    pattern2="${*:-.}"
+if "${todo:-false}"; then
+    pattern="#todo"
     key="--key=2"
-elif [ "$project" = yes ]; then
-    pattern1="#proj"
-    pattern2="${*:-.}"
+elif "${project:-false}"; then
+    pattern="#proj"
     reverse=--reverse
 else
-    pattern1="${*:-.}"
-	pattern2=.
+    pattern="${*:-.}"
     reverse=--reverse
 fi
 
 # select file
-cd $dir
-matches=$(grep -ir "$pattern1" | grep -i "$pattern2")
+matches=$(grep -ir -e "$pattern" --exclude-dir=".*" "$dir")
 if [ -z "$matches" ]; then
 	echo "no notes on \"$pattern\""
 	exit
 fi
 clear
 match=$(echo "$matches"\
+    | sed -e 's/\/home\/jfin\/notes\///'\
     | sed -e 's/: \+/:/'\
     | sort $key $reverse\
     | fzy -l$(( LINES - 1 )))
 file=${match%%:*}
 line=${match##*:}
-cd "$OLDPWD"
 
 # if none selected, then do nothing and quit
 if [ -z "$file" ]; then
@@ -71,7 +67,7 @@ if [ -z "$file" ]; then
 fi
 
 # if all we want is the path, then send it to the clipboard and quit
-if [ "$copy" = yes ]; then
+if "${copy_path:-false}"; then
     echo -n $dir/$file > /dev/clipboard
     echo copied \"$dir/$file\"
     exit
