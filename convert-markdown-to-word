@@ -21,8 +21,11 @@ else
 fi
 
 if [ -z "$1" ]; then
-	echo "No template specified. Using \"blank.docx\""
-	refdoc="$USERPROFILE/Templates/blank.docx"
+	echo
+	echo "No template specified. Using \"default.\""
+	echo "Available templates in \"\$USERPROFILE/Templates/.\""
+	echo
+	refdoc="$USERPROFILE/Templates/default"
 else
 	refdoc="$USERPROFILE/Templates/$1"
 	shift
@@ -34,7 +37,7 @@ convert_and_check () {
 	pandoc \
 		--from markdown \
 		--to docx \
-		--reference-doc="$refdoc" \
+		--reference-doc="${refdoc}.docx" \
 		--output "$output" \
 		"$input"
 

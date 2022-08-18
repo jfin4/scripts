@@ -3,12 +3,10 @@
 # process options
 OPTIND=1
 unset new copy todo
-while getopts 'nctp' arg; do
+while getopts 'np' arg; do
     case "${arg}" in
         n) new=true ;;
-        c) copy_path=true ;;
-        t) todo=true ;;
-        p) project=true ;;
+        p) copy_path=true ;;
         *) echo "unknown option \"${arg}\""; exit ;;
     esac
 done
@@ -34,15 +32,12 @@ if "${new:-false}"; then
     exit
 fi
 
-# if todo, set pattern etc
-if "${todo:-false}"; then
-    pattern="#todo"
+pattern="${*:-.}"
+
+# if todo, set sort order
+if [ "$pattern" = "#todo" ]; then
     key="--key=2"
-elif "${project:-false}"; then
-    pattern="#proj"
-    reverse=--reverse
 else
-    pattern="${*:-.}"
     reverse=--reverse
 fi
 
