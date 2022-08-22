@@ -13,6 +13,7 @@ done
 shift $((OPTIND-1))
 
 dir=$HOME/notes
+pattern="${*:-.}"
 
 # if new note, edit new file and quit when finished
 if "${new:-false}"; then
@@ -32,27 +33,27 @@ if "${new:-false}"; then
     exit
 fi
 
-pattern="${*:-.}"
-
-# if todo, set sort order
-if [ "$pattern" = "#todo" ]; then
-    key="--key=2"
-else
-    reverse=--reverse
-fi
-
 # select file
-matches=$(grep -ir -e "$pattern" --exclude-dir=".*" "$dir")
+matches=$(ls -dt $dir/* | xargs grep -i -e "$pattern")
+
 if [ -z "$matches" ]; then
 	echo "no notes on \"$pattern\""
 	exit
 fi
+
 clear
-match=$(echo "$matches"\
-    | sed -e 's/\/home\/jfin\/notes\///'\
-    | sed -e 's/: \+/:/'\
-    | sort $key $reverse\
-    | fzy -l$(( LINES - 1 )))
+
+if [ "$pattern" = "#todo" ]; then
+	match=$(echo "$matches"\
+		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
+		| sort --key=2\
+		| fzy -l$(( LINES - 1 )))
+else
+	match=$(echo "$matches"\
+		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
+		| fzy -l$(( LINES - 1 )))
+fi
+
 file=${match%%:*}
 line=${match##*:}
 
