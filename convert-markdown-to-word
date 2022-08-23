@@ -22,7 +22,7 @@ fi
 
 if [ -z "$1" ]; then
 	echo
-	echo "No template specified. Using \"default.\""
+	echo "No template specified; using \"default.\""
 	echo "Available templates in \"\$USERPROFILE/Templates/.\""
 	echo
 	refdoc="$USERPROFILE/Templates/default"

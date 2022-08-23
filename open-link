@@ -10,6 +10,7 @@ links='
     bu viewer,                          https://gispublic.waterboards.ca.gov/portal/apps/webappviewer/index.html?id=116f7daa9c4d4103afda1257be82eb16
     ilp templates,                      R:\RB3\Shared\Ag-ILRP\2 - Program Management\10 - Accessibility\Templates
     im individual meetings,             H:\Individual Meetings
+    im individual meetings local,       /c/Users/JInman/Individual Meetings
     key dates calendar,                 R:\RB3\Shared\- Board Meetings\Executive Assistant\Key Dates Calendar\Update\Key Dates Calendar update draft.xlsx
     laws and regulations,               https://www.waterboards.ca.gov/laws_regulations/
     paulas accessibility training,      R:\RB3\Shared\Ag-ILRP\2 - Program Management\10 - Accessibility\Accessibility_guidance\Creating Accessible Word Documents\Basic Styles Training
@@ -31,4 +32,10 @@ links='
 
 desc=$(echo "$links" | sed 's/ *\(.*\),.*/\1/' | grep "${*:-.}" | fzy )
 link=$(echo "$links" | grep "${desc}," | sed 's/.*, *//')
-cygstart "$link"
+drive=$(echo "$link" | cut -c1-3)
+if [ "$drive" = "/c/" ]; then
+	tmux split-window -b -c "$link"
+	tmux select-layout main-vertical
+else
+	cygstart "$link"
+fi
