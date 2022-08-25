@@ -43,7 +43,7 @@ if [ "$1" = "push" ]; then
 	echo
 
 	echo "BP REMEDIATION"
-	rsync -av "$user_profile/BP Remediation/" '/r/RB3/Shared/Basin Planning/Basin Plan Remediation'
+	rsync -av "$user_profile/Basin Plan Remediation/" '/r/RB3/Shared/Basin Planning/Basin Plan Remediation'
 	echo
 
 	echo "BACKUP AGENDAS"
