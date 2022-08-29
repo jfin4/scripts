@@ -9,8 +9,8 @@ status=$(< /sys/class/power_supply/BAT0/status)
 
 if [ $status = Discharging -a $capacity -le 5 ]
 then
+	# DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
 	sudo -u jfin \
 		DISPLAY=:0 \
-		DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
-        notify-send --urgency=critical "Battery ${capacity}%"
+		notify-send --urgency=critical "Battery ${capacity}%"
 fi
