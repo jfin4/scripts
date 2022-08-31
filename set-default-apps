@@ -4,4 +4,5 @@
 $USERPROFILE/software/set-default-browser/setdefaultbrowser HKLM 'Google Chrome'
 # $USERPROFILE/software/set-user-fta/SetUserFTA get
 $USERPROFILE/software/set-user-fta/setuserfta .pdf 'Applications\SumatraPDF.exe'
-$USERPROFILE/software/set-user-fta/setuserfta .mht 'Google Chrome'
+$USERPROFILE/software/set-user-fta/setuserfta .mht 'Firefox'
+$USERPROFILE/software/set-user-fta/setuserfta .mhtml 'Firefox'
