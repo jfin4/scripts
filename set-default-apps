@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # $USERPROFILE/software/set-default-browser/setdefaultbrowser
-$USERPROFILE/software/set-default-browser/setdefaultbrowser HKLM 'Google Chrome'
+$USERPROFILE/software/set-default-browser/setdefaultbrowser HKCU Firefox-6A6137B7CFCF1C16
 # $USERPROFILE/software/set-user-fta/SetUserFTA get
 $USERPROFILE/software/set-user-fta/setuserfta .pdf 'Applications\SumatraPDF.exe'
-$USERPROFILE/software/set-user-fta/setuserfta .mht 'Firefox'
-$USERPROFILE/software/set-user-fta/setuserfta .mhtml 'Firefox'
+$USERPROFILE/software/set-user-fta/setuserfta .mht 'FirefoxHTML-6A6137B7CFCF1C16'
+$USERPROFILE/software/set-user-fta/setuserfta .mhtml 'FirefoxHTML-6A6137B7CFCF1C16'
