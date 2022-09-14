@@ -66,9 +66,9 @@ for (i in 1:N) {
         mean_work <- mean(as.numeric(out[[3]]))
         mean_tot <- mean(as.numeric(out[[4]]))
         mean_prop <- mean_work / mean_tot # mean proportion of work per day
-        mean_norm <- mean_prop  * 8 # normalize by 8 hour day
+        mean_norm <- mean_prop  * 9 # normalize by 9 hour day
         mean <- sprintf("%.2f", mean_norm)
-        out <- rbind(out, c("Mean:", "", mean, "", "", "                        ^         "))
+        out <- rbind(out, c("Mean:", "", mean, "", "", "                            ^     "))
         print(out, row.names = F)
         names(hours) <- NULL
     }
