@@ -38,16 +38,17 @@ date <- as.Date(hours$DATE, format = "%m%d")
 hours$DAY <- format(date, "%a")
 hours$DATE <- format(date, "%m/%d")
 make_bar <- function(x) {
-    bar <- rep(" ", 32)
+    bar <- rep(" ", 36)
     bar[1:(4 * x)] <- "="
     bar <- paste(bar, collapse = "")
     bar <- paste0("|", bar, "|")
 }
 hours$BARCHART <- sapply(hours$WORK, make_bar)
 hours[2:4] <- as.data.frame(lapply(hours[2:4], \(x) sprintf("%.2f", x)))
-hours[2:5] <- format(hours[2:5], width = 6, justify = "right")
-hours[6] <- format(hours[6], width = 32, justify = "left")
-names(hours)[6] <- "BARCHART                          "
+hours[2:4] <- format(hours[2:4], width = 5, justify = "right")
+hours[5] <- format(hours[5], width = 4, justify = "right")
+hours[6] <- format(hours[6], width = 36, justify = "left")
+names(hours)[6] <- ""
 
 week1_dates <- as.Date(paste0(month, "-", 1:7), format = "%y-%m-%d")
 week1_days <- format(week1_dates , "%a")
@@ -68,7 +69,7 @@ for (i in 1:N) {
         mean_prop <- mean_work / mean_tot # mean proportion of work per day
         mean_norm <- mean_prop  * 9 # normalize by 9 hour day
         mean <- sprintf("%.2f", mean_norm)
-        out <- rbind(out, c("Mean:", "", mean, "", "", "                            ^     "))
+        out <- rbind(out, c("Mean:", "", mean, "", "", "^         "))
         print(out, row.names = F)
         names(hours) <- NULL
     }
