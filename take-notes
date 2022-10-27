@@ -10,10 +10,11 @@ while getopts 'np' arg; do
         *) echo "unknown option \"${arg}\""; exit ;;
     esac
 done
-shift $((OPTIND-1))
+shift $(( OPTIND - 1 ))
 
 dir=$HOME/notes
-pattern="${*:-.}"
+pattern="$1"
+query="$2"
 
 # if new note, edit new file and quit when finished
 if "${new:-false}"; then
@@ -47,11 +48,11 @@ if [ "$pattern" = "#todo" ]; then
 	match=$(echo "$matches"\
 		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
 		| sort --key=2\
-		| fzy -l$(( LINES - 1 )))
+		| fzy -q "$query" -l$(( LINES - 1 )))
 else
 	match=$(echo "$matches"\
 		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
-		| fzy -l$(( LINES - 1 )))
+		| fzy -q "$query" -l$(( LINES - 1 )))
 fi
 
 file=${match%%:*}

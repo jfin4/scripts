@@ -29,7 +29,10 @@ links='
 
 '
 
-desc=$(echo "$links" | sed 's/ *\(.*\),.*/\1/' | grep "${*:-.}" | fzy )
+desc=$(echo "$links" | sed 's/ *\(.*\),.*/\1/' | fzy -q "$*")
+if [ -z "$desc" ]; then
+	exit
+fi
 link=$(echo "$links" | grep "${desc}," | sed 's/.*, *//')
 drive=$(echo "$link" | cut -c1-3)
 if [ "$drive" = "/c/" ]; then
