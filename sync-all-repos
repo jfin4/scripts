@@ -31,7 +31,7 @@ if [ "$1" = "push" ]; then
 	user_profile=$(cygpath $USERPROFILE)
 
 	echo "SHARE NOTES"
-	rsync -av --exclude=".*" "$HOME/notes/" '/r/RB3/Shared/Basin Planning/Temp, JI'
+	rsync -av --exclude=".*" "$HOME/notes/" '/r/RB3/Shared/Basin Planning/Temp JI'
 	echo
 
 	echo "BACKUP MUSIC"
