@@ -1,7 +1,6 @@
 #!/bin/sh
 
 links='
-
     bp basin plan 2019,                 R:\RB3\Shared\Basin Planning\Basin Plan Editions\2019 Basin Plan\2019_basin_plan_r3_complete.pdf
     bp basin planning folder,           R:\RB3\Shared\Basin Planning
     bp basin planning webpage,          https://www.waterboards.ca.gov/centralcoast/publications_forms/publications/basin_plan/
@@ -12,7 +11,7 @@ links='
     ilp templates,                      R:\RB3\Shared\Ag-ILRP\2 - Program Management\10 - Accessibility\Templates
     im individual meetings,             H:\Individual Meetings
     im individual meetings local,       /c/Users/JInman/Individual Meetings
-    key dates calendar,                 R:\RB3\Shared\- Board Meetings\Executive Assistant\Key Dates Calendar\Update\Key Dates Calendar update draft.xlsx
+    key dates calendar,                 R:\RB3\Shared\- Board Meetings\Executive Assistant\Key Dates Calendar\2023_key_dates_calendar_updated_110722 blue.pdf
     laws and regulations,               https://www.waterboards.ca.gov/laws_regulations/
     paulas accessibility training,      R:\RB3\Shared\Ag-ILRP\2 - Program Management\10 - Accessibility\Accessibility_guidance\Creating Accessible Word Documents\Basic Styles Training
     pay period calendar,                http://waternet.waterboards.ca.gov/das/human_resources/docs/2021_paycalendar.pdf
@@ -30,8 +29,6 @@ links='
     r3 writing guide,                   R:\RB3\Shared\TMDL_Wtrshd Assess\Writing style guides_pete\R3_writing_style_and_conventions.pdf
     r3 wiki,                            http://wiki/r3/doku.php?id=start
 	basin plan amendment bp process,    R:\RB3\Shared\TMDL_Wtrshd Assess\Basin Planning\0_BasinPlan_document\basin_plan_amend_process.docx
-
-
 '
 
 desc=$(echo "$links" | sed 's/ *\(.*\),.*/\1/' | fzy -q "$*")
