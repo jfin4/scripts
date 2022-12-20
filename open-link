@@ -28,7 +28,7 @@ links='
     ocean plan and asbs map,            https://gispublic.waterboards.ca.gov/portal/home/webmap/viewer.html?webmap=ce85c309d07d444e8f5c8126b7acfcb7
     r3 writing guide,                   R:\RB3\Shared\TMDL_Wtrshd Assess\Writing style guides_pete\R3_writing_style_and_conventions.pdf
     r3 wiki,                            http://wiki/r3/doku.php?id=start
-	basin plan amendment bp process,    R:\RB3\Shared\TMDL_Wtrshd Assess\Basin Planning\0_BasinPlan_document\basin_plan_amend_process.docx
+    basin plan amendment bp process,    R:\RB3\Shared\TMDL_Wtrshd Assess\Basin Planning\0_BasinPlan_document\basin_plan_amend_process.docx
 '
 
 desc=$(echo "$links" | sed 's/ *\(.*\),.*/\1/' | fzy -q "$*")
