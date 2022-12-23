@@ -26,13 +26,14 @@ for last; do
     true
 done
 
-trap "pkill ffplay; exit" QUIT
-trap "pkill ffplay; read -p 'paused... '" INT
+trap "exit" QUIT
+trap "read -p 'paused... '" INT
 
 while true; do
     echo playing "${1##*/}"
     ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
-    wait "$!"
+	echo $! > $HOME/.ffplay-pid
+    wait $!
 	if [ "$1" = "$last" ]; then
 		set $tracks
 	else
