@@ -6,11 +6,11 @@ do
 	if [ $TMUX ]
 	then
 		win_w=$(tmux display-message -p '#{window_width}')
-		pane_w=$(( $win_w * 6 / 10 ))
+		pane_w=$(( $win_w * 55 / 100 ))
 		tmux set-window-option -g main-pane-width $pane_w 
 
 		win_h=$(tmux display-message -p '#{window_height}')
-		pane_h=$(( $win_h * 6 / 10 ))
+		pane_h=$(( $win_h * 55 / 100 ))
 		tmux set-window-option -g main-pane-height $pane_h
 
 		exit

@@ -27,6 +27,8 @@ if [ "$arg" = o ]; then
     cat "$temp" | awk '! /^\[/ { print }'
 else
     # sudo systemctl restart bluetooth.service 
+    bluetoothctl power off > "$temp"
+    cat "$temp" | awk '! /^\[/ { print }'
     bluetoothctl power on > "$temp"
     cat "$temp" | awk '! /^\[/ { print }'
     bluetoothctl connect "$mac" > "$temp"

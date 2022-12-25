@@ -1,0 +1,4 @@
+#!/bin/sh
+
+scp $HOME/downloads/*.torrent jfin@rpi:/home/jfin/.rtorrent/torrents
+rm $HOME/downloads/*.torrent

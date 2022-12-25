@@ -10,6 +10,9 @@ case "$1" in
     sh)
         command="zsh"
         ;;
+    scheme)
+        command="racket"
+        ;;
 esac
 
 tmux split-window -c "#{pane_current_path}" "$command"

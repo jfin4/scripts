@@ -1,23 +1,11 @@
 #!/bin/sh
 
-# # arch
-# efibootmgr --disk /dev/nvme0n1\
-#     --part 1\
-#     --create\
-#     --label "Arch Linux"\
-#     --loader /vmlinuz-linux\
-#     --unicode\
-#         'root=PARTUUID=0c6aba77-bb0d-614c-a5f8-decf894e3d44
-#          resume=PARTUUID=7a961d3e-68a2-524c-b0c8-f6fb810bb0df
-#          rw
-#          initrd=\initramfs-linux.img'\
-#     --verbose
-
-# obsd
+# arch
 efibootmgr --disk /dev/nvme0n1\
-    --part 1\
-    --create\
-    --label 'OpenBSD'\
-    --loader '\EFI\OBSD\BOOTX64.efi'\
-    --verbose
-
+	--part 1\
+	--create\
+	--label "Arch Linux"\
+	--loader /vmlinuz-linux\
+	--unicode\
+		'root=PARTUUID=b825d628-e10b-4196-ac96-fcc58e874e76 resume=PARTUUID=44eeea26-87af-416a-a826-0cbf5788a207 rw initrd=\initramfs-linux.img'\
+	--verbose

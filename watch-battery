@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# addition vars due to invoking from cron
+# more here:
+# https://wiki.archlinux.org/title/Desktop_notifications#Usage_in_programing
+
+check_battery() {
+	capacity=$(< /sys/class/power_supply/BAT0/capacity)
+	status=$(< /sys/class/power_supply/BAT0/status)
+	if [ $status = Discharging -a $capacity -le 5 ]
+	# if [ $status = Charging -a $capacity -le 100 ]
+	then
+		sudo -u jfin \
+			DISPLAY=:0 \
+			DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
+			notify-send --urgency=critical "Battery ${capacity}%"
+	fi
+}
+
+while true; do
+	check_battery
+	sleep 300
+done

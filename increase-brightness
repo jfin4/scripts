@@ -9,7 +9,7 @@ if [ $higher -eq  0 ]; then
 fi
 
 if [ $higher -le $max ]; then
-	echo $higher > /sys/class/backlight/amdgpu_bl0/brightness
+	sudo sh -c "echo $higher > /sys/class/backlight/amdgpu_bl0/brightness"
 else
-	echo $max > /sys/class/backlight/amdgpu_bl0/brightness
+	sudo sh -c "echo $max > /sys/class/backlight/amdgpu_bl0/brightness"
 fi

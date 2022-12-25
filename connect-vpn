@@ -1,0 +1,21 @@
+#!/bin/sh
+
+check_setting () {
+	case $setting in
+		u | up) 
+			setting=up 
+			;;
+		d | down) 
+			setting=down 
+			;;
+		*) 
+			read -p "(u)p or (d)own? " setting
+			check_setting 
+			;;
+	esac
+}
+
+setting=$1
+check_setting
+
+wg-quick $setting mullvad-us195
