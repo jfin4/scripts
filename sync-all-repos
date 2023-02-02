@@ -45,3 +45,5 @@ if [ "$1" = "push" ]; then
 	echo "BACKUP AGENDAS"
 	rsync -av "$user_profile/Individual Meetings/" '/h/Individual Meetings'
 fi
+
+echo done
