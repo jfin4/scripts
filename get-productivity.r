@@ -1,8 +1,8 @@
 # get hours worked per day
 
 args = commandArgs(trailingOnly=TRUE)
-pat <- ".*(\\d{2}-\\d{2}).*"
 dir <- args[1]
+pat <- ".*(\\d{2}-\\d{2}).*"
 # dir <- 'C:/msys64/home/jfin/hours'
 month <- ifelse(is.na(args[2]), 
                 format(Sys.Date(), "%y-%m"),
@@ -40,8 +40,9 @@ hours$DATE <- format(date, "%m/%d")
 make_bar <- function(x) {
     bar <- rep(" ", 36)
     bar[1:(4 * x)] <- "="
+    bar[37] <- "|"
     bar <- paste(bar, collapse = "")
-    bar <- paste0("|", bar, "|")
+    bar <- paste0("|", bar)
 }
 hours$BARCHART <- sapply(hours$WORK, make_bar)
 hours[2:4] <- as.data.frame(lapply(hours[2:4], \(x) sprintf("%.2f", x)))
@@ -69,7 +70,11 @@ for (i in 1:N) {
         mean_prop <- mean_work / mean_tot # mean proportion of work per day
         mean_norm <- mean_prop  * 9 # normalize by 9 hour day
         mean <- sprintf("%.2f", mean_norm)
-        out <- rbind(out, c("Mean:", "", mean, "", "", "^         "))
+        len <- max(nchar(out[[6]]))
+        pad_len <- len - 29
+        pad <- paste0(rep(" ", pad_len), collapse = "")
+        target <- paste0("^", pad)
+        out <- rbind(out, c("Mean:", "", mean, "", "", target))
         print(out, row.names = F)
         names(hours) <- NULL
     }
