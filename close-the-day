@@ -35,32 +35,32 @@ repos="\
 	
 for repo in $repos; do
 	if [ "$repo" = "$HOME" ]; then
-		"repo_name"=dotfiles
+		repo_name=dotfiles
 	else
-		"repo_name"="$repo"
+		repo_name="$repo"
 	fi
 	echo "${repo_name##*/}" | tr "[:lower:]" "[:upper:]"
 	push_repo "$repo"
 	echo ""
 done
 
-# sync folders
-echo "SHARE NOTES"
-rsync -ahP --exclude=".*" "$HOME/notes/" "/r/RB3/Shared/Basin Planning/Temp JI"
-echo ""
+# # sync folders
+# echo "SHARE NOTES"
+# rsync -ahP --exclude=".*" "$HOME/notes/" "/r/RB3/Shared/Basin Planning/Temp JI"
+# echo ""
 
-echo "BACKUP MUSIC"
-rsync -ahP "/c/Users/JInman/Music/" "/h/Music"
-echo ""
+# echo "BACKUP MUSIC"
+# rsync -ahP "/c/Users/JInman/Music/" "/h/Music"
+# echo ""
 
-echo "BACKUP TEMPLATES"
-rsync -ahP "/c/Users/JInman/Templates/" "/h/Templates"
-echo ""
+# echo "BACKUP TEMPLATES"
+# rsync -ahP "/c/Users/JInman/Templates/" "/h/Templates"
+# echo ""
 
-echo "BACKUP AGENDAS"
-rsync -ahP "/c/Users/JInman/Individual Meetings/" "/h/Individual Meetings"
-echo ""
+# echo "BACKUP AGENDAS"
+# rsync -ahP "/c/Users/JInman/Individual Meetings/" "/h/Individual Meetings"
+# echo ""
 
-echo "BACKUP BASIN PLANNING FOLDER"
-rsync -ahP  "/r/rb3/Shared/Basin Planning" "/h"
-echo "DONE"
+# echo "BACKUP BASIN PLANNING FOLDER"
+# rsync -ahP  "/r/rb3/Shared/Basin Planning" "/h"
+# echo "DONE"
