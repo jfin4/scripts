@@ -45,22 +45,22 @@ for repo in $repos; do
 done
 
 # # sync folders
-# echo "SHARE NOTES"
-# rsync -ahP --exclude=".*" "$HOME/notes/" "/r/RB3/Shared/Basin Planning/Temp JI"
-# echo ""
+echo "SHARE NOTES"
+rsync -ahP --exclude=".*" "$HOME/notes/" "/r/RB3/Shared/Basin Planning/Temp JI"
+echo ""
 
-# echo "BACKUP MUSIC"
-# rsync -ahP "/c/Users/JInman/Music/" "/h/Music"
-# echo ""
+echo "BACKUP MUSIC"
+rsync -ahP "/c/Users/JInman/Music/" "/h/Music"
+echo ""
 
-# echo "BACKUP TEMPLATES"
-# rsync -ahP "/c/Users/JInman/Templates/" "/h/Templates"
-# echo ""
+echo "BACKUP TEMPLATES"
+rsync -ahP "/c/Users/JInman/Templates/" "/h/Templates"
+echo ""
 
-# echo "BACKUP AGENDAS"
-# rsync -ahP "/c/Users/JInman/Individual Meetings/" "/h/Individual Meetings"
-# echo ""
+echo "BACKUP AGENDAS"
+rsync -ahP "/c/Users/JInman/Individual Meetings/" "/h/Individual Meetings"
+echo ""
 
-# echo "BACKUP BASIN PLANNING FOLDER"
-# rsync -ahP  "/r/rb3/Shared/Basin Planning" "/h"
-# echo "DONE"
+echo "BACKUP BASIN PLANNING FOLDER"
+rsync -ahP --exclude="~*" "/r/rb3/Shared/Basin Planning" "/h"
+echo "DONE"
