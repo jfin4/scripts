@@ -1,0 +1,66 @@
+#!/bin/sh
+
+
+git_dot () {
+	git --bare \
+		--git-dir=$HOME/.dotfiles.git/ \
+		--work-tree=$HOME \
+		"$@"
+}
+
+push_repo () {
+	repo="$1"
+	if [ "$repo" = "$HOME" ]
+	then
+		git_dot add -u 
+		git_dot commit -m "$(date)"
+		git_dot push
+	else
+		git -C "$repo" add .
+		git -C "$repo" commit -m "$(date)"
+		git -C "$repo" push
+	fi
+}
+
+# push git repos
+repos="\
+	$HOME/notes
+	$HOME/hours
+	$HOME
+	$HOME/scripts
+	$HOME/todo
+	$HOME/reminders
+	$HOME/passwords
+	"
+	
+for repo in $repos; do
+	if [ "$repo" = "$HOME" ]; then
+		"repo_name"=dotfiles
+	else
+		"repo_name"="$repo"
+	fi
+	echo "${repo_name##*/}" | tr "[:lower:]" "[:upper:]"
+	push_repo "$repo"
+	echo ""
+done
+
+# sync folders
+echo "SHARE NOTES"
+rsync -ahP --exclude=".*" "$HOME/notes/" "/r/RB3/Shared/Basin Planning/Temp JI"
+echo ""
+
+echo "BACKUP MUSIC"
+rsync -ahP "/c/Users/JInman/Music/" "/h/Music"
+echo ""
+
+echo "BACKUP TEMPLATES"
+rsync -ahP "/c/Users/JInman/Templates/" "/h/Templates"
+echo ""
+
+echo "BACKUP AGENDAS"
+rsync -ahP "/c/Users/JInman/Individual Meetings/" "/h/Individual Meetings"
+echo ""
+
+echo "BACKUP BASIN PLANNING FOLDER"
+rsync -ahP  "/r/rb3/Shared/Basin Planning" "/h"
+echo "DONE"
