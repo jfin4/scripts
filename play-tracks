@@ -31,7 +31,7 @@ trap "read -p 'paused... '" INT
 
 while true; do
     echo playing "${1##*/}"
-    ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
+    /c/Users/jinman/AppData/Local/Programs/ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
 	echo $! > $HOME/.ffplay-pid
     wait $!
 	if [ "$1" = "$last" ]; then

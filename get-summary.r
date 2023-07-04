@@ -2,6 +2,7 @@
 
 args <- commandArgs(trailingOnly=TRUE)
 dir <- args[1]
+supervisor <- "Lori"
 
 # defaults to today
 file <- file.path(dir, "current.csv")
@@ -51,7 +52,7 @@ data <- data[data$task != 'misc', ]
 summary <- unique(data[[4]])
 summary <- paste0('\t', summary)
 summary <- paste0(summary, collapse='\n')
-opening <- paste0('Hi Daniel, \n\nI worked on these tasks and projects ', 
+opening <- paste0('Hi ', supervisor, ', \n\nI worked on these tasks ', 
                   date_string,
                   ':\n\n') 
 dow <- format(as.Date(date, '%m%d'), '%a')

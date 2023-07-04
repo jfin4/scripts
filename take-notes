@@ -30,12 +30,12 @@ if "${new:-false}"; then
         fi
     done
     vim $dir/${dayno}${i}.txt
-    echo vim $dir/${dayno}${i}.txt >> $HOME/.zsh_history
+    # echo vim $dir/${dayno}${i}.txt >> $HOME/.zsh_history
     exit
 fi
 
 # select file
-matches=$(ls -dt $dir/* | xargs grep -i -e "$pattern")
+matches=$(ls -dt $dir/*.txt | xargs grep -H -i -e "$pattern")
 
 if [ -z "$matches" ]; then
 	echo "no notes on \"$pattern\""
@@ -46,12 +46,12 @@ clear
 
 if [ "$pattern" = "#todo" ]; then
 	match=$(echo "$matches"\
-		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
+		| sed -e 's/\/home\/JInman\/notes\/\(.*\.txt:\) */\1/'\
 		| sort --key=2\
 		| fzy -q "$query" -l$(( LINES - 1 )))
 else
 	match=$(echo "$matches"\
-		| sed -e 's/\/home\/jfin\/notes\/\(.*\.txt:\) */\1/'\
+		| sed -e "s/\/home\/JInman\/notes\/\(.*\.txt:\) */\1/"\
 		| fzy -q "$query" -l$(( LINES - 1 )))
 fi
 
@@ -72,4 +72,4 @@ fi
 
 # edit the selected file
 vim -c "call search(\"$line\$\")" $dir/$file
-echo vim $dir/$file >> $HOME/.zsh_history
+# echo vim $dir/$file >> $HOME/.zsh_history
