@@ -1,10 +1,11 @@
 #!/bin/sh
 
-# $LOCALAPPDATA/Programs/setdefaultbrowser
-$LOCALAPPDATA/Programs/setdefaultbrowser HKCU Firefox-24B455402948E1D1
-# $LOCALAPPDATA/Programs/SetUserFTA get
-$LOCALAPPDATA/Programs/setuserfta .pdf 'SumatraPDF.pdf'
-$LOCALAPPDATA/Programs/setuserfta .png 'SumatraPDF.pdf'
-$LOCALAPPDATA/Programs/setuserfta .jpg 'SumatraPDF.pdf'
-# $LOCALAPPDATA/Programs/setuserfta .mht 'FirefoxHTML-ED82324667419616'
-# $LOCALAPPDATA/Programs/setuserfta .mhtml 'FirefoxHTML-ED82324667419616'
+# /c/bin/setdefaultbrowser
+/c/bin/setdefaultbrowser HKCU Firefox-49478549B9ABEE9C
+# /c/bin/setuserfta get
+/c/bin/setuserfta .pdf 'SumatraPDF.pdf'
+/c/bin/setuserfta .png 'SumatraPDF.pdf'
+/c/bin/setuserfta .jpg 'SumatraPDF.pdf'
+# /c/bin/setuserfta .mht 'FirefoxHTML-ED82324667419616'
+# /c/bin/setuserfta .mhtml 'FirefoxHTML-ED82324667419616'
+

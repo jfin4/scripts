@@ -11,8 +11,8 @@ while getopts 'q' arg; do
 done
 shift $(( OPTIND - 1))
 
-if [ -z "$1" ]; then
-	echo "Play what?"
+if [ ! -f "$1" ]; then
+	echo "${0##*/} cannot find $1"
 	exit
 fi
 
@@ -22,7 +22,7 @@ fi
 
 tracks="$@"
 
-for last; do 
+for last in $tracks; do 
     true
 done
 
@@ -30,14 +30,13 @@ trap "exit" QUIT
 trap "read -p 'paused... '" INT
 
 while true; do
-    echo playing "${1##*/}"
-    /c/Users/jinman/AppData/Local/Programs/ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
-	echo $! > $HOME/.ffplay-pid
-    wait $!
-	if [ "$1" = "$last" ]; then
-		set $tracks
-	else
-		shift
-	fi
+  echo playing "${1##*/}"
+  ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
+  wait $!
+  if [ "$1" = "$last" ]; then
+    set $tracks
+  else
+    shift
+  fi
 done
 

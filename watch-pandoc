@@ -1,0 +1,17 @@
+#!/bin/sh
+
+file=slides.md
+mod_time=$(stat -c %Y "$file")
+
+# pandoc -t pptx --reference-doc=wb_template.pptx slides.md -o slides.pptx
+pandoc -t pptx --reference-doc=custom-reference.pptx slides.md -o slides.pptx
+
+# while true; do
+#   threshold=$mod_time
+#   mod_time=$(stat -c %Y "$file")
+#   if (( mod_time > threshold )); then
+#     pandoc -t beamer slides.md -o slides.pdf
+#     echo "updated $(date +%H:%M)"
+#   fi
+#   sleep 1
+# done
