@@ -1,0 +1,19 @@
+#!/bin/sh
+
+xterm\
+	-b 3\
+	-bg '#000000'\
+	-fa 'xft:terminus:size=16:weight=bold'\
+	-fg '#ffffff'\
+	-geometry '174x1+0+0'\
+	-hold\
+	-title 'statusbar'\
+	-class 'statusbar'\
+	-e 'get-status' &
+
+# temp=$(mktemp)
+# xprop -spy -root _NET_ACTIVE_WINDOW > "$temp" &
+# echo "$temp" | entr -np send-hup-to-status &
+
+# watch-window-name &
+# echo "$temp" | entr -np send-hup-to-watcher &

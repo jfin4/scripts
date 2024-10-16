@@ -1,0 +1,111 @@
+#! /bin/sh
+# status bar
+
+# colors and blocks
+# colors{{{
+red="%{F#ff0000}"
+yellow="%{F#ffff00}"
+gray="%{F#808080}"
+uncolor="%{F-}"
+#}}}
+# unicode blocks{{{
+block14='\xe2\x96\x82' 
+block24='\xe2\x96\x84' 
+block34='\xe2\x96\x86' 
+block44='\xe2\x96\x88' 
+#}}}
+
+# bar items
+## group {{{
+#Group() {
+#	var="$(xdotool get_desktop)"
+#	if [ $var -eq 0 ]
+#	then
+#		var=1
+#	fi
+#	printf '%d' "$var"
+#}
+##}}}
+## window{{{
+#Win() {
+#	var="$(xdotool getactivewindow getwindowname)"
+#	if [ "$var" = "statusbar" ]
+#	then
+#		var=""
+#	fi
+#	printf '%b' "$var"
+#}
+##}}}
+# network{{{
+Net() {
+	wired=$(ifconfig re0 | awk '/status:/ { print $2 }')
+	signal=$(ifconfig iwx0 | awk '/ieee80211:/ { print $8 }')
+	sig=${signal%\%}
+	if [ $wired = "active" ]
+	then
+		var=""
+	elif [ $sig -ge 90 ]
+	then
+		var="$block14$block24$block34$block44 "
+	elif [ $sig -ge 80 ]
+	then
+		var="$block14$block24$block34$gray$block44$uncolor "
+	elif [ $sig -ge 70 ]
+	then
+		var="$block14$block24$gray$block34$block44$uncolor "
+	elif [ $sig -ge 60 ]
+	then
+		var="$block14$gray$block24$block34$block44$uncolor "
+	elif [ $sig -ge 50 ]
+	then
+		var="$gray$block14$block24$block34$block44$uncolor "
+	else
+		var="$yellow$block14$block24$block34$block44$uncolor "
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# battery{{{
+Bat() {
+	if [ $(apm -a) -eq 1 ]
+	then
+		var=""
+	elif [ $(apm -l) -ge 90 ]
+	then
+		var="$block44$block44$block44$block44 "
+	elif [ $(apm -l) -ge 75 ]
+	then
+		var="$block44$block44$block44$gray$block44$uncolor "
+	elif [ $(apm -l) -ge 50 ]
+	then
+		var="$block44$block44$gray$block44$block44$uncolor "
+	elif [ $(apm -l) -ge 25 ]
+	then
+		var="$block44$gray$block44$block44$block44$uncolor "
+	elif [ $(apm -l) -ge 10 ]
+	then
+		var="$yellow$block44$uncolor$gray$block44$block44$block44$uncolor "
+	else
+		var="$red$block44$block44$block44$block44$uncolor "
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# time{{{
+Time() {
+	var="$(date '+%H:%M') "
+	printf '%s' "$var" 
+}
+#}}}
+
+# print loop
+trap : HUP #{{{
+while true
+do
+	# printf '%s\n' "$(Group):$(Win)%{r}$(Net)$(Bat)$(Time)"
+	printf '%s\n' "%{r}$(Net)$(Bat)$(Time)"
+	sleep 60 &
+	wait
+done
+#}}}
+

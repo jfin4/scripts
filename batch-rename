@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ -e /tmp/rename ] 
+then
+    rm /tmp/rename
+fi
+
+if [ -n "$1" ] 
+then
+    for FILE in "$@"  
+    do
+        echo "$FILE" >> /tmp/rename
+    done
+else
+    for FILE in *
+    do
+        echo "$FILE" >> /tmp/rename
+    done
+    set -- *
+fi
+
+vim /tmp/rename
+
+while IFS= read -r NAME
+do
+    if [ "$1" != "$NAME" ]
+    then
+        mv  "$1" "$NAME"
+    fi
+	shift 1
+done < /tmp/rename

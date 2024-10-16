@@ -1,0 +1,108 @@
+#! /bin/sh
+# status bar
+
+# colors{{{
+red="\e[1;31m"
+yellow="\e[1;33m"
+gray="\e[1;30m"
+uncolor="\e[0m"
+#}}}
+# unicode blocks{{{
+block14='\xe2\x96\x82' 
+block24='\xe2\x96\x84' 
+block34='\xe2\x96\x86' 
+block44='\xe2\x96\x88' 
+#}}}
+# group {{{
+Group() {
+	var="$(xdotool get_desktop)"
+	printf '%d' "$var"
+}
+#}}}
+# window{{{
+Win() {
+	var="$(xdotool getactivewindow getwindowname)"
+	printf '%b' "$var"
+}
+#}}}
+# network{{{
+Net() {
+	wired=$(ifconfig em0 | awk '/status:/ { print $2 }')
+	signal=$(ifconfig iwm0 | awk '/ieee80211:/ { print $8 }')
+	sig=${signal%\%}
+	if [ $wired = "active" ]
+	then
+		var="    "
+	elif [ $sig -ge 90 ]
+	then
+		var="$block14$block24$block34$block44"
+	elif [ $sig -ge 80 ]
+	then
+		var="$block14$block24$block34$gray$block44$uncolor"
+	elif [ $sig -ge 70 ]
+	then
+		var="$block14$block24$gray$block34$block44$uncolor"
+	elif [ $sig -ge 60 ]
+	then
+		var="$block14$gray$block24$block34$block44$uncolor"
+	elif [ $sig -ge 50 ]
+	then
+		var="$gray$block14$block24$block34$block44$uncolor"
+	else
+		var="$yellow$block14$block24$block34$block44$uncolor"
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# battery{{{
+Bat() {
+	if [ $(apm -a) -eq 1 ]
+	then
+		var="    "
+	elif [ $(apm -l) -ge 90 ]
+	then
+		var="$block44$block44$block44$block44"
+	elif [ $(apm -l) -ge 75 ]
+	then
+		var="$block44$block44$block44$gray$block44$uncolor"
+	elif [ $(apm -l) -ge 50 ]
+	then
+		var="$block44$block44$gray$block44$block44$uncolor"
+	elif [ $(apm -l) -ge 25 ]
+	then
+		var="$block44$gray$block44$block44$block44$uncolor"
+	elif [ $(apm -l) -ge 10 ]
+	then
+		var="$yellow$block44$uncolor$gray$block44$block44$block44$uncolor"
+	else
+		var="$red$block44$block44$block44$block44$uncolor"
+	fi
+	printf '%b' "$var"
+}
+#}}}
+# time{{{
+Time() {
+	var="$(date '+%H:%M')"
+	printf '%s' "$var" 
+}
+#}}}
+# print left{{{
+print_left() {
+	tput cup 1 0
+	printf '%-159.159s' "$(Group):$(Win)"
+}
+#}}}
+# set trap {{{
+trap 'kill $(jobs -p); print_left' HUP
+#}}}
+# draw status bar{{{
+tput civis
+print_left
+while true
+do
+	tput cup 1 159
+	printf '%s' "$(Net) $(Bat) $(Time)"
+	sleep 60 &
+	wait
+done
+#}}}

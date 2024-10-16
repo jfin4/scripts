@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pkill -HUP -f /home/jfin/scripts/status-print
+pkill -HUP -f /home/jfin/scripts/status-watch-name

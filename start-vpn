@@ -1,0 +1,4 @@
+#!/bin/sh
+
+trap 'doas rm nohup.out' INT
+doas nohup openvpn --config .openvpn/lax.conf

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+lemonbar-xft -p -n statusbar -f "Terminus:size=16"

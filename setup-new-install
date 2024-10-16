@@ -1,0 +1,134 @@
+#!/bin/sh
+
+cd $HOME
+
+# configure etc
+su root -c 'cat <<- EOF > /etc/doas.conf
+	# See doas.conf(5) for syntax and examples.
+
+	# Allow wheel by default
+	permit nopass keepenv :wheel
+EOF'
+
+doas sh -c 'cat <<- EOF > /etc/X11/xenodm/Xsetup_0
+	#!/bin/sh
+	/usr/local/bin/feh --no-fehbg --bg-fill '/home/jfin/.wallpaper.jpg' 
+EOF'
+
+doas sh -c 'cat <<- EOF > /etc/sysctl.conf
+	machdep.lidaction=0
+EOF'
+
+# add user to staff
+doas usermod -G staff jfin
+
+# system daemons
+doas rcctl enable apmd
+doas rcctl set apmd flags -A
+
+# setup git
+doas pkg_add git--
+git config --global user.name "John Inman"
+git config --global user.email jfinmaniv@icloud.com
+git config --global credential.helper store
+
+# install dotfiles
+cd $HOME
+
+if [ ! -e .dot.git ]
+then
+	git clone --bare https://github.com/jfinmaniv/dotfiles .dot.git
+
+	function dot {
+	git --git-dir=.dot.git/ --work-tree=. "$@"
+	}
+
+	dot checkout obsd
+
+	if [ "$?" = 0 ]; then
+		echo "Checked out dot files."
+		else
+			mkdir dotfiles.bak
+			echo "Backing up pre-existing dot files."
+			dot checkout obsd 2>&1 \
+				| awk '/\../ {print}' \
+				| xargs -I{} mv {} dotfiles.bak/{}
+	fi;
+
+	dot checkout obsd
+	dot config --local status.showUntrackedFiles no
+	dot push --set-upstream origin obsd
+fi
+
+# install scripts
+cd $HOME
+if [ ! -e scripts ]
+then
+	git clone https://github.com/jfinmaniv/scripts
+	cd scripts
+	git checkout obsd
+fi
+
+# set up vim
+cd $HOME
+doas pkg_add vim--no_x11-python3
+
+while read plug
+do 
+	if [ ! -e .vim/pack/pack/start/${plug#*/} ]
+	then
+		git clone https://github.com/$plug .vim/pack/pack/start/${plug#*/}
+	fi
+done < .vim/plugins
+if [ ! -e .vim/undo ]
+then
+	mkdir .vim/undo
+fi
+
+# set up python
+doas pkg_add python--%3.9
+if [ ! -h /usr/local/bin/python ]
+then
+	doas ln -s /usr/local/bin/python3 /usr/local/bin/python
+fi
+ 
+# setup firefox
+# /usr/local/share/doc/pkg-readmes/firefox
+doas pkg_add firefox--
+doas sysctl kern.audio.record=1
+doas chown jfin /dev/video0
+
+# install other packages
+doas pkg_add feh-- unclutter-- terminus-font--
+# doas pkg_add texlive_texmf-full--
+
+# # pandoc
+# doas pkg_add ghc cabal-install
+# ulimit -d $(( 32 * 1024 * 1024 )) # maximum memory
+# cabal update
+# cabal install pandoc
+# doas ln -s $HOME/.cabal/bin/pandoc /usr/local/bin
+
+# # ports
+# 
+# cd /tmp
+# ftp https://cdn.openbsd.org/pub/OpenBSD/$(uname -r)/{ports.tar.gz,SHA256.sig}
+# signify -Cp /etc/signify/openbsd-$(uname -r | cut -c 1,3)-base.pub -x SHA256.sig ports.tar.gz
+# 
+# doas cd /usr
+# doas tar xzf /tmp/ports.tar.gz
+# 
+# doas sh -c 'cat <<- EOF > /etc/mk.conf
+# 	WRKOBJDIR=/usr/obj/ports
+# 	DISTDIR=/usr/distfiles
+# 	PACKAGE_REPOSITORY=/usr/packages
+# EOF'
+# 
+# doas chown jfin /usr/obj/ports
+# doas chown jfin /usr/distfiles
+# doas chown jfin /usr/packages
+
+# printf "\n%s\n" "Press enter to reboot."
+# read
+# doas reboot
+cd $HOME

@@ -1,0 +1,17 @@
+#! /bin/ksh
+# configure dwm
+
+dir=$PWD
+cd /usr/ports/x11/dwm
+doas make
+cd $(make show=WRKSRC)
+doas vim config.def.h
+doas cp config.def.h ~/dotfiles/.dwm/dwm-config.def.h 
+doas chown jfin:jfin ~/dotfiles/.dwm/dwm-config.def.h
+cd /usr/ports/x11/dwm
+doas make update-patches
+doas make clean patch
+doas pkg_delete dwm
+doas make install
+doas make clean=all
+cd $dir

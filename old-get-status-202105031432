@@ -1,0 +1,61 @@
+#! /bin/ksh
+# status bar
+
+# tmux mode --------------------------------------------------------------------
+[[ $(< $HOME/.tmux-mode) = on ]] && tmode="tmux | " || tmode=
+
+# network ----------------------------------------------------------------------
+net_info=$(ifconfig iwm0)
+# heredoc using "<<-" strips tabs allowing for long yet readable commands
+read nwid <<- EOM
+	$(print $net_info \
+	| egrep -o '(join|nwid) ([^" ]*|"[^"]*)' \
+	| sed -E 's/(join|nwid) "?//')
+EOM
+signal=$(print $net_info | egrep -o '([0-9]+%)')
+[[ -n $signal ]] && network="$nwid ${signal} | " || network=""
+
+# disk -------------------------------------------------------------------------
+disk_free=$(df /home | awk 'FNR == 2 {print $4}')
+(( $disk_free <= 5242880 )) && disk_warn="disk $disk_free | " || disk_warn=""
+
+# memory -----------------------------------------------------------------------
+mem_use=$(vmstat | awk 'FNR == 3 {print $3}')
+let mem_int=$(print $mem_use | sed 's/M//')
+(( $mem_int >= 4096 )) && mem_warn="mem $mem_use | " || mem_warn="" 
+
+# cpu --------------------------------------------------------------------------
+cpu_load=$(uptime | egrep -o ': [^,]+' | sed 's/: //')
+let cpu_int=$(print $cpu_load | sed 's/\..*//')
+temp=$(sysctl hw.sensors.cpu0.temp0 | sed -E 's/.*=(.+) .*/\1/')
+let temp_int=$(print $temp | sed 's/\..*//')
+(( $cpu_int >= 2 || $temp_int >= 50 )) \
+    && cpu_warn="cpu $cpu_load ${temp_int}C | " || cpu_warn=""
+
+# battery ----------------------------------------------------------------------
+let batt_perc=$(apm -l)
+(( $batt_perc <= 90 )) && batt_warn="batt ${batt_perc}% | " || batt_warn=""
+
+# time -------------------------------------------------------------------------
+time=$(date '+%a %b %e %H:%M')
+
+# statusline -------------------------------------------------------------------
+echo "%{r}${tmode}${network}${disk_warn}${mem_warn}${cpu_warn}${batt_warn}${time}"
+
+# battery warning --------------------------------------------------------------
+# pgrep -f batt-blink && pkill -f batt-blink 
+# (( $batt_perc <= 10 )) && /home/jfin/scripts/batt-blink &
+
+# arch wiki lemonbar
+# Define the clock
+# Clock() {
+#         DATETIME=$(date "+%a %b %d, %T")
+#         echo -n "$DATETIME"
+# }
+
+# Print the clock
+
+# while true; do
+#         echo "%{c}%{F#FFFF00}%{B#0000FF} $(Clock) %{F-}%{B-}"
+#         sleep 1
+# done

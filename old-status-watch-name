@@ -1,0 +1,13 @@
+#!/bin/sh
+
+temp_active="$1"
+temp_name=$(mktemp)
+trap 'kill $(jobs -p)' HUP
+while true
+do
+	winid=$(tail -n 1 "$temp_active" | awk '{ print $5 }')
+	xprop -spy -id $winid WM_NAME > "$temp_name" &
+	echo "$temp_name" \
+		| entr -nps 'pkill -HUP -f [j]fin/scripts/status-[pw]' &
+	wait
+done

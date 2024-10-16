@@ -1,0 +1,37 @@
+#! /bin/ksh
+# implement scratchpad
+
+client=$(tmux list-clients -t scratch)
+if [[ -n $client ]]
+then
+    # if shown then hide it
+    setxkbmap -option altwin:swap_alt_win 
+    tmux detach-client -s scratch
+else
+    # if hidden/non-existant then show/create it
+    setxkbmap -option 
+    # setxkbmap -option ctrl:nocaps
+    if $(tmux has-session -t scratch)
+    then
+        # if there is a scratchpad then attach it
+        command="tmux -2 attach-session -t scratch"
+    else
+        # if there is no scratchpad then make one
+        command="tmux -2 \
+            new-session -s scratch \; \
+            new-window \; \
+            send-keys 'ranger' C-m \; \
+            new-window \; \
+            send-keys 'mutt' C-m \; \
+            select-window -t 0"
+    fi
+    # geometry can be found with $COLUMNS and $LINES
+	# -bd is border color, "black" doesn't work
+    xterm \
+		-bd '#010101' \
+        -class scratch \
+        -title scratch \
+        -geometry 174x46 \
+        -e "$command"
+fi
+

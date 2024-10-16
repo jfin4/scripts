@@ -1,0 +1,53 @@
+#! /bin/ksh
+# pomodoro timer
+
+# set default mpv arguments
+mpv='mpv --ao=sndio --audio-display=no'
+
+# set media file locations
+brownnoise='/home/jfin/music/other/brownnoise.mp3'
+binaural='/home/jfin/music/other/binaural.mp3'
+bell='/home/jfin/music/other/bell.mp3'
+
+# set default pomo command (quiet) and duration
+command=':'
+let time=1500
+
+# ^C to exit
+trap 'return 1' INT
+
+# argument case analysis
+while [[ -n $@ ]]
+do
+    case $1 in
+        +([0-9]) ) min=${1#-*}
+                   let time=$(( min * 60 - 1 )) # minus 1 to account for lag
+                   shift ;;
+        -b       ) command='$mpv --loop=inf $binaural &
+                            print $! > /tmp/pomo-$$'
+                   shift ;;
+        -n       ) command='$mpv --loop=inf $brownnoise &
+                            print $! > /tmp/pomo-$$'
+                   shift ;;
+        *        ) error='Usage: pomo [-bn] [<minutes>]
+                          \n\t-b\t\tbinaural beats
+                          \n\t-n\t\tbrown noise
+                          \n\t<minutes>\tset timer duration (default: 25)' 
+                   shift ;;
+    esac
+done 
+
+# print error message, exit if error
+if [[ -n $error ]]
+then
+    print $error
+    return 1
+fi
+
+# run program, supress output.
+{
+    eval $command &
+    sleep $time
+    kill -INT $(< /tmp/pomo-$$) 
+    $mpv $bell 
+} > /dev/null 2>&1

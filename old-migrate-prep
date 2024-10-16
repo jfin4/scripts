@@ -1,0 +1,26 @@
+#! /bin/ksh
+# collect migration information
+
+# place to store information
+dir=$HOME/.migrate
+[[ -e $dir ]] && doas rm -r $dir
+mkdir -p $dir/etc
+
+# collect information ----------------------------------------------------------
+# crontab
+crontab -l > $dir/crontab
+
+# /etc files
+etcfiles="
+	doas.conf
+	rc.conf.local
+	sysctl.conf 
+	X11/xenodm/Xsetup_0
+"
+
+cd /etc
+doas rsync --delete --archive --verbose --relative $etcfiles $dir/etc
+cd -
+
+# get list of manually installed packages
+pkg_info -mqz > $dir/package.list

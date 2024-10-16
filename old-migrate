@@ -1,0 +1,31 @@
+#! /bin/ksh
+# install to new system
+
+dir=$HOME/.migrate
+
+# crontab:
+cat $dir/crontab | crontab -
+print $dir
+ls $dir/etc
+
+# /etc files
+cd $dir/etc
+doas rsync --archive --verbose --relative ./ /etc
+cd -
+
+# rcctl commands
+doas rcctl enable apmd
+doas rcctl enable ntpd
+
+# install packages
+doas pkg_add $(cat $dir/package.list)
+
+# python links
+doas ln -s /usr/local/bin/python3.6 /usr/local/bin/python
+doas ln -s /usr/local/bin/python3.6m-config /usr/local/bin/python-config
+
+# texhash mmd helper files
+texhash $HOME/.texmf
+
+# permissions
+doas chmod 660 /dev/video0

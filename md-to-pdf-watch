@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -n "$1" ] 
+then
+	ls "$1" | entr /home/jfin/bin/md2pdf "$1"
+else
+	ls *.md | entr /home/jfin/bin/md2pdf *.md
+fi

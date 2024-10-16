@@ -1,0 +1,10 @@
+#! /bin/ksh
+# tex wrapper
+
+pdflatex -interaction=nonstopmode main.tex
+mupdf main.pdf &
+ag -l '.' . | entr -ps 'pdflatex -interaction=nonstopmode main.tex 
+	                 bibtex main.aux
+	                 pdflatex -interaction=nonstopmode main.tex 
+	                 pdflatex -interaction=nonstopmode main.tex 
+	                 pkill -HUP mupdf'
