@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# process options
+OPTIND=1
+unset new copy todo
+while getopts 'q' arg; do
+    case "${arg}" in
+        q) nodisp=-nodisp ;;
+        *) echo unknown option; exit ;;
+    esac
+done
+shift $(( OPTIND - 1))
+
+if [ ! -f "$1" ]; then
+	echo "${0##*/} cannot find $1"
+	exit
+fi
+
+if [ -d "$1" ]; then
+	set "$1"/*
+fi
+
+tracks="$@"
+
+for last in "$tracks"; do 
+    true
+done
+
+trap "exit" QUIT
+trap "read -p 'paused... '" INT
+
+while true; do
+  echo playing "${1##*/}"
+  ffplay -autoexit $nodisp "$1" > /dev/null 2>&1 &
+  wait $!
+  if [ "$1" = "$last" ]; then
+    set "$tracks"
+  else
+    shift
+  fi
+done
+

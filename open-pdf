@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# mupdf
+sumatrapdf "$@" &> /dev/null & disown
+

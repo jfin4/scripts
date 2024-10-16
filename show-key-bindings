@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo '
+=================================================
+             <<<   <<      <     >     >>    >>>
+-------------------------------------------------
+ clear       C-l                              
+ undo        C-_                              
+ history     C-r           C-p   C-n         C-s
+ cursor      C-a   M-b     C-b   C-f   M-f   C-e
+ kill        C-u   M-C-h   C-h   C-d   M-d   C-k
+ paste             M-y     C-y                
+ transpose         M-t     C-t                
+ case              M-l                 M-c    
+ args              M-n                 M-n    
+=================================================
+'

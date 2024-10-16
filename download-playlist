@@ -1,0 +1,9 @@
+#!/bin/sh
+
+yt-dlp.exe\
+    --audio-format "mp3"\
+    --audio-quality 0\
+    --extract-audio\
+    --ignore-errors\
+    --output "%(playlist_index)s-%(title)s.%(ext)s"\
+    "$1"

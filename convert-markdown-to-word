@@ -1,0 +1,53 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	echo 
+	echo "Usage: mdd INPUT OUTPUT TEMPLATE"
+	echo 
+	echo "Available templates:"
+	ls $USERPROFILE/Templates
+	exit
+else
+	input="$1"
+	shift
+fi
+
+if [ -z "$1" ]; then
+	echo "need output name"
+	exit
+else
+	output="$1"
+	shift
+fi
+
+if [ -z "$1" ]; then
+	echo
+	echo "No template specified; using \"default.\""
+	echo "Available templates in \"\$USERPROFILE/Templates/.\""
+	echo
+	refdoc="$USERPROFILE/Templates/default"
+else
+	refdoc="$USERPROFILE/Templates/$1"
+	shift
+fi
+
+
+convert_and_check () {
+
+	pandoc \
+		--from markdown \
+		--to docx \
+		--reference-doc="${refdoc}.docx" \
+		--output "$output" \
+		"$input"
+
+	if [ "$?" -gt 0 ]; then
+		read -p "close $output..."
+		convert_and_check
+	fi
+
+}
+
+convert_and_check
+
+cygstart "$output"

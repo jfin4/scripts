@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ -z "$3" ]; then
+	echo "Usage: ${0##*/} <PDF document>"
+	exit
+fi
+
+gs \
+	-dNOPAUSE \
+	-dBATCH \
+	-sDEVICE=pdfwrite \
+	-dCompatibilityLevel=1.4 \
+	-dPDFSETTINGS=/printer \
+	-sOutputFile="$1"-reduced.pdf \
+	"$1".pdf
+
+# alternatively
+# ps2pdf -dPDFSETTINGS=/screen "$1".pdf "$1"-reduced.pdf
+

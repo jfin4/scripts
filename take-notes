@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# notes
+notes() {
+notes_file="$HOME/notes/notes.txt"
+line=$(\
+rg --line-number "${*:-.}" "$notes_file" |\
+fzf --height 40% --reverse |\
+sed -e 's/:.*//'
+)
+if [[ $line ]]; then
+vim +$line "$notes_file"
+fi
+}
+
+# # process options
+# OPTIND=1
+# unset new copy todo
+# while getopts 'np' arg; do
+#     case "${arg}" in
+#         n) new=true ;;
+#         p) copy_path=true ;;
+#         *) echo "unknown option \"${arg}\""; exit ;;
+#     esac
+# done
+# shift $(( OPTIND - 1 ))
+
+# dir=$HOME/notes
+# pattern="$1"
+# query="$2"
+
+# # if new note, edit new file and quit when finished
+# if "${new:-false}"; then
+#     dayno=$(date +'%y%j')
+#     i=a
+#     while [ -e $dir/${dayno}${i}.txt ]
+#     do
+#         if [ $i = "z" ]; then
+#             echo "too many notes today"
+#             exit
+#         else
+#             i=$(echo $i | tr "a-y" "b-z")
+#         fi
+#     done
+#     vim $dir/${dayno}${i}.txt
+#     # echo vim $dir/${dayno}${i}.txt >> $HOME/.zsh_history
+#     exit
+# fi
+
+# # select file
+# matches=$(ls -dt $dir/*.txt | xargs grep -H -i -e "$pattern")
+
+# if [ -z "$matches" ]; then
+# 	echo "no notes on \"$pattern\""
+# 	exit
+# fi
+
+# clear
+
+# if [ "$pattern" = "#todo" ]; then
+# 	match=$(echo "$matches"\
+# 		| sed -e 's/\/home\/JInman\/notes\/\(.*\.txt:\) */\1/'\
+# 		| sort --key=2\
+#     | fzf -q "$query" --reverse)
+# else
+# 	match=$(echo "$matches"\
+# 		| sed -e 's/\/home\/JInman\/notes\/\(.*\.txt:\) */\1/'\
+#     | fzf -q "$query" --reverse)
+# fi
+
+# file=${match%%:*}
+# line=${match##*:}
+
+# # if none selected, then do nothing and quit
+# if [ -z "$file" ]; then
+#     exit
+# fi
+
+# # if all we want is the path, then send it to the clipboard and quit
+# if "${copy_path:-false}"; then
+#     echo -n $dir/$file > /dev/clipboard
+#     echo copied \"$dir/$file\"
+#     exit
+# fi
+
+# # edit the selected file
+# vim -c "call search(\"$line\$\")" $dir/$file
+# # echo vim $dir/$file >> $HOME/.zsh_history
