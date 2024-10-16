@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# arch
+efibootmgr --disk /dev/nvme0n1\
+	--part 1\
+	--create\
+	--label "Arch Linux"\
+	--loader /vmlinuz-linux\
+	--unicode\
+		'root=PARTUUID=b825d628-e10b-4196-ac96-fcc58e874e76 resume=PARTUUID=44eeea26-87af-416a-a826-0cbf5788a207 rw initrd=\initramfs-linux.img'\
+	--verbose

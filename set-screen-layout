@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case $1 in
+    default)
+        ~/.screenlayout/default.sh
+        ;;
+    dual)
+        ~/.screenlayout/dual.sh
+        ;;
+    external)
+        ~/.screenlayout/external.sh
+        ;;
+esac

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+current=$(</sys/class/backlight/amdgpu_bl1/brightness)
+higher=$(expr $current \* 2)
+max=$(</sys/class/backlight/amdgpu_bl1/max_brightness)
+
+if [ $higher -eq  0 ]; then
+	higher=1
+fi
+
+if [ $higher -le $max ]; then
+	sudo sh -c "echo $higher > /sys/class/backlight/amdgpu_bl1/brightness"
+else
+	sudo sh -c "echo $max > /sys/class/backlight/amdgpu_bl1/brightness"
+fi

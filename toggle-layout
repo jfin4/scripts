@@ -1,0 +1,13 @@
+#!/bin/sh
+
+file=$HOME/.layout
+layout=$(< $file)
+
+if [ $layout -eq 0 ]; then
+	xdotool key alt+F2
+	echo 1 > $file
+else
+	xdotool key alt+F1
+	echo 0 > $file
+fi
+

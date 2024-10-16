@@ -1,0 +1,4 @@
+#!/bin/sh
+
+nmcli radio wwan on
+nmcli connection up "T-Mobile LTE 1"

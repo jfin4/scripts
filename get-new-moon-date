@@ -1,0 +1,8 @@
+#!/bin/sh
+remind - <<'eof'
+banner %
+set $latitude  "35.214245237053476"
+set $longitude "-120.72966239323448"
+rem run echo %"%" [moondate(0)]
+eof
+

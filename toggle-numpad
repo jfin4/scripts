@@ -1,0 +1,11 @@
+#!/bin/sh
+# virtual number pad
+
+if [ $1 == on ]
+then
+	xmodmap ~/.xmodmap/numpad
+elif [ $1 == off ]
+then
+	xmodmap ~/.xmodmap/default
+fi
+

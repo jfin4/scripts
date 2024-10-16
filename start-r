@@ -1,0 +1,3 @@
+#! /bin/sh
+
+/usr/bin/R --no-save --quiet "$@"

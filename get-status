@@ -1,0 +1,86 @@
+#!/bin/zsh
+# status bar
+
+# unicode chars
+bar18=$(echo -e '\xe2\x96\x81')
+bar14=$(echo -e '\xe2\x96\x82') 
+bar24=$(echo -e '\xe2\x96\x84') 
+bar34=$(echo -e '\xe2\x96\x86') 
+bar44=$(echo -e '\xe2\x96\x88') 
+shade=$(echo -e '\xe2\x96\x91')
+
+# bar items
+# network
+Net() {
+    device=$(nmcli | awk '/connected [^(]/ { print $1 }' | tr -d :)
+
+    # get signal
+    if [ "$device" = wlp3s0 ]; then
+        dbm=$(iw dev wlp3s0 link | awk '/signal/ { print $2 }')
+        sig=$(( 2 * ( $dbm + 100 ) ))
+    elif [ "$device" = wwan0mbim0 ]; then
+        modem=$(mmcli -L | awk '{ print $1 }' | sed 's/.*\///')
+        sig_r=$(mmcli -m "$modem" | awk '/signal/ { print $4 }' | tr -d %)
+        sig=$(( sig_r / 2 + 50 ))
+    else
+        sig=0
+    fi
+
+    # get shape
+    if [ "$sig" -ge 90 ]; then
+        var="$bar14$bar24$bar34$bar44"
+    elif [ "$sig" -ge 80 ]; then
+		var="$bar14$bar24$bar34$bar18"
+	elif [ "$sig" -ge 70 ]; then
+		var="$bar14$bar24$bar18$bar18"
+	elif [ "$sig" -ge 60 ]; then
+		var="$bar14$bar18$bar18$bar18"
+	elif [ "$sig" -ge 50 ]; then
+		var="$bar18$bar18$bar18$bar18"
+    elif [ "$sig" -gt 0 ]; then
+        var="$bar18$(printf "%02d" "$sig")%"
+    else
+        var="____"
+	fi
+
+    # if wired
+    if [ "$device" = enp6s0 ]; then
+        var=e${var#?}
+    fi
+
+    echo "$var"
+}
+
+# battery
+Bat() {
+	cap=$(< /sys/class/power_supply/BAT0/capacity)
+	state=$(< /sys/class/power_supply/BAT0/status)
+
+	if [ "$cap" -ge 88 ]; then
+		var="$bar44$bar44$bar44$bar44"
+	elif [ "$cap" -ge 63 ]; then
+		var="$bar44$bar44$bar44$shade"
+	elif [ "$cap" -ge 38 ]; then
+		var="$bar44$bar44$shade$shade"
+	elif [ "$cap" -ge 13 ]; then
+		var="$bar44$shade$shade$shade"
+	else
+        var="$shade$(printf "%02d" "$cap")%"
+	fi
+
+    # if plugged in
+    if [ "$state" != Discharging ]; then
+        var=c${var#?}
+    fi
+
+    echo "$var"
+}
+
+# time
+Time() {
+	var="$(date '+%a, %b %d, %H:%M')"
+	echo "$var" 
+}
+
+# notify-send "$(Net) $(Bat) $(Time)"
+echo "$(Net) $(Bat) $(Time)"

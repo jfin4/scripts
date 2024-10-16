@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cat <<- eof |
+	Subject:Reminder: $*
+
+	$*
+eof
+msmtp john@johninman.dev

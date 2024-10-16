@@ -1,0 +1,5 @@
+#!/bin/sh
+
+wg-quick $1 /home/jfin/.wireguard/us-sjc-wg-002.conf
+
+

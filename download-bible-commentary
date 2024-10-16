@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+
+import urllib.request, urllib.error, urllib.parse
+
+base_url = "https://biblehub.com/commentaries/cambridge/"
+
+table = [["01", "genesis", 50],
+        ["02", "exodus", 40],
+        ["03", "leviticus", 27],
+        ["04", "numbers", 36],
+        ["05", "deuteronomy", 34],
+        ["06", "joshua", 24],
+        ["07", "judges", 21],
+        ["08", "ruth", 4],
+        ["09", "1_samuel", 31],
+        ["10", "2_samuel", 24],
+        ["11", "1_kings", 22],
+        ["12", "2_kings", 25],
+        ["13", "1_chronicles", 29],
+        ["14", "2_chronicles", 36],
+        ["15", "ezra", 10],
+        ["16", "nehemiah", 13],
+        ["17", "esther", 10],
+        ["18", "job", 42],
+        ["19", "psalms", 150],
+        ["20", "proverbs", 31],
+        ["21", "ecclesiastes", 12],
+        ["22", "songs", 8],
+        ["23", "isaiah", 66],
+        ["24", "jeremiah", 52],
+        ["25", "lamentations", 5],
+        ["26", "ezekiel", 48],
+        ["27", "daniel", 12],
+        ["28", "hosea", 14],
+        ["29", "joel", 3],
+        ["30", "amos", 9],
+        ["31", "obadiah", 1],
+        ["32", "jonah", 4],
+        ["33", "micah", 7],
+        ["34", "nahum", 3],
+        ["35", "habakkuk", 3],
+        ["36", "zephaniah", 3],
+        ["37", "haggai", 2],
+        ["38", "zechariah", 14],
+        ["39", "malachi", 4],
+        ["40", "matthew", 28],
+        ["41", "mark", 16],
+        ["42", "luke", 24],
+        ["43", "john", 21],
+        ["44", "acts", 28],
+        ["45", "romans", 16],
+        ["46", "1_corinthians", 16],
+        ["47", "2_corinthians", 13],
+        ["48", "galatians", 6],
+        ["49", "ephesians", 6],
+        ["50", "philippians", 4],
+        ["51", "colossians", 4],
+        ["52", "1_thessalonians", 5],
+        ["53", "2_thessalonians", 3],
+        ["54", "1_timothy", 6],
+        ["55", "2_timothy", 4],
+        ["56", "titus", 3],
+        ["57", "philemon", 1],
+        ["58", "hebrews", 13],
+        ["59", "james", 5],
+        ["60", "1_peter", 5],
+        ["61", "2_peter", 3],
+        ["62", "1_john", 5],
+        ["63", "2_john", 1],
+        ["64", "3_john", 1],
+        ["65", "jude", 1],
+        ["66", "revelation", 22]]
+
+
+# for row in table:
+#     book = row[1]
+#     chapters =  row[2]
+#     for chapter in range(1, chapters + 1):
+#         cname = str(chapter).zfill(3)
+#         fname = row[0] + "-" + book + "-" + cname + ".htm"
+#         url = base_url +  book + "/" + str(chapter) + ".htm"
+#         response = urllib.request.urlopen(url)
+#         content = response.read().decode('utf-8')
+#         f = open(fname, 'w')
+#         f.write(content)
+#         f.close
+
+for row in table:
+    book = row[1]
+    fname = row[0] + "-" + book + "-000.htm"
+    url = base_url +  book + "/"
+    response = urllib.request.urlopen(url)
+    content = response.read().decode('utf-8')
+    f = open(fname, 'w')
+    f.write(content)
+    f.close

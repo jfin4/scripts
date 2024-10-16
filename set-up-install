@@ -1,0 +1,28 @@
+#!/bin/sh
+# set up new install
+
+
+# checkout dotfiles into new home dir
+git clone --bare https://github.com/jfinmaniv/dotfiles $HOME/.dotfiles.git
+
+function dot {
+   git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME "$@"
+}
+
+dot checkout msys
+
+if [ "$?" = 0 ]
+then
+	echo "Checked out dot files."
+else
+	mkdir dotfiles.bak
+	echo "Backing up pre-existing dot files."
+	dot checkout msys 2>&1 \
+		| egrep "\s+\." \
+		| awk {'print $branch'} \
+		| xargs -I{} mv {} dotfiles.bak/{}
+fi
+
+dot checkout arch
+dot config --local status.showUntrackedFiles no
+dot push --set-upstream origin arch

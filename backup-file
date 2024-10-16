@@ -1,0 +1,9 @@
+#!/bin/sh
+
+time="$(date +'%Y%m%d%H%S')"
+
+for file in "$@"
+do
+	file=${file%/}
+	cp -r "$file" "$file"-"$time"
+done

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+ask_if_again() {
+	question="Again? ('yes' or 'no'): [yes] "
+	printf '%s' "$question"
+	read q 
+	case $q in
+		"") : ;;
+		n) quit ;;
+		no) quit ;;
+		y) : ;;
+		yes) : ;;
+		ye) : ;;
+		*) 	ask_if_again
+	esac
+}
+
+quit() {
+	if [ $(pgrep -f ffplay) ]
+	then
+		pkill -f ffplay
+	fi
+	if [ -e ffplay.exe.stackdump ]
+	then
+		rm ffplay.exe.stackdump
+	fi
+	exit
+}
+
+trap quit INT
+
+start=$1
+set wind rain water waves
+case $start in
+	wind) shift 0 ;;
+	rain) shift 1 ;;
+	water) shift 2 ;;
+	waves) shift 3 
+esac
+dir="$HOME/music/sounds"
+minutes=25
+
+while true
+do
+	file=$dir/$1.mp3
+	ffplay -nodisp $file > /dev/null 2>&1 &
+
+	i=$minutes
+	while (( $i > 0 ))
+	do
+		clear
+		if (( $i > 1 ))
+		then
+			printf '%s\n' "Less than $i minutes to go."
+		else
+			printf '%s\n' "Less than $i minute to go."
+		fi
+		i=$(( $i - 1 ))
+		sleep 60
+	done
+
+	clear
+	printf '%s\n' "$i minutes to go."
+	pkill -f ffplay
+	ask_if_again
+
+	if [ $1 = waves ]
+	then
+		set wind rain water waves
+	else
+		shift
+	fi
+
+done

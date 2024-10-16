@@ -1,0 +1,9 @@
+#!/bin/sh
+# tex wrapper
+
+ag -l '.' . | entr -ps '
+	pdflatex -interaction=nonstopmode main.tex 
+	bibtex main.aux
+	pdflatex -interaction=nonstopmode main.tex 
+	pdflatex -interaction=nonstopmode main.tex 
+	pkill -HUP mupdf'

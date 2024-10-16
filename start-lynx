@@ -1,0 +1,8 @@
+#! /bin/sh
+
+if [[ -n $1 ]]; then
+	/usr/bin/lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss $@
+else
+	/usr/bin/lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss
+fi
+

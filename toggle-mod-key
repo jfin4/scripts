@@ -1,0 +1,15 @@
+#!/bin/sh
+
+file=$HOME/.swap-alt-win
+is_swapped=$(< $file)
+
+if $is_swapped; then
+	setxkbmap -option 
+	setxkbmap -option caps:escape 
+	echo false > $file
+	notify-send "mod key toggled"
+else
+	setxkbmap -option altwin:swap_alt_win
+	echo true > $file
+	notify-send "mod key toggled"
+fi

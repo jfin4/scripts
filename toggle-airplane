@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rfkill toggle bluetooth
+rfkill block wwan
+rfkill toggle wlan

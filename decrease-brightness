@@ -1,0 +1,5 @@
+#!/bin/sh
+
+current=$(</sys/class/backlight/amdgpu_bl1/brightness)
+lower=$(expr $current / 2)
+sudo sh -c "echo $lower > /sys/class/backlight/amdgpu_bl1/brightness"

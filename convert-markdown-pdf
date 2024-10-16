@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# pandoc wrapper used primarily to convert markdown notes into pdf
+
+doc="${1%.md}"
+
+pandoc "${doc}".md --output="${doc}".pdf \
+	--variable=geometry:margin=1.5in \
+	--variable=fontsize=12pt \
+	--variable=pagestyle=empty \
+	--variable=fontfamily=palatino

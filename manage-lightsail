@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# scp to server
+_push () {
+local_project_root="$HOME/waterplots"
+local_absolute_path=$(readlink --canonicalize $1)
+# strip trailing path sep just in case
+local_absolute_path=${local_absolute_path%/}
+
+# relative to project root
+relative_path=${local_absolute_path#$local_project_root/*}
+relative_dir=${relative_path%/*}
+remote_project_root="waterplots"
+remote_absolute_dir="$remote_project_root"/"$relative_dir"
+
+rsync \
+    --archive \
+    --human-readable \
+    --partial \
+    --progress \
+    --rsh="ssh -i /home/JInman/.ssh/LightsailDefaultKey-us-west-2.pem" \
+    "$local_absolute_path" \
+    admin@54.148.13.14:"$remote_absolute_dir"
+}
+

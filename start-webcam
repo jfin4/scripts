@@ -1,0 +1,7 @@
+#!/bin/sh
+
+dir=$PWD
+cd $(mktemp --directory --tmpdir=$HOME/downloads)
+mpv av://v4l2:/dev/video0 --profile=low-latency --untimed &
+sleep 2 && xdotool key s
+cd "$dir"

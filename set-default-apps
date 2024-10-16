@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# /c/bin/setdefaultbrowser
+/c/bin/setdefaultbrowser HKCU Firefox-308046B0AF4A39CB
+# /c/bin/setuserfta get
+/c/bin/setuserfta .pdf 'SumatraPDF.pdf'
+/c/bin/setuserfta .png 'SumatraPDF.pdf'
+/c/bin/setuserfta .jpg 'SumatraPDF.pdf'
+# /c/bin/setuserfta .mht 'FirefoxHTML-ED82324667419616'
+# /c/bin/setuserfta .mhtml 'FirefoxHTML-ED82324667419616'
+
